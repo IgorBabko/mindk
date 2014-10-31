@@ -22,6 +22,9 @@ $activeIfRoute = function ($item) use (&$route) {
     <link href="/css/theme.css" rel="stylesheet">
 
 </head>
+
+{hello world}
+
 <body role="document">
 
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
