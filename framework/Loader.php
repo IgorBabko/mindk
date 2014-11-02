@@ -10,20 +10,21 @@ class Loader {
 		self::$_namespacePath[$namespace] = $namespacePath;
 	}
 
-	public static function controller($controllerName, $params = null) {
-		
-		$controllerName .= 'Controller';
+	public static function loadController($controllerName, $params = null, $instantiate = true) {
+
 		$controllerFile = self::$_namespacePath['Blog\\Controller\\'] . $controllerName . '.php';
 		
 		if(file_exists($controllerFile)) {
 			require_once $controllerFile;
 		}
 
-		$className = 'Blog\\Controller\\' . $controllerName;
-		return new $className();
+		if($instantiate) {
+			$className = 'Blog\\Controller\\' . $controllerName;
+			return new $className();
+		}
 	}
 
-	public static function model($modelName, $params = null) {
+	public static function laodModel($modelName, $params = null, $instantiate = true) {
 		
 		$modelFile = self::$_namespacePath['Blog\\Model\\'] . $modelName . '.php';
 
@@ -31,12 +32,13 @@ class Loader {
 			require_once $modelFile;
 		}
 
-
-		$className = 'Blog\\Model\\' . $modelName;
-		return new $className();
+		if($instantiate) {
+			$className = 'Blog\\Model\\' . $modelName;
+			return new $className();
+		}
 	}
 
-	public static function core($coreClassName, $params = null) {
+	public static function loadCoreComponent($coreClassName, $params = null, $instantiate = true) {
 		
 		$coreClassFile = self::$_namespacePath["Framework\\"] . $coreClassName . '.php';
 
@@ -44,11 +46,13 @@ class Loader {
 			require_once $coreClassFile;
 		}
 
-		$className = "Framework\\" . $coreClassName;
-		if (isset($params)) {
-			return new $className($params);
-		} else {
-			return new $className();
+		if($instantiate) {
+			$className = "Framework\\" . $coreClassName;
+			if (isset($params)) {
+				return new $className($params);
+			} else {
+				return new $className();
+			}
 		}
 	}
 }

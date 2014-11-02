@@ -2,17 +2,25 @@
 
 use Framework\Loader;
 
-#define('CORE_PATH', __DIR__ . '/../framework');
-define('CONFIG', __DIR__.'/../app/config/config.php');
-define('ROUTES', __DIR__.'/../app/config/routes.php');
-define('VIEWS', __DIR__.'/../src/Blog/views/');
+function info($obj) {
+	echo '<pre>';
+	print_r($obj);
+	echo '</pre>';
+}
 
-require_once(__DIR__.'/../framework/Loader.php');
+define('CORE',   __DIR__ . '/../framework');
+define('CONFIG', __DIR__ . '/../app/config/config.php');
+define('ROUTES', __DIR__ . '/../app/config/routes.php');
+define('VIEWS',  __DIR__ . '/../src/Blog/views/');
 
-Loader::addNamespacePath("Blog\\Controller\\", __DIR__.'/../src/Blog/Controller/');
-Loader::addNamespacePath('Blog\\Model\\',	   __DIR__.'/../src/Blog/Model/');
-Loader::addNamespacePath('Framework\\', 	   __DIR__.'/../framework/');
+require_once(__DIR__ . '/../framework/Loader.php');
+
+Loader::addNamespacePath("Blog\\Controller\\", __DIR__ . '/../src/Blog/Controller/');
+Loader::addNamespacePath('Blog\\Model\\',	   __DIR__ . '/../src/Blog/Model/');
+Loader::addNamespacePath('Framework\\', 	   __DIR__ . '/../framework/');
 
 
-$app = Loader::core('Application', array('config' => CONFIG, 'routes' => ROUTES));
+$app = Loader::loadCoreComponent('Application', array('config' => CONFIG, 'routes' => ROUTES));
 $app->run();
+
+info($_SERVER);

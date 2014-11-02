@@ -1,6 +1,11 @@
 <?php
 
 return array(
+    'hello'           => array(
+        'pattern'    => '/hello',
+        'controller' => 'HelloController',
+        'action'     => 'index'
+    ),
     'home'           => array(
         'pattern'    => '/',
         'controller' => 'Blog\\Controller\\PostController',

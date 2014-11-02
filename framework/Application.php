@@ -2,31 +2,35 @@
 
 namespace Framework;
 
-#require_once(__DIR__.'/Loader.php');
-
-#use \Framework\Controller\Controller;
-
-
 class Application {
 
 	private $_controller;
-	//private $_action;
-	private $_params;
+	private $_action;
 	private $_config;
-	private $_routes;
+	private $_router;
+	private $_matchedRoute;
+	private $_request;
 
-	public function __construct($info = null) {
+	public function __construct($data = array()) {
 		
-		if ($info !== null) 
-		{
-			$this->_config = require_once $info['config'];
-			$this->_routes = require_once $info['routes'];
-		}
+		echo $_SERVER['REQUEST_URI'] . '<br />';
+
+		$this->_config = require_once $data['config'];
+		$this->_router = Loader::loadCoreComponent('Router', $data['routes']);
+		$this->_matchedRoute = $this->_router->matchRequest($_SERVER['REQUEST_URI']);
+		
+
+		$this->_controller = Loader::loadController($this->_matchedRoute->controller);
+		$this->_action = $this->_matchedRoute->action;
 	}
+
+
 
 	public function run() {
 
-		//echo $_GET['uri'];
+		//$action = $this->_action;
+		$this->_controller->{$this->_action}();
+		/*//echo $_GET['uri'];
 		if (isset($_GET['uri'])) 
 		{
 
@@ -73,5 +77,6 @@ class Application {
 		{
 		// @TODO ...
 		}
+	}*/
 	}
 }
