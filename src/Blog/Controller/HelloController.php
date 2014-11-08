@@ -8,15 +8,11 @@
 
 namespace Blog\Controller;
 
-use \Framework\Controller;
-use \Framework\Loader;
 
-Loader::core('controller');
-
-class HelloController extends Controller
+class HelloController extends \Framework\Controller
 {
     public function indexAction()
     {
-        return $this->render(VIEWS . 'Hello/index.html.php');
+        return $this->render('Hello/index.html.php');
     }
 }

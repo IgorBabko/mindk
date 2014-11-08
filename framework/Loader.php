@@ -2,57 +2,62 @@
 
 namespace Framework;
 
-class Loader {
+class Loader
+{
 
-	private static $_namespacePath = array();
+    private static $_namespacePath = array();
 
-	public static function addNamespacePath($namespace, $namespacePath) {
-		self::$_namespacePath[$namespace] = $namespacePath;
-	}
+    public static function addNamespacePath($namespace, $namespacePath)
+    {
+        self::$_namespacePath[$namespace] = $namespacePath;
+    }
 
-	public static function loadController($controllerName, $params = null, $instantiate = true) {
+    public static function loadController($controllerName, $params = null, $instantiate = true)
+    {
 
-		$controllerFile = self::$_namespacePath['Blog\\Controller\\'] . $controllerName . '.php';
-		
-		if(file_exists($controllerFile)) {
-			require_once $controllerFile;
-		}
+        $controllerFile = self::$_namespacePath['Blog\\Controller\\'].$controllerName.'.php';
 
-		if($instantiate) {
-			$className = 'Blog\\Controller\\' . $controllerName;
-			return new $className();
-		}
-	}
+        if (file_exists($controllerFile)) {
+            require_once $controllerFile;
+        }
 
-	public static function laodModel($modelName, $params = null, $instantiate = true) {
-		
-		$modelFile = self::$_namespacePath['Blog\\Model\\'] . $modelName . '.php';
+        if ($instantiate) {
+            $className = 'Blog\\Controller\\'.$controllerName;
+            return new $className();
+        }
+    }
 
-		if(file_exists($modelFile)) {
-			require_once $modelFile;
-		}
+    public static function laodModel($modelName, $params = null, $instantiate = true)
+    {
 
-		if($instantiate) {
-			$className = 'Blog\\Model\\' . $modelName;
-			return new $className();
-		}
-	}
+        $modelFile = self::$_namespacePath['Blog\\Model\\'].$modelName.'.php';
 
-	public static function loadCoreComponent($coreClassName, $params = null, $instantiate = true) {
-		
-		$coreClassFile = self::$_namespacePath["Framework\\"] . $coreClassName . '.php';
+        if (file_exists($modelFile)) {
+            require_once $modelFile;
+        }
 
-		if(file_exists($coreClassFile)) {
-			require_once $coreClassFile;
-		}
+        if ($instantiate) {
+            $className = 'Blog\\Model\\'.$modelName;
+            return new $className();
+        }
+    }
 
-		if($instantiate) {
-			$className = "Framework\\" . $coreClassName;
-			if (isset($params)) {
-				return new $className($params);
-			} else {
-				return new $className();
-			}
-		}
-	}
+    public static function loadCoreComponent($coreClassName, $params = null, $instantiate = true)
+    {
+
+        $coreClassFile = self::$_namespacePath["Framework\\"].$coreClassName.'.php';
+
+        if (file_exists($coreClassFile)) {
+            require_once $coreClassFile;
+        }
+
+        if ($instantiate) {
+            $className = "Framework\\".$coreClassName;
+            if (isset($params)) {
+                return new $className($params);
+            } else {
+                return new $className();
+            }
+        }
+    }
 }

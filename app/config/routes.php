@@ -1,14 +1,30 @@
 <?php
 
 return array(
-    'hello'           => array(
+
+    'testRoute1'            => array(
+        'pattern'    => '/testRoute1/:id/edit',
+        'controller' => 'Blog\\Controller\\TestRoute2Controller',
+        'action'     => 'edit',
+        '_requirements' => array('_method' => 'GET', 'id' => '\d+')
+    ),
+
+    'testRoute2'        => array(
+        'pattern'    => '/testRoute2/:id/:name',
+        'controller' => 'Blog\\Controller\\MyController',
+        'action'     => 'index',
+        '_requirements' => array('_method' => 'GET', 'id' => '\d+', 'name' => '\w+')
+    ),
+    'hello'          => array(
         'pattern'    => '/hello',
-        'controller' => 'HelloController',
-        'action'     => 'index'
+        'controller' => 'Blog\\Controller\\HelloController',
+        'action'     => 'index',
+        'security'   => array('niko', 'bellic'),
+        '_requirements' => array('_method' => 'GET', 'id' => '\d+')
     ),
     'home'           => array(
         'pattern'    => '/',
-        'controller' => 'Blog\\Controller\\PostController',
+        'controller' => 'Blog\\Controller\\HelloController',  //PostController,
         'action'     => 'index'
     ),
     'testredirect'   => array(
@@ -71,6 +87,5 @@ return array(
             'id'      => '\d+',
             '_method' => 'POST'
         )
-
     )
 );

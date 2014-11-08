@@ -2,26 +2,49 @@
 
 namespace Framework;
 
-class MatchedRoute {
+class MatchedRoute
+{
 
-	public $controller;
-	public $action;
-	public $parameters;
+    public $controller = 'Blog\\Controller\\HelloController';
+    public $action = 'indexAction';
+    public $parameters = array();
 
-	public function __construct($routeInfo) {
-		$this->controller = $routeInfo['controller'];
-		$this->action = $routeInfo['action'] . 'Action';
-	}
+    public function __construct($routeInfo = null, $params = array())
+    {
+        if ($routeInfo) {
+            $this->controller = $routeInfo->controller;
+            $this->action     = $routeInfo->action.'Action';
+            $this->parameters = !empty($params)?$params:array();
+        }
+    }
 
-	public function getController() {
-		return $this->controller;
-	}
+    public function setController($controller)
+    {
+        $this->controller = $controller;
+    }
 
-	public function getAction() {
-		return $this->action;
-	}
+    public function setAction($action)
+    {
+        $this->action = $action.'Action';
+    }
 
-	public function getParameters() {
-		return $this->parameters();
-	}
+    public function setParams($parameters)
+    {
+        $this->parameters = $parameters;
+    }
+
+    public function getController()
+    {
+        return $this->controller;
+    }
+
+    public function getAction()
+    {
+        return $this->action;
+    }
+
+    public function getParameters()
+    {
+        return $this->parameters;
+    }
 }

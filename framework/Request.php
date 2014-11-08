@@ -14,47 +14,57 @@ $_SESSION 	Массив содержит все переменные сесси�
 
 */
 
-class Request {
+class Request
+{
 
-	public $uri;
-	public $method;
+    public $uri;
+    public $method;
 
-	public function __construct() {
-		$this->method = $_SERVER['REQUEST_METHOD'];
-		$this->url    = $_SERVER['REQUEST_URI'];
-	}
+    public function __construct()
+    {
+        $this->method = $_SERVER['REQUEST_METHOD'];
+        $this->url    = $_SERVER['REQUEST_URI'];
+    }
 
-	public function getURI() {
-		return $this->uri;
-	}
-	
-	public function getRequestMethod() {
-		return $this->method;
-	}
+    public function getURI()
+    {
+        return $this->uri;
+    }
 
-	public function getServerVar($name) {
-		return isset($_SERVER[$name]) ? $_SERVER[$name] : null;
-	}
+    public function getRequestMethod()
+    {
+        return $this->method;
+    }
 
-	public function getCookie($name) {
-		return isset($_COOKIE[$name]) ? $_COOKIE[$name] : null; 
-	}
+    public function getServerVar($name)
+    {
+        return isset($_SERVER[$name])?$_SERVER[$name]:null;
+    }
 
-	public function getSessionVar($name) {
-		return isset($_SESSION[$name]) ? $_SESSION[$name] : null;
-	}
+    public function getCookie($name)
+    {
+        return isset($_COOKIE[$name])?$_COOKIE[$name]:null;
+    }
 
-	public function getEnvVar($name) {
-		return isset($_ENV[$name]) ? $_ENV[$name] ; null;
-	}
+    public function getSessionVar($name)
+    {
+        return isset($_SESSION[$name])?$_SESSION[$name]:null;
+    }
 
-	public function getVar($name) {
-		if($this->method == 'GET') {
-			return isset($_GET[$name])  ? $_GET[$name]  : null;
-		} elseif($this->method == 'POST') {
-			return isset($_POST[$name]) ? $_POST[$name] : null;
-		} else {
-			return null;
-		}
-	}
+    public function getEnvVar($name)
+    {
+        return isset($_ENV[$name])?$_ENV[$name] ;
+        null;
+    }
+
+    public function getVar($name)
+    {
+        if ($this->method == 'GET') {
+            return isset($_GET[$name])?$_GET[$name]:null;
+        } elseif ($this->method == 'POST') {
+            return isset($_POST[$name])?$_POST[$name]:null;
+        } else {
+            return null;
+        }
+    }
 }

@@ -2,7 +2,8 @@
 
 namespace Framework;
 
-class UrlGenerator {
+class UrlGenerator
+{
 
-	
+
 }
