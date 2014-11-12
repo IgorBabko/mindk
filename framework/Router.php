@@ -2,6 +2,8 @@
 
 namespace Framework;
 
+use Framework\MatchedRoute;
+
 class Router
 {
 
@@ -10,14 +12,10 @@ class Router
     public $matcher;
     public $generator;
 
-    public function __construct($routes)
+    public function __construct($routeCollection = null)
     {
-
         $this->host            = 'http://'.$_SERVER['HTTP_HOST'];
-        $this->routeCollection = new RouteCollection($routes);
-
-        $this->matcher   = new UrlMatcher($this->routeCollection);
-        $this->generator = new UrlGenerator();
+        $this->routeCollection = $routeCollection;
     }
 
     public function addRoute($routeName, $routeInfo)
@@ -27,15 +25,13 @@ class Router
 
     public function matchCurrentRequest()
     {
-
         foreach ($this->routeCollection->routes as $routeName => $routeInfo) {
 
             if (isset($routeInfo->requirements['_method']) && $routeInfo->requirements['_method'] !== $_SERVER['REQUEST_METHOD']) {
                 continue;
             }
 
-            $url = $_SERVER['REQUEST_URI'];
-            //echo $url;
+            $url = '/' . trim($_SERVER['REQUEST_URI'], '/');
 
             if (strpos($routeInfo->pattern, ':') !== false) {
                 $pattern = $routeInfo->pattern;
@@ -62,20 +58,26 @@ class Router
                     echo '<pre>';
                     print_r($routeInfo);
                     echo '</pre>';
-                    return new \Framework\MatchedRoute($routeInfo, $params);
+                    DI::setParams('route', array('routeInfo' => (array)$routeInfo));
+                    DI::setParams('matchedRoute', array('params' => $params));
+
+                    return DI::resolve('matchedRoute');//new MatchedRoute($routeInfo, $params);
                 }
             }
 
             if ($routeInfo->pattern === $url) {
                 //echo 'route without any parameters is found';
-                return new \Framework\MatchedRoute($routeInfo);
+                DI::setParams('route', array('routeInfo' => (array)$routeInfo));
+                return DI::resolve('matchedRoute');
             }
         }
 
         //echo 'can\'t find the route';
+        //DI::setParams('route', array('controller' => 'Framework\\ErrorController', 'action' => 'index'));
+        //DI::setParams('matchedRoute', array('params' => array('errorCode' => '404')));
         $matchedRoute = new MatchedRoute();
         $matchedRoute->setController('Framework\\ErrorController');
-        $matchedRoute->setParams(array('errorCode' => '404'));
+        $matchedRoute->setParameters(array('errorCode' => '404'));
         return $matchedRoute;
     }
 

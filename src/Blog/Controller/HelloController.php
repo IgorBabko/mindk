@@ -8,9 +8,16 @@
 
 namespace Blog\Controller;
 
-
+/**
+ * Class HelloController
+ *
+ * @package Blog\Controller
+ */
 class HelloController extends \Framework\Controller
 {
+    /**
+     *
+     */
     public function indexAction()
     {
         return $this->render('Hello/index.html.php');

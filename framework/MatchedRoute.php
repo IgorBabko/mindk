@@ -9,7 +9,7 @@ class MatchedRoute
     public $action = 'indexAction';
     public $parameters = array();
 
-    public function __construct($routeInfo = null, $params = array())
+    public function __construct(Route $routeInfo = null, $params = array())
     {
         if ($routeInfo) {
             $this->controller = $routeInfo->controller;
@@ -28,7 +28,7 @@ class MatchedRoute
         $this->action = $action.'Action';
     }
 
-    public function setParams($parameters)
+    public function setParameters($parameters)
     {
         $this->parameters = $parameters;
     }

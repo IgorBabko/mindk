@@ -23,4 +23,8 @@ class ErrorController extends Controller
         //echo $errorDescription;
         $this->render($params['errorCode'].':'.$errorDescription);
     }
+
+    public function editAction() {
+        
+    }
 }

@@ -4,18 +4,15 @@ namespace Framework;
 
 class RouteCollection
 {
-
     public $routes = array();
 
-    public function __construct($routes = '')
+    public function __construct()
     {
+    }
 
-        if (file_exists($routes)) {
-            $routes = require $routes;
-            foreach ($routes as $routeName => $routeInfo) {
-                $this->routes[$routeName] = new \Framework\Route($routeInfo);
-            }
-        }
+    public function setRoute($routeName, $routeInfo) 
+    {
+        $this->routes[$routeName] = $routeInfo;
     }
 
     public function add($routeName, $routeInfo)
@@ -29,4 +26,4 @@ class RouteCollection
             info($name);
         }
     }
-}
+}   

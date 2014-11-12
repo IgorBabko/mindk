@@ -4,35 +4,35 @@ namespace Framework;
 
 class Autoloader
 {
-    public $prefixes = array();
+    public static $prefixes = array();
 
-    public function register()
+    public static function register()
     {
-        spl_autoload_register(array($this, 'loadClass'));
+        spl_autoload_register('self::loadClass');
     }
 
-    public function addNamespacePath($prefix, $base_dir, $prepend = false)
+    public static function addNamespacePath($prefix, $base_dir, $prepend = false)
     {
         $prefix   = trim($prefix, '\\').'\\';
         $base_dir = rtrim($base_dir, '/').DIRECTORY_SEPARATOR;
         $base_dir = rtrim($base_dir, DIRECTORY_SEPARATOR).'/';
-        if (isset($this->prefixes[$prefix]) === false) {
-            $this->prefixes[$prefix] = array();
+        if (isset(self::$prefixes[$prefix]) === false) {
+            self::$prefixes[$prefix] = array();
         }
         if ($prepend) {
-            array_unshift($this->prefixes[$prefix], $base_dir);
+            array_unshift(self::$prefixes[$prefix], $base_dir);
         } else {
-            array_push($this->prefixes[$prefix], $base_dir);
+            array_push(self::$prefixes[$prefix], $base_dir);
         }
     }
 
-    public function loadClass($class)
+    public static function loadClass($class)
     {
         $prefix = $class;
         while (false !== $pos = strrpos($prefix, '\\')) {
             $prefix         = substr($class, 0, $pos + 1);
             $relative_class = substr($class, $pos + 1);
-            $mapped_file    = $this->loadMappedFile($prefix, $relative_class);
+            $mapped_file    = self::loadMappedFile($prefix, $relative_class);
             if ($mapped_file) {
                 return $mapped_file;
             }
@@ -41,22 +41,22 @@ class Autoloader
         return false;
     }
 
-    public function loadMappedFile($prefix, $relative_class)
+    public static function loadMappedFile($prefix, $relative_class)
     {
-        if (isset($this->prefixes[$prefix]) === false) {
+        if (isset(self::$prefixes[$prefix]) === false) {
             return false;
         }
-        foreach ($this->prefixes[$prefix] as $base_dir) {
+        foreach (self::$prefixes[$prefix] as $base_dir) {
             $file = $base_dir.str_replace('\\', DIRECTORY_SEPARATOR, $relative_class).'.php';
             $file = $base_dir.str_replace('\\', '/', $relative_class).'.php';
-            if ($this->requireFile($file)) {
+            if (self::requireFile($file)) {
                 return $file;
             }
         }
         return false;
     }
 
-    public function requireFile($file)
+    public static function requireFile($file)
     {
         if (file_exists($file)) {
             require_once $file;

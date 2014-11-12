@@ -14,16 +14,21 @@ $_SESSION 	Массив содержит все переменные сесси�
 
 */
 
-class Request
-{
+namespace Framework;
 
+class Request {
+    
+    public $cookie;
+    public $session;
     public $uri;
     public $method;
 
-    public function __construct()
+    public function __construct($session = null, $cookie = null)
     {
-        $this->method = $_SERVER['REQUEST_METHOD'];
-        $this->url    = $_SERVER['REQUEST_URI'];
+        $this->method  = $_SERVER['REQUEST_METHOD'];
+        $this->url     = $_SERVER['REQUEST_URI'];
+        $this->session = $session;
+        $this->cookie  = $cookie;
     }
 
     public function getURI()
@@ -36,35 +41,109 @@ class Request
         return $this->method;
     }
 
-    public function getServerVar($name)
-    {
-        return isset($_SERVER[$name])?$_SERVER[$name]:null;
-    }
-
     public function getCookie($name)
     {
         return isset($_COOKIE[$name])?$_COOKIE[$name]:null;
     }
 
-    public function getSessionVar($name)
+    public function getSession($name)
     {
         return isset($_SESSION[$name])?$_SESSION[$name]:null;
     }
 
-    public function getEnvVar($name)
+    public function getEnv($name)
     {
-        return isset($_ENV[$name])?$_ENV[$name] ;
+        return isset($_ENV[$name])?$_ENV[$name];
         null;
     }
 
-    public function getVar($name)
-    {
-        if ($this->method == 'GET') {
-            return isset($_GET[$name])?$_GET[$name]:null;
-        } elseif ($this->method == 'POST') {
-            return isset($_POST[$name])?$_POST[$name]:null;
+    public function get($name, $filters = 0, $defaultValue = 0) {
+        return isset($_REQUEST[$name]) ? $_REQUEST[$name] : null;
+    }
+
+    public function getPost($name) {
+        return isset($_POST[$name]) ? $_POST[$name] : null;
+    }
+
+    public function getQuery($name) {
+        return isset($_GET[$name]) ? $_GET[$name] : null;
+    }
+
+    public function getServer() {
+        return isset($_SERVER[$name]) ? $_SERVER[$name] : null;
+    }
+
+    public function has($name) {
+        return isset($_REQUEST[$name]);
+    }
+
+    public function hasPost($name) {
+        return isset($_POST[$name]);
+    }
+
+    public function hasQuery($name) {
+        return isset($_GET[$name]);
+    }
+
+    public function hasServer($name) {
+        return isset($_SERVER[$name]);
+    }
+
+    public function getHeaders() {
+        return http_get_request_headers();
+    }
+
+    public function getHeader($name) {
+        $headers = $this->getHeaders();
+        if (isset($headers[$name])) {
+            return $headers[$name];
         } else {
+            // throw ...
             return null;
         }
+    }
+
+    public function getScheme() {
+        $scheme = parse_url($_SERVER['REQUEST_URI'])['scheme'];
+        return $scheme;
+    }
+
+    public function isAjax() {
+        return $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest';
+    }
+
+    public function getRawBody() {}
+
+    public function getServerAddress() {
+        return $_SERVER['SERVER_ADDR'];
+    }
+
+    public function getServerName() {
+        return gethostname();
+    }
+
+    public function getHttpHost() {
+        $parsed_url = parse_url($_SERVER('REQUEST_URI'));
+        return $parsed_url['scheme'] . $parsed_url['host'] . $parsed_url['port'];
+    }
+
+    public function getClientAddress() {
+        return $_SERVER['REMOTE_ADDR'];
+    }
+
+    public function getUserAgent() {
+        return $_SERVER['HTTP_USER_AGENT'];
+    }
+
+    public function isMethod($name) {
+        return $_SERVER['REQUEST_METHOD'] === strtoupper($name);
+    }
+
+    public function hasFiles() {
+
+    }
+
+    public function getUploadedFiles() {
+
     }
 }
