@@ -34,7 +34,7 @@ class Autoloader
     }
 
     /**
-     * Method to register namespaces
+     * Method to register namespaces.
      *
      * @static
      *
@@ -60,7 +60,9 @@ class Autoloader
     }
 
     /**
-     * Method to load class automatically
+     * Method to load class automatically.
+     *
+     * Method loads needed class specified in parameter $class.
      *
      * @param mixed $class class to load
      *
@@ -82,7 +84,6 @@ class Autoloader
     }
 
     /**
-     * Method to
      *
      * @param $prefix
      * @param $relative_class
@@ -105,7 +106,7 @@ class Autoloader
     }
 
     /**
-     * Method to require needed file
+     * Method to require needed file.
      *
      * @param string $file filepath to require
      *

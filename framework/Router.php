@@ -29,6 +29,10 @@ class Router
     public $host;
 
     /**
+     * Router constructor.
+     *
+     * Constructor takes routeCollection to know all available paths in application.
+     *
      * @param \Framework\RouteCollection | null $routeCollection Collection of all defined routes
      */
     public function __construct($routeCollection = null)
@@ -38,8 +42,12 @@ class Router
     }
 
     /**
-     * @param $routeName
-     * @param $routeInfo
+     * Method to add route to routeCollection.
+     *
+     * @param string $routeName Name of new route
+     * @param array  $routeInfo Info about new route
+     *
+     * @return void
      */
     public function addRoute($routeName, $routeInfo)
     {
@@ -47,7 +55,21 @@ class Router
     }
 
     /**
-     * @return MatchedRoute
+     * Method which defines matched route.
+     *
+     * Method runs foreach loop to take each route and check it for matching with request. It's necessary to check
+     * whether current route has some http method restrictions. Empty array which is supposed to hold all allowed http methods
+     * for route means that any method is allowed, but if http methods array specified and current http request doesn't match
+     * any of methods from method array loop gets next iteration with next route to check.
+     * If current route holds any placeholders they have to be replaced with its regular expressions from requirements array.
+     * If all specified parameters in url satisfy its regular expressions MatchedRoute object instantiates
+     * according to the parameters taken from url.
+     * When there's no placeholders in url it simply compares url with each route pattern and if match happens
+     * the MatchedRoute object instantiates based on route pattern of which has matched with url.
+     * If method could not detect any valid route from routeCollection for specified url it instantiates the MatchedRoute object
+     * based on ErrorController to inform of error
+     *
+     * @return \Framework\MatchedRoute Route which will handle http request
      */
     public function matchCurrentRequest()
     {
@@ -75,32 +97,23 @@ class Router
                 $pattern = str_replace('/', '\/', $pattern);
                 $pattern = '/'.$pattern.'/';
 
-                //echo '--------------------' . $pattern . '<br />';
-                //echo '--------------------' . $url . '<br />';
 
                 if (preg_match($pattern, $url, $params) !== 0) {
 
                     array_shift($params);
-                    echo '<pre>';
-                    print_r($routeInfo);
-                    echo '</pre>';
                     DI::setParams('route', array('routeInfo' => (array)$routeInfo));
                     DI::setParams('matchedRoute', array('params' => $params));
 
-                    return DI::resolve('matchedRoute');//new MatchedRoute($routeInfo, $params);
+                    return DI::resolve('matchedRoute');
                 }
             }
 
             if ($routeInfo->pattern === $url) {
-                //echo 'route without any parameters is found';
                 DI::setParams('route', array('routeInfo' => (array)$routeInfo));
                 return DI::resolve('matchedRoute');
             }
         }
 
-        //echo 'can\'t find the route';
-        //DI::setParams('route', array('controller' => 'Framework\\ErrorController', 'action' => 'index'));
-        //DI::setParams('matchedRoute', array('params' => array('errorCode' => '404')));
         $matchedRoute = new MatchedRoute();
         $matchedRoute->setController('Framework\\ErrorController');
         $matchedRoute->setParameters(array('errorCode' => '404'));
@@ -109,11 +122,20 @@ class Router
 
 
     /**
-     * @param string $routeName
-     * @param array  $params
+     * Method to generate url according to given parameters and route name.
+     *
+     * Method generates url according to specified name (first parameter)
+     * and list of parameters of the route (second parameter). If no such name of route is found
+     * in routeCollection exceptions throws. If search of route by name succeed it gets pattern of found route.
+     * In case parameters array for url to be generated isn't set then method immediately returns pattern but
+     * when parameters array isn't empty it replaces all placeholders from pattern on its particular value from
+     * parameters array and only then generated url returns.
+     *
+     * @param string $routeName Name of route to generate
+     * @param array  $params    Params for route to generate
      *
      * @return mixed
-     * @throws \Exception
+     * @throws \Exception If no routes in routeCollection with given name
      */
     public function generateUrl($routeName = 'hello', $params = array())
     {
@@ -122,11 +144,10 @@ class Router
             throw new \Exception("No route with the name $routeName has been found.");
         }
 
-        \info(array_keys($this->routeCollection->routes));
+        //\info(array_keys($this->routeCollection->routes));
 
         $route = $this->routeCollection->routes[$routeName];
         $url   = $route->pattern;
-        //echo $url;
 
         if ($params && preg_match_all('/:(\w+)/', $url, $param_keys)) {
             $param_keys = $param_keys[1];
