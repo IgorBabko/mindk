@@ -1,28 +1,54 @@
 <?php
+/**
+ * /framework/Router.php contains Router class
+ */
 
 namespace Framework;
 
 use Framework\MatchedRoute;
 
+/**
+ * Class Router.
+ *
+ * Class represents routing system defining controller and its action
+ * to handle the http request depending on url.
+ *
+ * @package Framework
+ * @author  Igor Babko <i.i.babko@gmail.com>
+ */
 class Router
 {
 
+    /**
+     * @var array|null $routeCollection Holds all routes defined in application
+     */
     public $routeCollection = array();
+    /**
+     * @var string $host Host
+     */
     public $host;
-    public $matcher;
-    public $generator;
 
+    /**
+     * @param \Framework\RouteCollection | null $routeCollection Collection of all defined routes
+     */
     public function __construct($routeCollection = null)
     {
         $this->host            = 'http://'.$_SERVER['HTTP_HOST'];
         $this->routeCollection = $routeCollection;
     }
 
+    /**
+     * @param $routeName
+     * @param $routeInfo
+     */
     public function addRoute($routeName, $routeInfo)
     {
         $this->routeCollection->add($routeName, $routeInfo);
     }
 
+    /**
+     * @return MatchedRoute
+     */
     public function matchCurrentRequest()
     {
         foreach ($this->routeCollection->routes as $routeName => $routeInfo) {
@@ -31,7 +57,7 @@ class Router
                 continue;
             }
 
-            $url = '/' . trim($_SERVER['REQUEST_URI'], '/');
+            $url = '/'.trim($_SERVER['REQUEST_URI'], '/');
 
             if (strpos($routeInfo->pattern, ':') !== false) {
                 $pattern = $routeInfo->pattern;
@@ -82,6 +108,13 @@ class Router
     }
 
 
+    /**
+     * @param string $routeName
+     * @param array  $params
+     *
+     * @return mixed
+     * @throws \Exception
+     */
     public function generateUrl($routeName = 'hello', $params = array())
     {
 

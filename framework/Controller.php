@@ -1,14 +1,40 @@
 <?php
+/**
+ * /framework/Controller.php contains superclass "Controller" for all controllers
+ */
 
 namespace Framework;
 
+/**
+ * Class Controller is superclass for all controllers.
+ *
+ * Class holds all necessary fields and method for all controllers.
+ *
+ * @package Framework
+ * @author Igor Babko <i.i.babko@gmail.com>
+ */
 class Controller
 {
 
+    /**
+     * @var string $controller Name of controller
+     */
     protected $controller;
+    /**
+     * @var string $action Name of action
+     */
     protected $action;
+    /**
+     * @var array $params Params used in particular action of controller
+     */
     protected $params;
 
+    /**
+     * @param string $name Name of view to render
+     * @param array  $params Params used in view
+     *
+     * @return void
+     */
     public function render($name, $params = array())
     {
 
@@ -21,10 +47,5 @@ class Controller
         }
 
         echo $content;
-        // $content = \str_replace('{hello world}', $content, \file_get_contents(VIEWS . 'main_layout.html.php'));
-        // echo $content;
-        //echo $content;
-        //echo 'hello world';
-        //echo $content;
     }
 }

@@ -1,19 +1,60 @@
 <?php
+/**
+ * /framework/Application.php contains front controller "Application"
+ */
 
 namespace Framework;
 
 use Framework\Router;
 
+/**
+ * Class Application - main class of the application (front controller)
+ *
+ * Application is a class that starts app and handles http request
+ * defining particular controller and its action to call depending on url
+ *
+ * @package Framework
+ * @author Igor Babko <i.i.babko@gmail.com>
+ */
 class Application
 {
 
+    /**
+     * @var \Framework\Controller $_controller Holds the chosen controller
+     */
     private $_controller;
+    /**
+     * @var string $_action Name of the chosen method
+     */
     private $_action;
+    /**
+     * @var array $_config App configurations
+     */
     private $_config;
+    /**
+     * @var \Framework\Router $_router Holds router
+     */
     private $_router;
+    /**
+     * @var \Framework\MatchedRoute $_router Holds matched route
+     */
     private $_matchedRoute;
+    /**
+     * @var \Framework\Request $_request Request object that represents http request
+     */
     private $_request;
 
+    /**
+     * Constructor of Application class
+     *
+     * Constructor takes router and app configurations as parameters
+     * and defines the matched router
+     *
+     * @param \Framework\Router $router router
+     * @param string            $config app configurations
+     *
+     * @return \Framework\Application Application object
+     */
     public function __construct($router, $config)
     {
         if (file_exists($config)) {
@@ -27,6 +68,13 @@ class Application
     }
 
 
+    /**
+     * The method to start the app
+     *
+     * It calls the the method of the controller of matched route
+     *
+     * @return void
+     */
     public function run()
     {
         $controller = $this->_controller;
@@ -35,78 +83,43 @@ class Application
         $controller->$action($parameters);
     }
 
+    /**
+     * Method to get the chosen controller
+     *
+     * @return \framework\Controller Chosen controller
+     */
     public function getController()
     {
         return $this->_controller;
     }
 
+    /**
+     * Method to get the chosen action of the chosen controller
+     *
+     * @return string Chosen action of chosen controller
+     */
     public function getAction()
     {
         return $this->_action;
     }
 
+    /**
+     * Method to get the application router
+     *
+     * @return \Framework\Router Router of app
+     */
     public function getRouter()
     {
         return $this->_router;
     }
 
+    /**
+     * Method to get the matched route
+     *
+     * @return \Framework\MatchedRoute Matched route
+     */
     public function getMatchedRoute()
     {
         return $this->_matchedRoute;
     }
-
-    //echo $this->_router->generateUrl();
-    //$this->_controller = new \Blog\HelloController();
-    //$this->_controller->indexAction();
-    //$action = $this->_action;
-    //$this->_controller->{$this->_action}();
-    /*//echo $_GET['uri'];
-    if (isset($_GET['uri']))
-    {
-
-        $action = '';
-        $params = array();
-        //echo '$_GET exists' . '<br />';
-        $uri = explode('/', $_GET['uri']);
-
-        if (!empty($uri[0]))
-        {
-            //echo 'controller exists' . '<br />';
-            $this->controller = Loader::controller($uri[0]);
-
-            if (isset($uri[1]) && method_exists(ucfirst($uri[0]) . 'Controller', $uri[1] . 'Action'))
-            {
-                //echo 'method exists' . '<br />';
-                $action = $uri[1] . 'Action';
-                unset($uri[1]);
-
-                if (isset($uri[2]))
-                {
-                    //echo 'params exist' . '<br />';
-                    $this->controller->$action($uri);
-                }
-                else
-                {
-                    $this->controller->$action();
-                }
-            } else
-            {
-                $action = 'indexAction';
-                $this->controller->$action();
-            }
-            unset($uri[0]);
-        }
-        else
-        {
-            $this->controller = Loader::controller('hello');
-            $action = 'indexAction';
-            $this->controller->$action();
-        }
-    }
-    else
-    {
-    // @TODO ...
-    }
-}*/
-    //}
 }

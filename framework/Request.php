@@ -22,9 +22,11 @@ class Request {
     public $session;
     public $uri;
     public $method;
+    public $headers = array();
 
     public function __construct($session = null, $cookie = null)
     {
+        $this->headers = apache_request_headers();
         $this->method  = $_SERVER['REQUEST_METHOD'];
         $this->url     = $_SERVER['REQUEST_URI'];
         $this->session = $session;
@@ -36,6 +38,14 @@ class Request {
         return $this->uri;
     }
 
+    public function getHeaders() {
+        return $this->headers;
+    }
+
+    public function getHeader($name) {
+        return isset($headers[$name]) ? $headers[$name] : null;
+    }
+
     public function getRequestMethod()
     {
         return $this->method;
@@ -43,12 +53,12 @@ class Request {
 
     public function getCookie($name)
     {
-        return isset($_COOKIE[$name])?$_COOKIE[$name]:null;
+        return $this->cookie->get($name);
     }
 
-    public function getSession($name)
+    public function getSessionVar($name)
     {
-        return isset($_SESSION[$name])?$_SESSION[$name]:null;
+        return $this->session->get($name);
     }
 
     public function getEnv($name)
@@ -89,18 +99,12 @@ class Request {
         return isset($_SERVER[$name]);
     }
 
-    public function getHeaders() {
-        return http_get_request_headers();
-    }
-
     public function getHeader($name) {
-        $headers = $this->getHeaders();
-        if (isset($headers[$name])) {
-            return $headers[$name];
-        } else {
-            // throw ...
-            return null;
+        if (isset($this->headers[$name])) {
+            return $this->headers[$name];
         }
+
+        // throw ...
     }
 
     public function getScheme() {
