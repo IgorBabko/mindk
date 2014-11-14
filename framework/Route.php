@@ -1,6 +1,11 @@
 <?php
 /**
- * /framework/Route.php contains Route class
+ * File /framework/Route.php contains Route class which keeps information of particular route
+ *
+ * PHP version 5
+ *
+ * @package Framework
+ * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
 namespace Framework;
@@ -40,9 +45,9 @@ class Route
      *
      * Route constructor takes information of route such as pattern, controller, action and so on.
      *
-     * @param $routeInfo
+     * @param array $routeInfo Information of particular route.
      *
-     * @return \Framework\Route
+     * @return \Framework\Route Route object.
      */
     public function __construct($routeInfo)
     {

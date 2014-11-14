@@ -1,7 +1,14 @@
 <?php
 /**
- * /framework/Request.php contains Request class
+ * File /framework/Request.php contains Request class is used
+ * to manipulated with http request easily.
+ *
+ * PHP version 5
+ *
+ * @package Framework
+ * @author  Igor Babko <i.i.babko@gmail.com>
  */
+
 namespace Framework;
 
 /**
@@ -11,7 +18,7 @@ namespace Framework;
  * http method, request headers, http url, GET data, POST data, SERVER data etc.
  *
  * @package Framework
- * @author Igor Babko <i.i.babko@gmail.com>
+ * @author  Igor Babko <i.i.babko@gmail.com>
  */
 class Request
 {
@@ -44,10 +51,10 @@ class Request
      *  - takes session object and cookie object as parameters;
      *  - defines request method and request uri.
      *
-     * @param null $session
-     * @param null $cookie
+     * @param \Framework\Session|null $session Session object.
+     * @param \Framework\Cookie|null  $cookie  Cookie  object.
      *
-     * @return \Framework\Request
+     * @return \Framework\Request Request object.
      */
     public function __construct($session = null, $cookie = null)
     {
@@ -61,7 +68,7 @@ class Request
     /**
      * Method which returns request uri.
      *
-     * @return string Request uri
+     * @return string Request uri.
      */
     public function getURI()
     {
@@ -81,7 +88,7 @@ class Request
     /**
      * Method returns particular header specified in $name parameter.
      *
-     * @param string $name Name of request header to be returned
+     * @param string $name Name of request header to be returned.
      *
      * @return string|null Request header.
      */
@@ -93,7 +100,7 @@ class Request
     /**
      * Method returns http request method.
      *
-     * @return string Http request method
+     * @return string Http request method.
      */
     public function getRequestMethod()
     {
@@ -105,7 +112,7 @@ class Request
      *
      * @param string $name Cookie name value of to be returned.
      *
-     * @return string|null Cookie value
+     * @return string|null Cookie value.
      */
     public function getCookie($name)
     {
@@ -117,7 +124,7 @@ class Request
      *
      * @param string $name Name of session variable.
      *
-     * @return string|null value of session variable $name
+     * @return string|null value of session variable $name.
      */
     public function getSessionVar($name)
     {
@@ -127,9 +134,9 @@ class Request
     /**
      * Method to return value of environment variable $name.
      *
-     * @param string $name Name of environment variable value of to be returned
+     * @param string $name Name of environment variable value of to be returned.
      *
-     * @return string|null Value of environment variable $name
+     * @return string|null Value of environment variable $name.
      */
     public function getEnv($name)
     {
@@ -139,13 +146,11 @@ class Request
     /**
      * Method to return values from $_REQUEST global array.
      *
-     * @param string $name $_REQUEST variable name
-     * @param int    $filters
-     * @param int    $defaultValue
+     * @param string $name $_REQUEST variable name.
      *
-     * @return string|null Value of $_REQUEST $name variable
+     * @return string|null Value of $_REQUEST $name variable.
      */
-    public function get($name, $filters = 0, $defaultValue = 0)
+    public function get($name)
     {
         return isset($_REQUEST[$name])?$_REQUEST[$name]:null;
     }
@@ -153,9 +158,9 @@ class Request
     /**
      * Method to return values from $_POST global array.
      *
-     * @param string $name $_POST variable name
+     * @param string $name $_POST variable name.
      *
-     * @return string|null Value of $_POST $name variable
+     * @return string|null Value of $_POST $name variable.
      */
     public function getPost($name)
     {
@@ -165,9 +170,9 @@ class Request
     /**
      * Method to return values from $_GET global array.
      *
-     * @param string $name $_GET variable name
+     * @param string $name $_GET variable name.
      *
-     * @return string|null Value of $_GET $name variable
+     * @return string|null Value of $_GET $name variable.
      */
     public function getQuery($name)
     {
@@ -177,9 +182,9 @@ class Request
     /**
      * Method to return values from $_SERVER global array.
      *
-     * @param string $name $_SERVER variable name
+     * @param string $name $_SERVER variable name.
      *
-     * @return string|null Value of $_SERVER $name variable
+     * @return string|null Value of $_SERVER $name variable.
      */
     public function getServer($name)
     {
@@ -189,7 +194,7 @@ class Request
     /**
      * Method checks whether variable with specified name exists in $_REQUEST global array or not.
      *
-     * @param string $name $_REQUEST variable name
+     * @param string $name $_REQUEST variable name.
      *
      * @return bool Does variable exist in $_REQUEST global array?
      */
@@ -201,7 +206,7 @@ class Request
     /**
      * Method checks whether variable with specified name exists in $_POST global array or not.
      *
-     * @param string $name $_POST variable name
+     * @param string $name $_POST variable name.
      *
      * @return bool Does variable exist in $_POST global array?
      */
@@ -213,7 +218,7 @@ class Request
     /**
      * Method checks whether variable with specified name exists in $_GET global array or not.
      *
-     * @param string $name $_GET variable name
+     * @param string $name $_GET variable name.
      *
      * @return bool Does variable exist in $_GET global array?
      */
@@ -225,7 +230,7 @@ class Request
     /**
      * Method checks whether variable with specified name exists in $_SERVER global array or not.
      *
-     * @param string $name $_SERVER variable name
+     * @param string $name $_SERVER variable name.
      *
      * @return bool Does variable exist in $_SERVER global array?
      */
@@ -235,22 +240,9 @@ class Request
     }
 
     /**
-     * @param $name
-     *
-     * @return mixed
-     */
-    /*public function getHeader($name)
-    {
-        if (isset($this->headers[$name])) {
-            return $this->headers[$name];
-        }
-        // throw ...
-    }*/
-
-    /**
      * Method returns http scheme.
      *
-     * @return string Http scheme
+     * @return string Http scheme.
      */
     public function getScheme()
     {
@@ -269,17 +261,9 @@ class Request
     }
 
     /**
-     *
-     *
-     */
-    public function getRawBody()
-    {
-    }
-
-    /**
      * Method returns server address.
      *
-     * @return string Server address
+     * @return string Server address.
      */
     public function getServerAddress()
     {
@@ -289,7 +273,7 @@ class Request
     /**
      * Method returns server name.
      *
-     * @return string Server name
+     * @return string Server name.
      */
     public function getServerName()
     {
@@ -299,7 +283,7 @@ class Request
     /**
      * Method returns http host.
      *
-     * @return string Http host
+     * @return string Http host.
      */
     public function getHttpHost()
     {
@@ -310,7 +294,7 @@ class Request
     /**
      * Method returns client address.
      *
-     * @return string Client address
+     * @return string Client address.
      */
     public function getClientAddress()
     {
@@ -320,7 +304,7 @@ class Request
     /**
      * Method returns user agent.
      *
-     * @return string User agent
+     * @return string User agent.
      */
     public function getUserAgent()
     {
@@ -330,7 +314,7 @@ class Request
     /**
      * Compare http request method with specified method in $name parameter.
      *
-     * @param string $name Http method name to compare to current request method
+     * @param string $name Http method name to compare to current request method.
      *
      * @return bool Does current http request method matches $name request method?
      */

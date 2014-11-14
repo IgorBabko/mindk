@@ -1,12 +1,18 @@
 <?php
 /**
- * /framework/MatchedRoute.php contains MatchedRoute class
+ * File /framework/MatchedRoute.php contains MatchedRoute class
+ * which holds information of matched route.
+ *
+ * PHP version 5
+ *
+ * @package Framework
+ * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
 namespace Framework;
 
 /**
- * Class MatchedRoute stores info of matched route
+ * Class MatchedRoute stores info of matched route.
  *
  * @package Framework
  * @author  Igor Babko <i.i.babko@gmail.com>
@@ -28,12 +34,12 @@ class MatchedRoute
     public $parameters = array();
 
     /**
-     * MatchedRoute constructor
+     * MatchedRoute constructor.
      *
-     * @param Route $routeInfo Route which represents info of matched route
-     * @param array $params    Action parameters for matched route
+     * @param Route $routeInfo Route which represents info of matched route.
+     * @param array $params    Action parameters for matched route.
      *
-     * @return \Framework\MatchedRoute
+     * @return \Framework\MatchedRoute MatchedRoute object.
      */
     public function __construct(Route $routeInfo = null, $params = array())
     {
@@ -47,7 +53,7 @@ class MatchedRoute
     /**
      * Method for setting controller to matched route.
      *
-     * @param string $controller
+     * @param string $controller Controller.
      *
      * @return void
      */
@@ -59,7 +65,7 @@ class MatchedRoute
     /**
      * Method for setting action to matched route.
      *
-     * @param $action
+     * @param string $action Action to be executed when route matches.
      *
      * @return void
      */
@@ -69,9 +75,9 @@ class MatchedRoute
     }
 
     /**
-     * Method for setting action parameters to matched route
+     * Method for setting action parameters to matched route.
      *
-     * @param $parameters
+     * @param array $parameters Parameters for defined action.
      *
      * @return void
      */
@@ -83,7 +89,7 @@ class MatchedRoute
     /**
      * Method for getting controller of matched route.
      *
-     * @return string Controller of matched route
+     * @return string Controller of matched route.
      */
     public function getController()
     {
@@ -93,7 +99,7 @@ class MatchedRoute
     /**
      * Method for getting action of matched route.
      *
-     * @return string Action of matched route
+     * @return string Action of matched route.
      */
     public function getAction()
     {
@@ -103,7 +109,7 @@ class MatchedRoute
     /**
      * Method for getting action parameters of matched route.
      *
-     * @return array Action parameters of matched route
+     * @return array Action parameters of matched route.
      */
     public function getParameters()
     {

@@ -1,6 +1,12 @@
 <?php
 /**
- * /framework/ErrorController.php contains ErrorController class
+ * File /framework/ErrorController.php contains ErrorController class
+ * which is going to be used once error is occured.
+ *
+ * PHP version 5
+ *
+ * @package Framework
+ * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
 namespace Framework;

@@ -1,6 +1,12 @@
 <?php
 /**
- * /framework/Controller.php contains superclass "Controller" for all controllers
+ * File /framework/Controller.php contains Controller superclass
+ * which will be inherited by all controllers.
+ *
+ * PHP version 5
+ *
+ * @package Framework
+ * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
 namespace Framework;
@@ -11,7 +17,7 @@ namespace Framework;
  * Class holds all necessary fields and method for all controllers.
  *
  * @package Framework
- * @author Igor Babko <i.i.babko@gmail.com>
+ * @author  Igor Babko <i.i.babko@gmail.com>
  */
 class Controller
 {
@@ -30,8 +36,8 @@ class Controller
     protected $params;
 
     /**
-     * @param string $name Name of view to render
-     * @param array  $params Params used in view
+     * @param string $name   Name of view to render.
+     * @param array  $params Params used in view.
      *
      * @return void
      */

@@ -1,17 +1,23 @@
 <?php
 /**
- * /framework/Response.php contains Response class
+ * File /framework/Response.php contains Response class to easily manipulate with http response.
+ *
+ * PHP version 5
+ *
+ * @package Framework
+ * @author  Igor Babko <i.i.babko@gmail.com>
  */
+
 namespace Framework;
 
 /**
- * Class Response - representation of http response
+ * Class Response - representation of http response.
  *
  * Class contains all needed information of http response such as cookie, session variables
  * response status, response headers, response body etc.
  *
  * @package Framework
- * @author Igor Babko <i.i.babko@gmail.com>
+ * @author  Igor Babko <i.i.babko@gmail.com>
  */
 class Response
 {
@@ -103,13 +109,13 @@ class Response
      *  - cookie  object.
      * Also it sets default body, status code and status descriptions to the response object.
      *
-     * @param \Framework\Session $session Session object
-     * @param \Framework\Cookie  $cookie  Cookie  object
-     * @param string             $content Content of response body
-     * @param int                $code    Status code of response
-     * @param string             $status  Description of response status code
+     * @param \Framework\Session $session Session object.
+     * @param \Framework\Cookie  $cookie  Cookie  object.
+     * @param string             $content Content of response body.
+     * @param int                $code    Status code of response.
+     * @param string             $status  Description of response status code.
      *
-     * @return \Framework\Response
+     * @return \Framework\Response Response object.
      */
     public function __construct($session = null, $cookie = null, $content = '', $code = 200, $status = 'OK')
     {
@@ -120,7 +126,7 @@ class Response
     /**
      * Method sets raw header e.g. "HTTP/1.1 200 OK".
      *
-     * @param string $rawHeader Raw header to be set
+     * @param string $rawHeader Raw header to be set.
      *
      * @return void
      */
@@ -130,16 +136,9 @@ class Response
     }
 
     /**
-     * Method sets status code of response e.g.
+     * Method sets Content-Disposition header asking http client to show upload dialog.
      *
-     * @param $code
-     * @param $message
-     */
-
-    /**
-     * Method sets Content-Disposition header asking http client to show upload dialog
-     *
-     * @param string $filename Filename to download
+     * @param string $filename Filename to download.
      *
      * @return void
      */
@@ -150,10 +149,10 @@ class Response
 
 
     /**
-     * Method sets response header with name $name and value $value
+     * Method sets response header with name $name and value $value.
      *
-     * @param string $name  Name  of response header to set
-     * @param string $value Value of response header $name
+     * @param string $name  Name  of response header to set.
+     * @param string $value Value of response header $name.
      *
      * @return void
      */
@@ -165,7 +164,7 @@ class Response
     /**
      * Method sets response status code.
      *
-     * @param string $code Response status code to set
+     * @param string $code Response status code to set.
      *
      * @return void
      */
@@ -176,10 +175,10 @@ class Response
 
 
     /**
-     * Method sets content type of response
+     * Method sets content type of response.
      *
-     * @param string $contentType Response content type
-     * @param string $charset     Response charset
+     * @param string $contentType Response content type.
+     * @param string $charset     Response charset.
      *
      * @return void
      */
@@ -213,8 +212,8 @@ class Response
     /**
      * Method add cookie with name $name and $value value.
      *
-     * @param string $name  Cookie name
-     * @param string $value Cookie value
+     * @param string $name  Cookie name.
+     * @param string $value Cookie value.
      *
      * @return void
      */
@@ -226,9 +225,9 @@ class Response
     /**
      * Method returns value of specified cookie.
      *
-     * @param string $name Cookie name value of to be returned
+     * @param string $name Cookie name value of to be returned.
      *
-     * @return string Cookie value
+     * @return string Cookie value.
      */
     public function getCookies($name)
     {
@@ -238,7 +237,7 @@ class Response
     /**
      * Method returns all response headers.
      *
-     * @return array Response headers
+     * @return array Response headers.
      */
     public function getHeaders()
     {
@@ -248,7 +247,7 @@ class Response
     /**
      * Method sets content to response body.
      *
-     * @param string $content Content to be set
+     * @param string $content Content to be set.
      *
      * @return void
      */
@@ -270,7 +269,7 @@ class Response
     /**
      * Method appends content to response body.
      *
-     * @param string $content Content to be appended to response body
+     * @param string $content Content to be appended to response body.
      */
     public function appendContent($content)
     {
@@ -303,7 +302,7 @@ class Response
     /**
      * Method redirects http client to given location $location.
      *
-     * @param string $location Location to be redirected to
+     * @param string $location Location to be redirected to.
      *
      * @return void
      */
@@ -315,9 +314,9 @@ class Response
     /**
      * Method returns value of specified response header.
      *
-     * @param string $name Name of response header its value to be returned
+     * @param string $name Name of response header its value to be returned.
      *
-     * @return string|null Value of specified header or null
+     * @return string|null Value of specified header or null.
      */
     public function getHeader($name)
     {
@@ -329,8 +328,8 @@ class Response
     /**
      * Method sets all needed headers and cache directives related to cache.
      *
-     * @param int $since Last modification time of current file
-     * @param int $time  Time when response is sent
+     * @param int $since Last modification time of current file.
+     * @param int $time  Time when response is sent.
      *
      * @return void
      */
@@ -349,9 +348,9 @@ class Response
      * Method sets last modification time to current file or returns value
      * of existed Last-Modified header when $time parameter is null.
      *
-     * @param DateTime|int|string|null $time Last modification time of current file
+     * @param DateTime|int|string|null $time Last modification time of current file.
      *
-     * @return string|null Last modification time of current file or null
+     * @return string|null Last modification time of current file or null.
      */
     public function modified($time = null)
     {
@@ -370,9 +369,9 @@ class Response
      * It returns value of max-age cache-directive unless $seconds is null
      * and max-age cache directive was not defined before then it returns null.
      *
-     * @param string $seconds Amount of seconds to cache file for
+     * @param string $seconds Amount of seconds to cache file for.
      *
-     * @return string|null Value of max-age cache-directive or null
+     * @return string|null Value of max-age cache-directive or null.
      */
     public function maxAge($seconds = null)
     {
@@ -391,9 +390,9 @@ class Response
      * It returns value of Expire header unless $time is null
      * and Expire header was not defined before then it returns null.
      *
-     * @param DateTime|int|string|null $time Expiration time for current file
+     * @param DateTime|int|string|null $time Expiration time for current file.
      *
-     * @return string|null Value of Expire header or null
+     * @return string|null Value of Expire header or null.
      */
     public function expires($time = null)
     {
@@ -412,9 +411,9 @@ class Response
      * Method takes $time parameter and convert it to DateTime object.
      * If $time is already DateTime object method just clones it and returns DateTime clone.
      *
-     * @param DateTime|string|int|null $time Time to convert to DateTime object
+     * @param DateTime|string|int|null $time Time to convert to DateTime object.
      *
-     * @return DateTime DateTime object
+     * @return DateTime DateTime object.
      */
     protected function _getUTCDate($time = null)
     {

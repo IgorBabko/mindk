@@ -1,6 +1,12 @@
 <?php
 /**
- * /framework/autoloader.php contains the Autoloader class
+ * File /framework/autoloader.php contains the Autoloader class
+ * which handle autoloading process.
+ *
+ * PHP version 5
+ *
+ * @package Framework
+ * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
 namespace Framework;
@@ -23,7 +29,7 @@ class Autoloader
     public static $prefixes = array();
 
     /**
-     * Method to register function which loads classes
+     * Method to register function which loads classes.
      *
      * @static
      * @return void
@@ -34,13 +40,16 @@ class Autoloader
     }
 
     /**
-     * Method to register namespaces.
+     * Method to register namespaces and its associated directories.
+     * If $prepend is set to true $base_dir (where classes from current namespace is situated)
+     * will be set as first element of Namespace prefixes array otherwise $base_dir pushes
+     * to the end of this array.
      *
      * @static
      *
-     * @param string $prefix prefix of namespace
-     * @param string $base_dir base_dir
-     * @param bool   $prepend whether to append loading function at the end or at the beginning of autoloading stack
+     * @param string $prefix prefix of namespace.
+     * @param string $base_dir base_dir.
+     * @param bool   $prepend whether to append loading function at the end or at the beginning of autoloading stack.
      *
      * @return void
      */
@@ -60,13 +69,15 @@ class Autoloader
     }
 
     /**
-     * Method to load class automatically.
+     * Method to load classes automatically.
      *
-     * Method loads needed class specified in parameter $class.
+     * Method loads needed class specified in $class parameter. It parses given classname
+     * taking namespace prefix to $prefix variable and classname itself to $relative_class variable.
+     * Then self::loadMappedFile loads class and method returns path to the file of loaded class.
      *
-     * @param mixed $class class to load
+     * @param mixed $class class to load.
      *
-     * @return bool|string path to the class file or false when loading fails
+     * @return bool|string path to the loaded file or false if loading fails.
      */
     public static function loadClass($class)
     {
@@ -84,11 +95,13 @@ class Autoloader
     }
 
     /**
+     * Method loads $relative_class iterating through all paths related to prefix $prefix.
+     * Once classfile is detected in one of paths this path is required by self::requireFile.
      *
-     * @param $prefix
-     * @param $relative_class
+     * @param string $prefix         Namespace prefix.
+     * @param string $relative_class Classname to load.
      *
-     * @return bool|string
+     * @return bool|string Path to the loaded file or false if loading fails.
      */
     public static function loadMappedFile($prefix, $relative_class)
     {
@@ -108,9 +121,9 @@ class Autoloader
     /**
      * Method to require needed file.
      *
-     * @param string $file filepath to require
+     * @param string $file filepath to require.
      *
-     * @return bool whether file required successfully or not
+     * @return bool whether file required successfully or not.
      */
     public static function requireFile($file)
     {

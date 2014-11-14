@@ -1,6 +1,12 @@
 <?php
 /**
- * /framework/DI contains DI class.
+ * File /framework/DI contains DI class which allows simply resolve all dependencies
+ * instantiating particular object.
+ *
+ * PHP version 5
+ *
+ * @package Framework
+ * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
 namespace Framework;
@@ -23,12 +29,14 @@ class DI
     /**
      * Method for setting new service based on passing parameters.
      *
-     * @param string $name         Service name
-     * @param string $className    Classname of service
-     * @param null   $resolver     Function to create an instance of service with all needed dependencies
-     * @param array  $params       Parameters for resolver
-     * @param array  $dependencies List of classes service depends on
-     * @param bool   $isSingleton  Whether service is singleton or not
+     * @param string $name         Service name.
+     * @param string $className    Classname of service.
+     * @param null   $resolver     Function to create an instance of service with all needed dependencies.
+     * @param array  $params       Parameters for resolver.
+     * @param array  $dependencies List of classes service depends on.
+     * @param bool   $isSingleton  Whether service is singleton or not.
+     *
+     * @return void
      */
     public static function setService(
         $name,
@@ -54,10 +62,10 @@ class DI
      * set to resolver yet then all array of parameters will be assigned to resolver parameters
      * otherwise each parameter sets to its particular place of resolver parameters array
      * For a case service parameters have to be set to is singleton setting parameters step will be ignored
-     * 'cause for resolvers of singleton services (objects) parameters is set only once in /web/index.php
+     * 'cause for resolvers of singleton services (objects) parameters is set only once in /web/index.php .
      *
-     * @param string $name   Service name
-     * @param array  $params Parameters array of particular service resolver
+     * @param string $name   Service name.
+     * @param array  $params Parameters array of particular service resolver.
      *
      * @return void
      */
@@ -76,10 +84,10 @@ class DI
     }
 
     /**
-     * Method for setting dependencies to the service
+     * Method for setting dependencies to the service.
      *
-     * @param string $name         Service name to set dependencies to
-     * @param        $dependencies List of classes current service depends on
+     * @param string $name         Service name to set dependencies to.
+     * @param array  $dependencies List of classes current service depends on.
      *
      * @return void
      */
@@ -91,8 +99,10 @@ class DI
     /**
      * Method to set resolvers for specified service.
      *
-     * @param string $name    Service name
-     * @param object $resolve Resolver function
+     * @param string $name    Service name.
+     * @param object $resolve Resolver function.
+     *
+     * @return void
      */
     public static function setResolver($name, $resolve)
     {
@@ -102,9 +112,9 @@ class DI
     /**
      * Method to check whether specified in parameters service has any resolvers.
      *
-     * @param string $name Service name
+     * @param string $name Service name.
      *
-     * @return bool Service has resolver(s) or doesn't have
+     * @return bool Service has resolver(s) or doesn't have.
      */
     public static function hasResolver($name)
     {
@@ -112,14 +122,7 @@ class DI
     }
 
     /**
-     * @param $name
-     */
-    /*public static function resolveAsSingleton($name)
-    {
-    }*/
-
-    /**
-     * Method which resolves all dependencies for particular service (object) and create its instance
+     * Method which resolves all dependencies for particular service (object) and create its instance.
      *
      * Method checks if the request service is singleton and if so it immediately returns its instance
      * otherwise there's check whether request service has resolver
@@ -129,9 +132,9 @@ class DI
      * names of each dependency will be taken from service information array and current method calls for each
      * dependency to instantiate all dependencies respectively.
      *
-     * @param string $name Service name to be instantiated
+     * @param string $name Service name to be instantiated.
      *
-     * @return mixed Needed instance of requested service
+     * @return mixed Needed instance of requested service.
      */
     public static function resolve($name)
     {

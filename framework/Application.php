@@ -1,6 +1,12 @@
 <?php
 /**
- * /framework/Application.php contains front controller "Application"
+ * File /framework/Application.php contains Application class (front controller)
+ * from where application starts executing.
+ *
+ * PHP version 5
+ *
+ * @package Framework
+ * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
 namespace Framework;
@@ -8,10 +14,10 @@ namespace Framework;
 use Framework\Router;
 
 /**
- * Class Application - main class of the application (front controller)
+ * Class Application - main class of the application (front controller).
  *
  * Application is a class that starts app and handles http request
- * defining particular controller and its action to call depending on url
+ * defining particular controller and its action to call depending on url.
  *
  * @package Framework
  * @author Igor Babko <i.i.babko@gmail.com>
@@ -45,15 +51,15 @@ class Application
     private $_request;
 
     /**
-     * Constructor of Application class
+     * Application constructor.
      *
      * Constructor takes router and app configurations as parameters
-     * and defines the matched router
+     * and defines the matched router.
      *
-     * @param \Framework\Router $router router
-     * @param string            $config app configurations
+     * @param \Framework\Router $router Router.
+     * @param string            $config App configurations.
      *
-     * @return \Framework\Application Application object
+     * @return \Framework\Application Application object.
      */
     public function __construct($router, $config)
     {
@@ -69,9 +75,9 @@ class Application
 
 
     /**
-     * The method to start the app
+     * The method to start the app.
      *
-     * It calls the the method of the controller of matched route
+     * It calls the the method of the controller of matched route.
      *
      * @return void
      */
@@ -84,9 +90,9 @@ class Application
     }
 
     /**
-     * Method to get the chosen controller
+     * Method to get the chosen controller.
      *
-     * @return \framework\Controller Chosen controller
+     * @return \framework\Controller Chosen controller.
      */
     public function getController()
     {
@@ -94,9 +100,9 @@ class Application
     }
 
     /**
-     * Method to get the chosen action of the chosen controller
+     * Method to get the chosen action of the chosen controller.
      *
-     * @return string Chosen action of chosen controller
+     * @return string Chosen action of chosen controller.
      */
     public function getAction()
     {
@@ -104,9 +110,9 @@ class Application
     }
 
     /**
-     * Method to get the application router
+     * Method to get the application router.
      *
-     * @return \Framework\Router Router of app
+     * @return \Framework\Router Router of app.
      */
     public function getRouter()
     {
@@ -114,9 +120,9 @@ class Application
     }
 
     /**
-     * Method to get the matched route
+     * Method to get the matched route.
      *
-     * @return \Framework\MatchedRoute Matched route
+     * @return \Framework\MatchedRoute Matched route.
      */
     public function getMatchedRoute()
     {

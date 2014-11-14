@@ -1,6 +1,11 @@
 <?php
 /**
- * /framework/Cookie.php contains Cookie class
+ * File /framework/Cookie.php contains Cookie class to easy manipulate with cookies.
+ *
+ * PHP version 5
+ *
+ * @package Framework
+ * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
 namespace Framework;

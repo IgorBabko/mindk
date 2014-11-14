@@ -1,12 +1,18 @@
 <?php
 /**
- * /framework\Session.php contains Session class
+ * File /framework\Session.php contains Session class is used to easily manipulate
+ * with session variables.
+ *
+ * PHP version 5
+ *
+ * @package Framework
+ * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
 namespace Framework;
 
 /**
- * Class Session represents objects to work with sessions
+ * Class Session represents objects to work with sessions.
  *
  * @package Framework
  * @author  Igor Babko <i.i.babko@gmail.com>
@@ -86,7 +92,7 @@ class Session implements ArrayAccess
     /**
      * Method returns session name.
      *
-     * @return string Session name
+     * @return string Session name.
      */
     public function getName()
     {
@@ -110,9 +116,9 @@ class Session implements ArrayAccess
     }
 
     /**
-     * Method checks if given session variable $name exists or not
+     * Method checks if given session variable $name exists or not.
      *
-     * @param string $name
+     * @param string $name Name of session variable to be checked.
      *
      * @return bool Does session variable $name exist?
      */
@@ -128,9 +134,9 @@ class Session implements ArrayAccess
     /**
      * Method gets value of session variable $name if exists.
      *
-     * @param string $name Name of session variable value of to be returned
+     * @param string $name Name of session variable value of to be returned.
      *
-     * @return string|null Value of session variable $name or null
+     * @return string|null Value of session variable $name or null.
      */
     public function get($name)
     {
@@ -144,8 +150,8 @@ class Session implements ArrayAccess
     /**
      * Method sets session variable $name with value $value.
      *
-     * @param string $name  Name of session variable to be added
-     * @param string $value Value of session variable with name $name
+     * @param string $name  Name of session variable to be added.
+     * @param string $value Value of session variable with name $name.
      *
      * @return void
      */
@@ -160,7 +166,9 @@ class Session implements ArrayAccess
     /**
      * Method removes specified session variable.
      *
-     * @param string $name Name of session variable to remove
+     * @param string $name Name of session variable to remove.
+     *
+     * @return void
      */
     public function remove($name)
     {

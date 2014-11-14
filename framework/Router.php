@@ -1,6 +1,12 @@
 <?php
 /**
- * /framework/Router.php contains Router class
+ * File /framework/Router.php contains Router class which is used to resolve
+ * what controller must be used to handle http request.
+ *
+ * PHP version 5
+ *
+ * @package Framework.
+ * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
 namespace Framework;
@@ -33,7 +39,9 @@ class Router
      *
      * Constructor takes routeCollection to know all available paths in application.
      *
-     * @param \Framework\RouteCollection | null $routeCollection Collection of all defined routes
+     * @param \Framework\RouteCollection|null $routeCollection Collection of all defined routes.
+     *
+     * @return \Framework\Router Router object.
      */
     public function __construct($routeCollection = null)
     {
@@ -44,8 +52,8 @@ class Router
     /**
      * Method to add route to routeCollection.
      *
-     * @param string $routeName Name of new route
-     * @param array  $routeInfo Info about new route
+     * @param string $routeName Name of new route.
+     * @param array  $routeInfo Info about new route.
      *
      * @return void
      */
@@ -67,9 +75,9 @@ class Router
      * When there's no placeholders in url it simply compares url with each route pattern and if match happens
      * the MatchedRoute object instantiates based on route pattern of which has matched with url.
      * If method could not detect any valid route from routeCollection for specified url it instantiates the MatchedRoute object
-     * based on ErrorController to inform of error
+     * based on ErrorController to inform of error.
      *
-     * @return \Framework\MatchedRoute Route which will handle http request
+     * @return \Framework\MatchedRoute Route which will handle http request.
      */
     public function matchCurrentRequest()
     {
@@ -131,11 +139,11 @@ class Router
      * when parameters array isn't empty it replaces all placeholders from pattern on its particular value from
      * parameters array and only then generated url returns.
      *
-     * @param string $routeName Name of route to generate
-     * @param array  $params    Params for route to generate
+     * @param string $routeName Name of route to generate.
+     * @param array  $params    Params for route to generate.
      *
-     * @return mixed
-     * @throws \Exception If no routes in routeCollection with given name
+     * @return string Generated url.
+     * @throws \Exception If no routes in routeCollection with given name.
      */
     public function generateUrl($routeName = 'hello', $params = array())
     {
