@@ -1,53 +1,60 @@
 <?php
 /**
- * /framework/Cookie.php
+ * /framework/Cookie.php contains Cookie class
  */
 
+namespace Framework;
+
 /**
- * Class Cookie
+ * Class Cookie represents objects to work with cookies.
+ *
+ * @package Framework
+ * @author  Igor Babko <i.i.babko@gmail.com>
  */
 class Cookie
 {
 
     /**
-     *
+     * @const null SESSION Set cookie for a session.
      */
     const SESSION = null;
     /**
-     *
+     * @const int DAY Set cookie for a day.
      */
-    const ONE_DAY = 86400;
+    const DAY = 86400;
     /**
-     *
+     * @const int WEEK Set cookie for a week.
      */
-    const SEVEN_DAYS = 604800;
+    const WEEK = 604800;
     /**
-     *
+     * @const int MONTH Set cookie for a month.
      */
     const MONTH = 2592000;
     /**
-     *
+     * @const int SIX_MONTHS Set cookie for six months.
      */
     const SIX_MONTHS = 15811200;
     /**
-     *
+     * @const int YEAR Set cookie for a year.
      */
-    const ONE_YEAR = 31536000;
+    const YEAR = 31536000;
     /**
-     *
+     * @const int FOREVER Set cookie forever.
      */
-    const LIFETIME = -1;
+    const FOREVER = -1;
 
     /**
-     * @var array
+     * @var array $_cookies Cookies to be sent
      */
     public $cookies = array();
 
 
     /**
-     * @param $name
+     * Method checks whether cookie with specified name $name exists or not.
      *
-     * @return bool
+     * @param string $name Cookie name to check.
+     *
+     * @return bool Does cookie $name exist?
      */
     public function exists($name)
     {
@@ -55,7 +62,9 @@ class Cookie
     }
 
     /**
+     * Method sends all defined cookies.
      *
+     * @return void
      */
     public function sendCookie()
     {
@@ -78,13 +87,17 @@ class Cookie
 
 
     /**
-     * @param        $name
-     * @param        $value
-     * @param int    $expiry
-     * @param string $path
-     * @param bool   $domain
+     * Method adds cookie to $_cookies array.
+     *
+     * @param string $name   Name of cookie to be added.
+     * @param string $value  Value of cookie $name.
+     * @param int    $expiry Cookie expiration date.
+     * @param string $path   Path where cookie will be available.
+     * @param bool   $domain Domain where cookie will be available.
+     *
+     * @return void
      */
-    public function set($name, $value, $expiry = self::ONE_YEAR, $path = '/', $domain = false)
+    public function add($name, $value, $expiry = self::ONE_YEAR, $path = '/', $domain = false)
     {
 
         if ($expiry === -1) {
@@ -103,18 +116,22 @@ class Cookie
     }
 
     /**
-     * @return array
+     * Method gets all cookies from $cookies array.
+     *
+     * @return array Cookies array.
      */
-    public function getCookie()
+    public function getCookies()
     {
         return $this->cookies;
     }
 
 
     /**
-     * @param $name
+     * Method checks whether specified cookie is empty or not.
      *
-     * @return bool
+     * @param string $name Cookie name to check.
+     *
+     * @return bool Is cookie $name empty?
      */
     public function isEmpty($name)
     {
@@ -126,47 +143,31 @@ class Cookie
     }
 
     /**
-     * @param        $name
-     * @param string $default
+     * Method returns cookie with specified name $name. When there's no cookie $name
+     * it returns value specified in second parameter.
      *
-     * @return string
+     * @param string $name    Name of cookie value of to be returned.
+     * @param mixed  $default Default value to be returned.
+     *
+     * @return mixed Value of Cookie with name $name or default value.
      */
     public function get($name, $default = '')
     {
         return isset($_COOKIE[$name])?$_COOKIE[$name]:$default;
     }
 
-    /*
-        public function set($name, $value, $expiry = self::ONE_YEAR, $path = '/', $domain = false) {
-            $retval = false;
-            if(!headers_sent()) {
-                if($domain === false) {
-                    $domain = $_SERVER['HTTP_HOST'];
-                }
-                if($expiry === -1) {
-                    $expiry = 1893456000;
-                } elseif(is_numeric($expiry)) {
-                    $expiry += time();
-                } else {
-                    $expiry = strtotime($expiry);
-                }
-
-                $retval = setcookie($name, $value, $expiry, $path, $domain);
-                if($retval) {
-                    $_COOKIE[$name] = $value;
-                }
-            }
-        }*/
-
     /**
-     * @param        $name
-     * @param string $path
-     * @param bool   $domain
-     * @param bool   $remove_from_global
+     * Method removes cookie with specified name $name.
+     * When $global is true then cookie also will be removed from $_COOKIE global array.
      *
-     * @return bool
+     * @param string $name   Name of cookie to be removed.
+     * @param string $path   Path where cookie is available.
+     * @param bool   $domain Domain where cookie is available.
+     * @param bool   $global Should cookie be removed from $_COOKIE global array.
+     *
+     * @return bool Is cookie successfully removed?
      */
-    public function remove($name, $path = '/', $domain = false, $remove_from_global = false)
+    public function remove($name, $path = '/', $domain = false, $global = false)
     {
         $retval = false;
         if (!headers_sent()) {
@@ -176,7 +177,7 @@ class Cookie
 
             $retval = setcookie($name, '', time() - 3600, $path, $domain);
 
-            if ($remove_from_global) {
+            if ($global) {
                 unset($_COOKIE[$name]);
             }
         }

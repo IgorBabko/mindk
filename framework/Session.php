@@ -1,22 +1,49 @@
 <?php
+/**
+ * /framework\Session.php contains Session class
+ */
 
+namespace Framework;
 
+/**
+ * Class Session represents objects to work with sessions
+ *
+ * @package Framework
+ * @author  Igor Babko <i.i.babko@gmail.com>
+ */
+/**
+ * Class Session
+ *
+ * @package Framework
+ */
 class Session implements ArrayAccess
 {
-    private $meta = '__meta';
+    /**
+     * @var string $_meta Session variable that keeps general information of current session
+     */
+    private $_meta = '__meta';
+    /**
+     * @var bool $_started Is session started?
+     */
     private $started = false;
 
-    public function __construct()
-    {
-        /*if (ini_get('session.auto_start')) {
-            $this->start();
-        }*/
-    }
 
-    public function isStarted() {
+    /**
+     * Methods checks whether session is started or not.
+     *
+     * @return bool Is session started?
+     */
+    public function isStarted()
+    {
         return $this->started;
     }
 
+    /**
+     * Method starts session. In a case it's already been started method do nothing but returns void.
+     * Also it sets session variable __meta with general information of current session.
+     *
+     * @return void
+     */
     public function start()
     {
         if ($this->started === true) {
@@ -31,44 +58,47 @@ class Session implements ArrayAccess
         }
 
         $this->started = true;
-
     }
 
     /**
-     * write session data to store and close the session.
+     * Method destroys session by setting up expired session cookie and remove all session variables.
+     *
+     * @return void
      */
-    public function commit()
-    {
-        session_commit();
-        $this->started = false;
-    }
-
     public function destroy()
     {
         $_SESSION = array();
         if (ini_get("session.use_cookies")) {
             $params = session_get_cookie_params();
-            setcookie(session_name(), '', time() - 42000,
-                $params["path"], $params["domain"],
-                $params["secure"], $params["httponly"]
+            setcookie(
+                session_name(),
+                '',
+                time() - 42000,
+                $params["path"],
+                $params["domain"],
+                $params["secure"],
+                $params["httponly"]
             );
         }
         session_destroy();
     }
 
-    public function get($name, $default = NULL)
-    {
-        return isset($_SESSION[$name]) ? $_SESSION[$name] : $default;
-    }
-
     /**
-     * @return string
+     * Method returns session name.
+     *
+     * @return string Session name
      */
     public function getName()
     {
         return session_name();
     }
 
+    /**
+     * Method sets session variable with name __meta which holds
+     * general information of current session.
+     *
+     * @return void
+     */
     private function init()
     {
         $_SESSION[$this->meta] = array(
@@ -80,64 +110,63 @@ class Session implements ArrayAccess
     }
 
     /**
-     * Whether a offset exists
-     * @link http://php.net/manual/en/arrayaccess.offsetexists.php
-     * @param mixed $offset
-     * @return boolean true on success or false on failure.
-     * The return value will be casted to boolean if non-boolean was returned.
+     * Method checks if given session variable $name exists or not
+     *
+     * @param string $name
+     *
+     * @return bool Does session variable $name exist?
      */
-    public function offsetExists($offset)
+    public function exists($name)
     {
-        if($this->started === true) {
-            return isset($_SESSION[$offset]);
+        if ($this->started === true) {
+            return isset($_SESSION[$name]);
         }
-
         // throw ...
     }
 
-    /**
-     * Offset to retrieve
-     * @link http://php.net/manual/en/arrayaccess.offsetget.php
-     * @param mixed $offset
-     * @return mixed Can return all value types.
-     */
-    public function offsetGet($offset)
-    {
-        if($this->started === true) {
-            return $this->get($offset);
-        }
 
+    /**
+     * Method gets value of session variable $name if exists.
+     *
+     * @param string $name Name of session variable value of to be returned
+     *
+     * @return string|null Value of session variable $name or null
+     */
+    public function get($name)
+    {
+        if ($this->started === true) {
+            return $_SESSION[$name] ? $_SESSION[$name] : null;
+        }
         // throw ...
     }
 
+
     /**
-     * Offset to set
-     * @link http://php.net/manual/en/arrayaccess.offsetset.php
-     * @param mixed $offset
-     * @param mixed $value
+     * Method sets session variable $name with value $value.
+     *
+     * @param string $name  Name of session variable to be added
+     * @param string $value Value of session variable with name $name
+     *
      * @return void
      */
-    public function offsetSet($offset, $value)
+    public function add($name, $value)
     {
-        if($this->started === true) {
-            $_SESSION[$offset] = $value;
+        if ($this->started === true) {
+            $_SESSION[$name] = $value;
         }
-
         // throw ...
     }
 
     /**
-     * Offset to unset
-     * @link http://php.net/manual/en/arrayaccess.offsetunset.php
-     * @param mixed $offset
-     * @return void
+     * Method removes specified session variable.
+     *
+     * @param string $name Name of session variable to remove
      */
-    public function offsetUnset($offset)
+    public function remove($name)
     {
-        if($this->started === true) {
-            unset($_SESSION[$offset]);
+        if ($this->started === true) {
+            unset($_SESSION[$name]);
         }
-        
         // throw ...
     }
 }

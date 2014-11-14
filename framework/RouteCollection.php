@@ -24,10 +24,10 @@ class RouteCollection
      * @param string           $routeName Name of new route
      * @param \Framework\Route $routeInfo Info of new route (pattern, controller, action)
      */
-    /*public function setRoute($routeName, $routeInfo)
+    public function setRoute($routeName, $routeInfo)
     {
         $this->routes[$routeName] = $routeInfo;
-    }*/
+    }
 
     /**
      * Method to add new rote to the routeCollection.
