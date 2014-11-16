@@ -2,6 +2,13 @@
 
 return array(
 
+    'error'            => array(
+        'pattern'    => '',
+        'controller' => 'Framework\\ErrorController',
+        'action'     => 'index',
+        '_requirements' => array()
+    ),
+
     'testRoute1'            => array(
         'pattern'    => '/testRoute1/:id/edit',
         'controller' => 'Blog\\Controller\\TestRoute2Controller',

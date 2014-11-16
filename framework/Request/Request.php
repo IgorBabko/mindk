@@ -1,15 +1,15 @@
 <?php
 /**
- * File /framework/Request.php contains Request class is used
+ * File /Framework/Request/Request.php contains Request class is used
  * to manipulated with http request easily.
  *
  * PHP version 5
  *
- * @package Framework
+ * @package Framework\Request
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework;
+namespace Framework\Request;
 
 /**
  * Class Request - representation of http request.
@@ -17,7 +17,7 @@ namespace Framework;
  * Class contains all needed information of http request such as cookie, session variables
  * http method, request headers, http url, GET data, POST data, SERVER data etc.
  *
- * @package Framework
+ * @package Framework\Request
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 class Request
@@ -54,7 +54,7 @@ class Request
      * @param \Framework\Session|null $session Session object.
      * @param \Framework\Cookie|null  $cookie  Cookie  object.
      *
-     * @return \Framework\Request Request object.
+     * @return \Framework\Request\Request Request object.
      */
     public function __construct($session = null, $cookie = null)
     {

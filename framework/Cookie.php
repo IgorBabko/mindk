@@ -1,6 +1,6 @@
 <?php
 /**
- * File /framework/Cookie.php contains Cookie class to easy manipulate with cookies.
+ * File /Framework/Cookie.php contains Cookie class to easy manipulate with cookies.
  *
  * PHP version 5
  *
@@ -9,6 +9,8 @@
  */
 
 namespace Framework;
+
+use Framework\Exception\CookieException;
 
 /**
  * Class Cookie represents objects to work with cookies.
@@ -69,6 +71,8 @@ class Cookie
     /**
      * Method sends all defined cookies.
      *
+     * @throws CookieException CookieException instance.
+     *
      * @return void
      */
     public function sendCookie()
@@ -87,7 +91,8 @@ class Cookie
                 }
             }
         }
-        // throw ...
+
+        throw new CookieException("Headers has already been set.");
     }
 
 
@@ -136,6 +141,8 @@ class Cookie
      *
      * @param string $name Cookie name to check.
      *
+     * @throws CookieException CookieException instance.
+     *
      * @return bool Is cookie $name empty?
      */
     public function isEmpty($name)
@@ -144,7 +151,8 @@ class Cookie
         if ($this->exists($name)) {
             return empty($this->cookie[$name]);
         }
-        // throw ...
+
+        throw new CookieException("Cookie $name doesn't exists.");
     }
 
     /**

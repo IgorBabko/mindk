@@ -1,6 +1,6 @@
 <?php
 /**
- * File /framework/MatchedRoute.php contains MatchedRoute class
+ * File /Framework/MatchedRoute.php contains MatchedRoute class
  * which holds information of matched route.
  *
  * PHP version 5
@@ -83,7 +83,13 @@ class MatchedRoute
      */
     public function setParameters($parameters)
     {
-        $this->parameters = $parameters;
+        if(empty($this->parameters)) {
+            $this->parameters = $parameters;
+        } else {
+            foreach ($parameters as $name => $value) {
+                $this->parameters[$name] = $value;
+            }
+        }
     }
 
     /**

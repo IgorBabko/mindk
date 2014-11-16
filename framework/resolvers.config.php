@@ -2,6 +2,8 @@
 
 namespace Framework;
 
+use Framework\DI\Service;
+
 return array(
 	
 	'route' => 
@@ -17,8 +19,8 @@ return array(
 			}
 
 			foreach($routes as $routeName => $routeInfo) {
-				DI::setParams('route', array('routeInfo' => $routeInfo));
-				$routeCollection->setRoute($routeName, DI::resolve('route'));
+				Service::setParams('route', array('routeInfo' => $routeInfo));
+				$routeCollection->setRoute($routeName, Service::resolve('route'));
 			}
 			return $routeCollection;
 		},
@@ -30,11 +32,18 @@ return array(
 
 	'matchedRoute' => 
 		function($params = array()) {
-			return new MatchedRoute($params['route'], $params['params']);
+			$matchedRoute = new MatchedRoute($params['route']);
+			unset($params['route']);
+			$matchedRoute->setParameters($params);
+			return $matchedRoute;
 		},
 
 	'application' =>
 		function($params = array()) {
-			return new Application($params['router'], $params['config']);
+			return new Application($params['router'], $params['templateEngine'], $params['config']);
+		},
+	'templateEngine' =>
+		function($params = array()) {
+			return TemplateEngine::getInstance($params['templateDir']);
 		}
 );

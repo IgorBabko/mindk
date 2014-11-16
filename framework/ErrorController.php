@@ -1,6 +1,6 @@
 <?php
 /**
- * File /framework/ErrorController.php contains ErrorController class
+ * File /Framework/ErrorController.php contains ErrorController class
  * which is going to be used once error is occured.
  *
  * PHP version 5
@@ -11,19 +11,20 @@
 
 namespace Framework;
 
+use Framework\Controller\Controller;
+
 /**
- * Class ErrorController is responsible to render views for different types of errors.
+ * Class ErrorController is responsible to render Views for different types of errors.
  *
  * @package Framework
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 class ErrorController extends Controller
 {
-
     /**
-     * @var array $errorInfo Holds error codes as keys and its descriptions as values
+     * @var array $errorList Holds error codes as keys and its descriptions as values
      */
-    public static $errorInfo = array(
+    public static $errorList = array(
         '400' => 'Bad Request',
         '401' => 'Unauthorized',
         '403' => 'Forbidden',
@@ -34,13 +35,20 @@ class ErrorController extends Controller
     /**
      * Method specifies parameters to error view and calls method to render error view with these parameters.
      *
-     * @param array $params Parameters array.
+     * @param string $errorInfo Information of error (code, description).
      *
      * @return void
      */
-    public function indexAction($params)
+    public function indexAction($errorInfo)
     {
-        $errorDescription = self::$errorInfo[$params['errorCode']];
-        $this->render($params['errorCode'].':'.$errorDescription);
+        //Application::reset();
+        $templateEngine = Application::getTemplateEngine();
+
+        $errorCode    = $errorInfo['errorCode'];
+        $errorMessage = self::$errorList[$errorCode];
+        $templateEngine->setData('code',    $errorCode);
+        $templateEngine->setData('message', $errorMessage);
+        $templateEngine->render('/500');
+        //$this->render('/500.html.php');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * File /framework\Session.php contains Session class is used to easily manipulate
+ * File /Framework\Session.php contains Session class is used to easily manipulate
  * with session variables.
  *
  * PHP version 5
@@ -11,18 +11,15 @@
 
 namespace Framework;
 
+use Framework\Exception\SessionException;
+
 /**
  * Class Session represents objects to work with sessions.
  *
  * @package Framework
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
-/**
- * Class Session
- *
- * @package Framework
- */
-class Session implements ArrayAccess
+class Session
 {
     /**
      * @var string $_meta Session variable that keeps general information of current session
@@ -32,8 +29,6 @@ class Session implements ArrayAccess
      * @var bool $_started Is session started?
      */
     private $started = false;
-
-
     /**
      * Methods checks whether session is started or not.
      *
@@ -120,6 +115,8 @@ class Session implements ArrayAccess
      *
      * @param string $name Name of session variable to be checked.
      *
+     * @throws SessionException SessionException instance.
+     *
      * @return bool Does session variable $name exist?
      */
     public function exists($name)
@@ -127,7 +124,8 @@ class Session implements ArrayAccess
         if ($this->started === true) {
             return isset($_SESSION[$name]);
         }
-        // throw ...
+
+        throw new SessionException("Session isn't started.");
     }
 
 
@@ -136,6 +134,8 @@ class Session implements ArrayAccess
      *
      * @param string $name Name of session variable value of to be returned.
      *
+     * @throws SessionException SessionException instance.
+     *
      * @return string|null Value of session variable $name or null.
      */
     public function get($name)
@@ -143,7 +143,8 @@ class Session implements ArrayAccess
         if ($this->started === true) {
             return $_SESSION[$name] ? $_SESSION[$name] : null;
         }
-        // throw ...
+
+        throw new SessionException("Session isn't started.");
     }
 
 
@@ -153,6 +154,8 @@ class Session implements ArrayAccess
      * @param string $name  Name of session variable to be added.
      * @param string $value Value of session variable with name $name.
      *
+     * @throws SessionException SessionException instance.
+     *
      * @return void
      */
     public function add($name, $value)
@@ -160,13 +163,16 @@ class Session implements ArrayAccess
         if ($this->started === true) {
             $_SESSION[$name] = $value;
         }
-        // throw ...
+
+        throw new SessionException("Session isn't started.");
     }
 
     /**
      * Method removes specified session variable.
      *
      * @param string $name Name of session variable to remove.
+     *
+     * @throws SessionException SessionException instance.
      *
      * @return void
      */
@@ -175,6 +181,7 @@ class Session implements ArrayAccess
         if ($this->started === true) {
             unset($_SESSION[$name]);
         }
-        // throw ...
+
+        throw new SessionException("Session isn't started.");
     }
 }

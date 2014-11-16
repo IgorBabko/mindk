@@ -1,6 +1,6 @@
 <?php
 /**
- * File /framework/Route.php contains Route class which keeps information of particular route
+ * File /Framework/Route.php contains Route class which keeps information of particular route
  *
  * PHP version 5
  *

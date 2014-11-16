@@ -1,6 +1,6 @@
 <?php
 /**
- * File /framework/Router.php contains Router class which is used to resolve
+ * File /Framework/Router.php contains Router class which is used to resolve
  * what controller must be used to handle http request.
  *
  * PHP version 5
@@ -11,7 +11,9 @@
 
 namespace Framework;
 
-use Framework\MatchedRoute;
+use Framework\Exception\RouterException;
+use Framework\Exception\HttpNotFoundException;
+use Framework\DI\Service;
 
 /**
  * Class Router.
@@ -77,17 +79,19 @@ class Router
      * If method could not detect any valid route from routeCollection for specified url it instantiates the MatchedRoute object
      * based on ErrorController to inform of error.
      *
+     * @throws HttpNotFoundException HttpNotFoundException instance.
+     *
      * @return \Framework\MatchedRoute Route which will handle http request.
      */
     public function matchCurrentRequest()
     {
+        $url = '/'.trim($_SERVER['REQUEST_URI'], '/');
+
         foreach ($this->routeCollection->routes as $routeName => $routeInfo) {
 
             if (isset($routeInfo->requirements['_method']) && $routeInfo->requirements['_method'] !== $_SERVER['REQUEST_METHOD']) {
                 continue;
             }
-
-            $url = '/'.trim($_SERVER['REQUEST_URI'], '/');
 
             if (strpos($routeInfo->pattern, ':') !== false) {
                 $pattern = $routeInfo->pattern;
@@ -109,23 +113,26 @@ class Router
                 if (preg_match($pattern, $url, $params) !== 0) {
 
                     array_shift($params);
-                    DI::setParams('route', array('routeInfo' => (array)$routeInfo));
-                    DI::setParams('matchedRoute', array('params' => $params));
-
-                    return DI::resolve('matchedRoute');
+                    Service::setParams('route', array('routeInfo' => (array)$routeInfo));
+                    Service::setParams('matchedRoute', array('params' => $params));
+                    return Service::resolve('matchedRoute');
                 }
             }
 
+
             if ($routeInfo->pattern === $url) {
-                DI::setParams('route', array('routeInfo' => (array)$routeInfo));
-                return DI::resolve('matchedRoute');
+                Service::setParams('route', array('routeInfo' => (array)$routeInfo));
+                return Service::resolve('matchedRoute');
             }
         }
 
-        $matchedRoute = new MatchedRoute();
-        $matchedRoute->setController('Framework\\ErrorController');
-        $matchedRoute->setParameters(array('errorCode' => '404'));
-        return $matchedRoute;
+        throw new HttpNotFoundException("404: Not Found");
+
+        /*$routeInfo  = require ROUTES;
+        $errorRoute = $routeInfo['error'];
+        Service::setParams('route', array('routeInfo' => $errorRoute));
+        Service::setParams('matchedRoute', array('errorCode' => '404'));
+        return Service::resolve('matchedRoute');*/
     }
 
 
@@ -134,25 +141,24 @@ class Router
      *
      * Method generates url according to specified name (first parameter)
      * and list of parameters of the route (second parameter). If no such name of route is found
-     * in routeCollection exceptions throws. If search of route by name succeed it gets pattern of found route.
+     * in routeCollection Exception throws. If search of route by name succeed it gets pattern of found route.
      * In case parameters array for url to be generated isn't set then method immediately returns pattern but
-     * when parameters array isn't empty it replaces all placeholders from pattern on its particular value from
-     * parameters array and only then generated url returns.
+     * when parameters array isn't empty it replaces all placeholders from pattern on its particular values from
+     * parameters array and only then generated url will be returned.
      *
      * @param string $routeName Name of route to generate.
      * @param array  $params    Params for route to generate.
      *
+     * @throws RouterException RouterException instance.
+     *
      * @return string Generated url.
-     * @throws \Exception If no routes in routeCollection with given name.
      */
     public function generateUrl($routeName = 'hello', $params = array())
     {
 
         if (!isset($this->routeCollection->routes[$routeName])) {
-            throw new \Exception("No route with the name $routeName has been found.");
+            throw new RouterException("No route with name $routeName has been found.");
         }
-
-        //\info(array_keys($this->routeCollection->routes));
 
         $route = $this->routeCollection->routes[$routeName];
         $url   = $route->pattern;

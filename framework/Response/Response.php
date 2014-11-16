@@ -1,14 +1,14 @@
 <?php
 /**
- * File /framework/Response.php contains Response class to easily manipulate with http response.
+ * File /Framework/Response/Response.php contains Response class to easily manipulate with http response.
  *
  * PHP version 5
  *
- * @package Framework
+ * @package Framework\Response
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework;
+namespace Framework\Response;
 
 /**
  * Class Response - representation of http response.
@@ -16,7 +16,7 @@ namespace Framework;
  * Class contains all needed information of http response such as cookie, session variables
  * response status, response headers, response body etc.
  *
- * @package Framework
+ * @package Framework\Response
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 class Response
@@ -115,7 +115,7 @@ class Response
      * @param int                $code    Status code of response.
      * @param string             $status  Description of response status code.
      *
-     * @return \Framework\Response Response object.
+     * @return \Framework\Response\Response Response object.
      */
     public function __construct($session = null, $cookie = null, $content = '', $code = 200, $status = 'OK')
     {
@@ -284,7 +284,6 @@ class Response
     public function sendCookies()
     {
         $this->cookie->send();
-        // throw ...
     }
 
     /**
@@ -296,7 +295,6 @@ class Response
     {
         $this->sendHeaders();
         echo $this->_body;
-        //$this->_headersSent = true;
     }
 
     /**
@@ -322,8 +320,6 @@ class Response
     {
         return isset($this->_headers[$name])?$this->_headers[$name]:null;
     }
-
-    /////////////////////////////////////////////////////////////////
 
     /**
      * Method sets all needed headers and cache directives related to cache.

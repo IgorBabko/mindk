@@ -1,6 +1,6 @@
 <?php
 /**
- * File /framework/Application.php contains Application class (front controller)
+ * File /Framework/Application.php contains Application class (front controller)
  * from where application starts executing.
  *
  * PHP version 5
@@ -11,7 +11,10 @@
 
 namespace Framework;
 
-use Framework\Router;
+use Framework\DI\Service;
+use Framework\Controller\ExceptionController;
+
+require_once('Loader.php');
 
 /**
  * Class Application - main class of the application (front controller).
@@ -20,11 +23,20 @@ use Framework\Router;
  * defining particular controller and its action to call depending on url.
  *
  * @package Framework
- * @author Igor Babko <i.i.babko@gmail.com>
+ * @author  Igor Babko <i.i.babko@gmail.com>
  */
 class Application
 {
-
+    /**
+     * @static
+     * @var \Framework\ExceptionController ExceptionController instance
+     */
+    public static $_exceptionController;
+    /**
+     * @static
+     * @var \Framework\TemplateEngine TemplateEngine object
+     */
+    public static $_templateEngine;
     /**
      * @var \Framework\Controller $_controller Holds the chosen controller
      */
@@ -51,26 +63,104 @@ class Application
     private $_request;
 
     /**
+     * Method is used to make full preparation before application startup.
+     *
+     * Method does next steps:
+     *  - defines several constants;
+     *  - reflects namespaces to its particular directories;
+     *  - collects information about all needed services to successfully resolve all class dependencies.
+     *
+     * @throws \Framework\Exception\LoaderException
+     *
+     * @return \Framework\Application Application instance.
+     */
+    public static function instantiate()
+    {
+        define('CONFIG'   , __DIR__ . '/../app/config/config.php');
+        define('ROUTES'   , __DIR__ . '/../app/config/routes.php');
+        define('RESOLVERS', __DIR__ . '/resolvers.config.php'    );
+        define('VIEWS'    , __DIR__ . '/../src/Blog/Views/'      );
+
+
+        Loader::addNamespacePath('Blog\\Controller\\'     , __DIR__ . '/../src/Blog/Controller/');
+        Loader::addNamespacePath('Framework\\'            , __DIR__ . '/'                       );
+        Loader::addNamespacePath('Framework\\Exception\\' , __DIR__ . '/Exception/'             );
+        Loader::addNamespacePath('Framework\\Request\\'   , __DIR__ . '/Request/'               );
+        Loader::addNamespacePath('Framework\\Response\\'  , __DIR__ . '/Response/'              );
+        Loader::addNamespacePath('Framework\\DI\\'        , __DIR__ . '/DI/'                    );
+        Loader::addNamespacePath('Framework\\Controller\\', __DIR__ . '/Controller/'            );
+        Loader::addNamespacePath('Framework\\Validation\\', __DIR__ . '/Validation/'            );
+        Loader::register();
+
+
+        self::$_exceptionController = ExceptionController::getInstance();
+        self::$_exceptionController->registerHandler();
+
+
+        $resolvers = require RESOLVERS;
+        Service::setService(
+            'templateEngine',
+            'TemplateEngine',
+            $resolvers['templateEngine'],
+            array('templateDir' => VIEWS),
+            array()
+        );
+        Service::setService('route', 'Route', $resolvers['route'], array(), array());
+        Service::setService(
+            'routeCollection',
+            'RouteCollection',
+            $resolvers['routeCollection'],
+            array('routes' => ROUTES),
+            array()
+        );
+        Service::setService(
+            'router',
+            'Router',
+            $resolvers['router'],
+            array(),
+            array('routeCollection' => 'RouteCollection')
+        );
+        Service::setService(
+            'matchedRoute',
+            'MatchedRoute',
+            $resolvers['matchedRoute'],
+            array('params' => null),
+            array('route' => 'Route')
+        );
+        Service::setService(
+            'application',
+            'Application',
+            $resolvers['application'],
+            array('config' => CONFIG),
+            array('router' => 'Router', 'templateEngine' => 'TemplateEngine')
+        );
+
+        return Service::Resolve('application');
+    }
+
+    /**
      * Application constructor.
      *
      * Constructor takes router and app configurations as parameters
      * and defines the matched router.
      *
-     * @param \Framework\Router $router Router.
-     * @param string            $config App configurations.
+     * @param \Framework\Router         $router Router object.
+     * @param \Framework\TemplateEngine $templateEngine TemplateEngine object.
+     * @param string                    $config App configurations.
      *
      * @return \Framework\Application Application object.
      */
-    public function __construct($router, $config)
+    public function __construct($router, $templateEngine, $config)
     {
         if (file_exists($config)) {
-            $this->_config = require_once $config;
+            $this->_config = require($config);
         }
 
-        $this->_router       = $router;
-        $this->_matchedRoute = $this->_router->matchCurrentRequest();
-        $this->_controller   = new $this->_matchedRoute->controller();
-        $this->_action       = $this->_matchedRoute->action;
+        self::$_templateEngine  = $templateEngine;
+        $this->_router         = $router;
+        $this->_matchedRoute   = $this->_router->matchCurrentRequest();
+        $this->_controller     = new $this->_matchedRoute->controller();
+        $this->_action         = $this->_matchedRoute->action;
     }
 
 
@@ -90,9 +180,23 @@ class Application
     }
 
     /**
+     * Method returns TemplateEngine instance.
+     *
+     * @static
+     *
+     * @return \Framework\TemplateEngine TemplateEngine instance.
+     */
+    public static function getTemplateEngine() {
+      //  if(self::_templateEngine === null) {
+       //     self::_templateEngine = TemplateEngine::getInstance();
+        //}
+        return self::$_templateEngine;
+    }
+
+    /**
      * Method to get the chosen controller.
      *
-     * @return \framework\Controller Chosen controller.
+     * @return \Framework\Controller Chosen controller.
      */
     public function getController()
     {

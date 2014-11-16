@@ -5,7 +5,7 @@
 </head>
 <body>
 
-	{hello world}
+	{content}
 
 </body>
 </html>
