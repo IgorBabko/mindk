@@ -38,7 +38,7 @@ class Loader
      */
     public static function register()
     {
-        spl_autoload_register('self::loadClass');
+        spl_autoload_register(array(__CLASS__, 'loadClass'));
     }
 
     /**
