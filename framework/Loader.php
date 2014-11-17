@@ -96,7 +96,7 @@ class Loader
             $prefix = rtrim($prefix, '\\');
         }
 
-        throw new LoaderException("Not Found");
+        throw new LoaderException("Class to load not Found");
     }
 
     /**
