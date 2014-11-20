@@ -109,7 +109,6 @@ class Router
                 $pattern = str_replace('/', '\/', $pattern);
                 $pattern = '/'.$pattern.'/';
 
-
                 if (preg_match($pattern, $url, $params) !== 0) {
 
                     array_shift($params);
@@ -119,7 +118,6 @@ class Router
                 }
             }
 
-
             if ($routeInfo->pattern === $url) {
                 Service::setParams('route', array('routeInfo' => (array)$routeInfo));
                 return Service::resolve('matchedRoute');
@@ -127,12 +125,6 @@ class Router
         }
 
         throw new HttpNotFoundException("404: Not Found");
-
-        /*$routeInfo  = require ROUTES;
-        $errorRoute = $routeInfo['error'];
-        Service::setParams('route', array('routeInfo' => $errorRoute));
-        Service::setParams('matchedRoute', array('errorCode' => '404'));
-        return Service::resolve('matchedRoute');*/
     }
 
 

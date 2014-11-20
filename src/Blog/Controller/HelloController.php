@@ -3,7 +3,7 @@
  * /src/Blog/Controller/HelloController.php contains HelloController class.
  *
  * PHP version 5
- * 
+ *
  * @package Blog\Controller
  * @author  Igor Babko
  */
@@ -22,11 +22,10 @@ use Framework\Controller\Controller;
 class HelloController extends Controller
 {
     /**
-     * @TODO ... 
+     * Method calls TemplateEngine::render method to render Hello/index.html.php view.
      */
     public function indexAction()
     {
         Application::getTemplateEngine()->render('Hello/index.html.php');
-        //return $this->render('Hello/index.html.php');
     }
 }

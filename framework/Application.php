@@ -144,9 +144,9 @@ class Application
      * Constructor takes router and app configurations as parameters
      * and defines the matched router.
      *
-     * @param \Framework\Router         $router Router object.
+     * @param \Framework\Router         $router         Router object.
      * @param \Framework\TemplateEngine $templateEngine TemplateEngine object.
-     * @param string                    $config App configurations.
+     * @param string                    $config         App configurations.
      *
      * @return \Framework\Application Application object.
      */
@@ -156,7 +156,7 @@ class Application
             $this->_config = require($config);
         }
 
-        self::$_templateEngine  = $templateEngine;
+        self::$_templateEngine = $templateEngine;
         $this->_router         = $router;
         $this->_matchedRoute   = $this->_router->matchCurrentRequest();
         $this->_controller     = new $this->_matchedRoute->controller();
@@ -184,12 +184,12 @@ class Application
      *
      * @static
      *
+     * @TODO Add check whether self::_templateEngine exists.
+     *
      * @return \Framework\TemplateEngine TemplateEngine instance.
      */
-    public static function getTemplateEngine() {
-      //  if(self::_templateEngine === null) {
-       //     self::_templateEngine = TemplateEngine::getInstance();
-        //}
+    public static function getTemplateEngine()
+    {
         return self::$_templateEngine;
     }
 

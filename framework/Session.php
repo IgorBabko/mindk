@@ -29,6 +29,7 @@ class Session
      * @var bool $_started Is session started?
      */
     private $started = false;
+
     /**
      * Methods checks whether session is started or not.
      *
@@ -141,7 +142,7 @@ class Session
     public function get($name)
     {
         if ($this->started === true) {
-            return $_SESSION[$name] ? $_SESSION[$name] : null;
+            return $_SESSION[$name]?$_SESSION[$name]:null;
         }
 
         throw new SessionException("Session isn't started.");

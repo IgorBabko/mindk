@@ -41,14 +41,12 @@ class ErrorController extends Controller
      */
     public function indexAction($errorInfo)
     {
-        //Application::reset();
         $templateEngine = Application::getTemplateEngine();
 
         $errorCode    = $errorInfo['errorCode'];
         $errorMessage = self::$errorList[$errorCode];
-        $templateEngine->setData('code',    $errorCode);
+        $templateEngine->setData('code', $errorCode);
         $templateEngine->setData('message', $errorMessage);
-        $templateEngine->render('/500');
-        //$this->render('/500.html.php');
+        $templateEngine->render('500.html.php');
     }
 }

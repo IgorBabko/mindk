@@ -49,9 +49,9 @@ class Loader
      *
      * @static
      *
-     * @param string $prefix prefix of namespace.
-     * @param string $base_dir base_dir.
-     * @param bool   $prepend whether to append loading function at the end or at the beginning of autoloading stack.
+     * @param string $prefix   Prefix of namespace.
+     * @param string $base_dir Base_dir.
+     * @param bool   $prepend  Whether to append loading function at the end or at the beginning of autoloading stack.
      *
      * @return void
      */
@@ -77,11 +77,11 @@ class Loader
      * taking namespace prefix to $prefix variable and classname itself to $relative_class variable.
      * Then self::loadMappedFile loads class and method returns path to the file of loaded class.
      *
-     * @param mixed $class class to load.
+     * @param mixed $class Class to load.
      *
      * @throws LoaderException LoaderException instance.
      *
-     * @return bool|string path to the loaded file or false if loading fails.
+     * @return bool|string Path to the loaded file or false if loading fails.
      */
     public static function loadClass($class)
     {
@@ -126,9 +126,9 @@ class Loader
     /**
      * Method to require needed file.
      *
-     * @param string $file filepath to require.
+     * @param string $file Filepath to require.
      *
-     * @return bool whether file required successfully or not.
+     * @return bool Whether file required successfully or not.
      */
     public static function requireFile($file)
     {

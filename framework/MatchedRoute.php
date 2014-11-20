@@ -83,7 +83,7 @@ class MatchedRoute
      */
     public function setParameters($parameters)
     {
-        if(empty($this->parameters)) {
+        if (empty($this->parameters)) {
             $this->parameters = $parameters;
         } else {
             foreach ($parameters as $name => $value) {

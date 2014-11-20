@@ -162,7 +162,7 @@ class Response
     }
 
     /**
-     * Method sets response status code.
+     * Method sets response status code. "Http_response_code" function requires PHP 5 >= 5.4.0
      *
      * @param string $code Response status code to set.
      *
@@ -170,7 +170,7 @@ class Response
      */
     public function setStatusCode($code)
     {
-        http_response_code($code); // PHP 5 >= 5.4.0
+        http_response_code($code);
     }
 
 
@@ -241,7 +241,7 @@ class Response
      */
     public function getHeaders()
     {
-        return $this->_headers; // headers_list( void );
+        return $this->_headers;
     }
 
     /**

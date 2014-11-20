@@ -118,9 +118,9 @@ class Cookie
             $expiry = strtotime($expiry);
         }
         $this->cookies[$name] = array(
-            'value' => $value,
+            'value'  => $value,
             'expiry' => $expiry,
-            'path' => $path,
+            'path'   => $path,
             'domain' => $domain?$_SERVER['HTTP_HOST']:$domain
         );
     }

@@ -45,13 +45,9 @@ class Service
         $resolver = null,
         $params = array(),
         $dependencies = array()
-        /*$isSingleton = false*/
-    )
-    {
-
+    ) {
         self::$services[$name]              = array();
         self::$services[$name]['className'] = $className;
-        //self::$services[$name]['isSingleton'] = $isSingleton;
         self::setParams($name, $params);
         self::setDependencies($name, $dependencies);
         self::setResolver($name, $resolver);
@@ -73,9 +69,6 @@ class Service
      */
     public static function setParams($name, $params)
     {
-
-        //if (isset(self::$services[$name]['instance'])) {
-        //    return;
         if (!isset(self::$services[$name]['parameters'])) {
             self::$services[$name]['parameters'] = $params;
         } else {
@@ -141,11 +134,6 @@ class Service
      */
     public static function resolve($name)
     {
-
-        //if (isset(self::$services[$name]['instance'])) {
-        //    return self::$services[$name]['instance'];
-        //}
-
         if (self::hasResolver($name)) {
             $params = self::$services[$name]['parameters'];
 
@@ -153,18 +141,11 @@ class Service
                 $dependencies = self::$services[$name]['dependencies'];
                 foreach ($dependencies as $n => $className) {
                     $params[$n] = self::resolve($n);
-                    //if (self::$services[$n]['isSingleton'] && !isset(self::$services[$n]['instance'])) {
-                    //    self::$services[$n]['instance'] = $params[$n];
-                    //}
                 }
             }
 
             $resolver = self::$services[$name]['resolver'];
-            //info($resolver);
             $service = $resolver($params);
-            //if (self::$services[$name]['isSingleton']) {
-            //    self::$services[$name]['instance'] = $service;
-            //}
 
             return $service;
         }

@@ -123,11 +123,11 @@ class TemplateEngine
      */
     public function render($template)
     {
-        $template = $this->_templateDir . $template;
+        $template = $this->_templateDir.$template;
         ob_start();
         require $template;
 
-        $layout  = file_get_contents($this->_templateDir . 'main_layout.html.php');
+        $layout  = file_get_contents($this->_templateDir.'main_layout.html.php');
         $content = str_replace('{content}', ob_get_clean(), $layout);
         echo $content;
     }
