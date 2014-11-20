@@ -1,24 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4e361258-73cb-48b6-a9cf-deb36c811dc7" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/framework/Application.php" afterPath="$PROJECT_DIR$/framework/Application.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/framework/Cookie.php" afterPath="$PROJECT_DIR$/framework/Cookie.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/framework/ErrorController.php" afterPath="$PROJECT_DIR$/framework/ErrorController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Blog/Controller/HelloController.php" afterPath="$PROJECT_DIR$/src/Blog/Controller/HelloController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/framework/Response/JsonResponse.php" afterPath="$PROJECT_DIR$/framework/Response/JsonResponse.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/framework/Loader.php" afterPath="$PROJECT_DIR$/framework/Loader.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/framework/MatchedRoute.php" afterPath="$PROJECT_DIR$/framework/MatchedRoute.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/framework/Response/Response.php" afterPath="$PROJECT_DIR$/framework/Response/Response.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/framework/Route.php" afterPath="$PROJECT_DIR$/framework/Route.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/framework/Router.php" afterPath="$PROJECT_DIR$/framework/Router.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/framework/DI/Service.php" afterPath="$PROJECT_DIR$/framework/DI/Service.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/framework/Session.php" afterPath="$PROJECT_DIR$/framework/Session.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/framework/TemplateEngine.php" afterPath="$PROJECT_DIR$/framework/TemplateEngine.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/framework/Validation/Validator.php" afterPath="$PROJECT_DIR$/framework/Validation/Validator.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/framework/resolvers.config.php" afterPath="$PROJECT_DIR$/framework/resolvers.config.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="4e361258-73cb-48b6-a9cf-deb36c811dc7" name="Default" comment="" />
     <ignored path="stud1-ibabko.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
