@@ -14,8 +14,6 @@ namespace Framework;
 use Framework\DI\Service;
 use Framework\Controller\ExceptionController;
 
-require_once('Loader.php');
-
 /**
  * Class Application - main class of the application (front controller).
  *
@@ -82,7 +80,7 @@ class Application
         define('VIEWS'    , __DIR__ . '/../src/Blog/Views/'      );
 
 
-        Loader::addNamespacePath('Blog\\Controller\\'     , __DIR__ . '/../src/Blog/Controller/');
+
         Loader::addNamespacePath('Framework\\'            , __DIR__ . '/'                       );
         Loader::addNamespacePath('Framework\\Exception\\' , __DIR__ . '/Exception/'             );
         Loader::addNamespacePath('Framework\\Request\\'   , __DIR__ . '/Request/'               );
