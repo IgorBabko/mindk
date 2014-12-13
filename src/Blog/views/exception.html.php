@@ -1,6 +1,10 @@
 <h1><?=$this->message?></h1>
 <table>
     <tr>
+        <td><strong>Code:</strong></td>
+        <td><?=$this->code?></td>
+    </tr>
+    <tr>
         <td><strong>Message:</strong></td>
         <td><?=$this->message?></td>
     </tr>

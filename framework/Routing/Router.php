@@ -124,7 +124,7 @@ class Router
             }
         }
 
-        throw new HttpNotFoundException("404: Not Found");
+        throw new HttpNotFoundException(404, "Not Found");
     }
 
 

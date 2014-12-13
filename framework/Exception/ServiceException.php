@@ -23,12 +23,14 @@ class ServiceException extends FrameworkException
     /**
      * ServiceException constructor.
      *
+     * @param string $code    Exception code.
      * @param string $message Exception message.
      *
      * @return \Framework\Exception\ServiceException ServiceException instance.
      */
-    function __construct($message)
+    function __construct($code, $message)
     {
+        $this->code = $code;
         $this->message = $message;
     }
 }

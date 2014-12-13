@@ -101,6 +101,7 @@ class ExceptionController extends Controller
     {
         $templateEngine = Application::getTemplateEngine();
 
+        $templateEngine->setData('code'   ,   $exception->getCode());
         $templateEngine->setData('message',   $exception->getMessage());
         $templateEngine->setData('type'   ,   get_class($exception));
         $templateEngine->setData('file'   ,   $exception->getFile());

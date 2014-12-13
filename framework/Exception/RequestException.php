@@ -23,12 +23,14 @@ class RequestException extends FrameworkException
     /**
      * RequestException constructor.
      *
+     * @param string $code    Exception code.
      * @param string $message Exception message.
      *
      * @return \Framework\Exception\RequestException RequestException instance.
      */
-    function __construct($message)
+    function __construct($code, $message)
     {
+        $this->code = $code;
         $this->message = $message;
     }
 }

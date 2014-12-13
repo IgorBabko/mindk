@@ -23,12 +23,14 @@ class ValidatorException extends FrameworkException
     /**
      * ValidatorException constructor.
      *
+     * @param string $code    Exception code.
      * @param string $message Exception message.
      *
      * @return \Framework\Exception\ValidatorException ValidatorException instance.
      */
-    function __construct($message)
+    function __construct($code, $message)
     {
+        $this->code = $code;
         $this->message = $message;
     }
 }
