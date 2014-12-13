@@ -1,19 +1,19 @@
 <?php
 /**
- * File /Framework/Route.php contains Route class which keeps information of particular route
+ * File /Framework/Routing/Route.php contains Route class which keeps information of particular route
  *
  * PHP version 5
  *
- * @package Framework
+ * @package Framework\Routing
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework;
+namespace Framework\Routing;
 
 /**
  * Class Route to represent info of available routes in application.
  *
- * @package Framework
+ * @package Framework\Routing
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 class Route
@@ -47,7 +47,7 @@ class Route
      *
      * @param array $routeInfo Information of particular route.
      *
-     * @return \Framework\Route Route object.
+     * @return \Framework\Routing\Route Route object.
      */
     public function __construct($routeInfo)
     {

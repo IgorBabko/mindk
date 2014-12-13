@@ -27,7 +27,7 @@ class Application
 {
     /**
      * @static
-     * @var \Framework\ExceptionController ExceptionController instance
+     * @var \Framework\Controller\ExceptionController ExceptionController instance
      */
     public static $_exceptionController;
     /**
@@ -36,7 +36,7 @@ class Application
      */
     public static $_templateEngine;
     /**
-     * @var \Framework\Controller $_controller Holds the chosen controller
+     * @var \Framework\Controller\Controller $_controller Holds the chosen controller
      */
     private $_controller;
     /**
@@ -48,15 +48,15 @@ class Application
      */
     private $_config;
     /**
-     * @var \Framework\Router $_router Holds router
+     * @var \Framework\Routing\Router $_router Holds router
      */
     private $_router;
     /**
-     * @var \Framework\MatchedRoute $_router Holds matched route
+     * @var \Framework\Routing\MatchedRoute $_router Holds matched route
      */
     private $_matchedRoute;
     /**
-     * @var \Framework\Request $_request Request object that represents http request
+     * @var \Framework\Request\Request $_request Request object that represents http request
      */
     private $_request;
 
@@ -88,6 +88,7 @@ class Application
         Loader::addNamespacePath('Framework\\DI\\'        , __DIR__ . '/DI/'                    );
         Loader::addNamespacePath('Framework\\Controller\\', __DIR__ . '/Controller/'            );
         Loader::addNamespacePath('Framework\\Validation\\', __DIR__ . '/Validation/'            );
+        Loader::addNamespacePath('Framework\\Routing\\'   , __DIR__ . '/Routing/'               );
         Loader::register();
 
 
@@ -154,7 +155,9 @@ class Application
             $this->_config = require($config);
         }
 
+
         self::$_templateEngine = $templateEngine;
+
         $this->_router         = $router;
         $this->_matchedRoute   = $this->_router->matchCurrentRequest();
         $this->_controller     = new $this->_matchedRoute->controller();

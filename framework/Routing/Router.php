@@ -1,15 +1,15 @@
 <?php
 /**
- * File /Framework/Router.php contains Router class which is used to resolve
+ * File /Framework/Routing/Router.php contains Router class which is used to resolve
  * what controller must be used to handle http request.
  *
  * PHP version 5
  *
- * @package Framework.
+ * @package Framework\Routing
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework;
+namespace Framework\Routing;
 
 use Framework\Exception\RouterException;
 use Framework\Exception\HttpNotFoundException;
@@ -21,7 +21,7 @@ use Framework\DI\Service;
  * Class represents routing system defining controller and its action
  * to handle the http request depending on url.
  *
- * @package Framework
+ * @package Framework\Routing
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 class Router
@@ -41,9 +41,9 @@ class Router
      *
      * Constructor takes routeCollection to know all available paths in application.
      *
-     * @param \Framework\RouteCollection|null $routeCollection Collection of all defined routes.
+     * @param \Framework\Routing\RouteCollection|null $routeCollection Collection of all defined routes.
      *
-     * @return \Framework\Router Router object.
+     * @return \Framework\Routing\Router Router object.
      */
     public function __construct($routeCollection = null)
     {
@@ -81,7 +81,7 @@ class Router
      *
      * @throws HttpNotFoundException HttpNotFoundException instance.
      *
-     * @return \Framework\MatchedRoute Route which will handle http request.
+     * @return \Framework\Routing\MatchedRoute Route which will handle http request.
      */
     public function matchCurrentRequest()
     {
@@ -141,7 +141,7 @@ class Router
      * @param string $routeName Name of route to generate.
      * @param array  $params    Params for route to generate.
      *
-     * @throws RouterException RouterException instance.
+     * @throws \Framework\Exception\RouterException RouterException instance.
      *
      * @return string Generated url.
      */

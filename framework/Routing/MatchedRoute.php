@@ -1,20 +1,20 @@
 <?php
 /**
- * File /Framework/MatchedRoute.php contains MatchedRoute class
+ * File /Framework/Routing/MatchedRoute.php contains MatchedRoute class
  * which holds information of matched route.
  *
  * PHP version 5
  *
- * @package Framework
+ * @package Framework\Routing
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework;
+namespace Framework\Routing;
 
 /**
  * Class MatchedRoute stores info of matched route.
  *
- * @package Framework
+ * @package Framework\Routing
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 class MatchedRoute
@@ -36,10 +36,10 @@ class MatchedRoute
     /**
      * MatchedRoute constructor.
      *
-     * @param Route $routeInfo Route which represents info of matched route.
-     * @param array $params    Action parameters for matched route.
+     * @param \Framework\Routing\Route $routeInfo Route which represents info of matched route.
+     * @param array                    $params    Action parameters for matched route.
      *
-     * @return \Framework\MatchedRoute MatchedRoute object.
+     * @return \Framework\Routing\MatchedRoute MatchedRoute object.
      */
     public function __construct(Route $routeInfo = null, $params = array())
     {

@@ -1,20 +1,20 @@
 <?php
 /**
- * File /Framework/RouteCollection.php contains RouteCollection class
+ * File /framework/Routing\RouteCollection.php contains RouteCollection class
  * which keeps information of all available in application routes.
  *
  * PHP version 5
  *
- * @package Framework.
+ * @package Framework\Routing
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework;
+namespace Framework\Routing;
 
 /**
  * Class RouteCollection to store information about all available routes.
  *
- * @package Framework
+ * @package Framework\Routing
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 class RouteCollection
@@ -27,8 +27,8 @@ class RouteCollection
     /**
      * Method to set new route to the routeCollection.
      *
-     * @param string           $routeName Name of new route.
-     * @param \Framework\Route $routeInfo Info of new route (pattern, controller, action).
+     * @param string                   $routeName Name of new route.
+     * @param \Framework\Routing\Route $routeInfo Info of new route (pattern, controller, action).
      *
      * @return void
      */

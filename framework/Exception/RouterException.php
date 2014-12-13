@@ -9,7 +9,7 @@
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework\Exceptions;
+namespace Framework\Exception;
 
 /**
  * Class RouterException is used to represent exceptions
@@ -25,7 +25,7 @@ class RouterException extends FrameworkException
      *
      * @param string $message Exception message.
      *
-     * @return \Framework\Exceptions\RouterException RouterException instance.
+     * @return \Framework\Exception\RouterException RouterException instance.
      */
     function __construct($message)
     {
