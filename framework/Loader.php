@@ -53,7 +53,7 @@ class Loader
      * @param string $base_dir Base_dir.
      * @param bool   $prepend  Whether to append loading function at the end or at the beginning of autoloading stack.
      *
-     * @return void
+     * @return void.
      */
     public static function addNamespacePath($prefix, $base_dir, $prepend = false)
     {

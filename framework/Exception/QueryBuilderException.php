@@ -1,7 +1,7 @@
 <?php
 /**
- * File /Framework/Exception/LoaderException.php contains LoaderException class
- * to represent exceptions related to Loader class.
+ * File /Framework/Exception/QueryBuilderException.php contains QueryBuilderException class
+ * to represent exceptions related to QueryBuilder class.
  *
  * PHP version 5
  *
@@ -14,21 +14,21 @@ namespace Framework\Exception;
 require_once('FrameworkException.php');
 
 /**
- * Class LoaderException is used to represent exceptions
- * that might happen while loading classes.
+ * Class QueryBuilderException is used to represent exceptions
+ * that might happen while creating sql request.
  *
  * @package Framework\Exception
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
-class LoaderException extends FrameworkException
+class QueryBuilderException extends FrameworkException
 {
     /**
-     * LoaderException constructor.
+     * QueryBuilderException constructor.
      *
      * @param string $code    Exception code.
      * @param string $message Exception message.
      *
-     * @return \Framework\Exception\LoaderException LoaderException instance.
+     * @return \Framework\Exception\QueryBuilderException QueryBuilderException instance.
      */
     function __construct($code, $message)
     {
