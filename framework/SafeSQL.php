@@ -11,14 +11,13 @@
 
 namespace Framework;
 
-use Framework\Exception\SafeSQLException;
 use \PDO;
 use \PDOStatement;
-
-require_once('QueryBuilder.php');
+use Framework\Exception\SafeSQLException;
 
 /**
  * Class SafeSQL is used to make safe sql request to database.
+ * It extends Database class.
  *
  * Class uses QueryBuilder::rawQueryString and QueryBuilder::bindParameters to
  * to bind parameters instead of placeholders in QueryBuilder::rawQueryString
@@ -32,7 +31,7 @@ require_once('QueryBuilder.php');
  * @package Framework
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
-class SafeSQL extends PDO
+class SafeSQL extends Database
 {
     /**
      * @var null|PDOStatement $sqlResultSet PDOStatement object which holds data obtained from database
@@ -68,18 +67,13 @@ class SafeSQL extends PDO
      *
      * @return SafeSQL instance.
      */
-    public function __construct(
-        $engine = 'mysql',
-        $host = 'localhost',
-        $db = null,
-        $user = null,
-        $pass = null,
-        $charset = null
-    ) {
-        $dns = $engine.":dbname=".$db.";host=".$host;
-        parent::__construct($dns, $user, $pass);
-        $this->exec("SET CHARACTER SET $charset");
-        $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    public function __construct($user, $pass, $db, $engine = "mysql", $host = "localhost", $charset = "utf8")
+    {
+        parent::__construct($user, $pass, $db, $engine, $host, $charset);
+    }
+
+    public function getResultSet() {
+        return $this->resultSet;
     }
 
     /**
@@ -118,7 +112,6 @@ class SafeSQL extends PDO
             throw new SafeSQLException('001', "Can not get number of rows if SafeSQL::resultSet is undefined");
         }
     }
-
 
     /**
      * Method to get first fetched value from sql result set.
@@ -166,8 +159,7 @@ class SafeSQL extends PDO
      */
     public function getColumn($columnIndex = 1)
     {
-        $column       = array();
-//        $numOfColumns = count($this->resultSet[0]);
+        $column = array();
         if (isset($this->resultSet)) {
             if ($this->numOfColumns >= $columnIndex && $columnIndex >= 1) {
                 foreach ($this->resultSet as $row) {
@@ -208,7 +200,8 @@ class SafeSQL extends PDO
      * Method to make safe sql request to database.
      *
      * It returns data fetched from the database if there was 'SELECT' request
-     * otherwise nothing returns. In the case of request failure method throws an error.
+     * otherwise count of affected rows is returned.
+     * In the case of request failure method throws an error.
      *
      * @param string $rawQueryString Query string QueryBuilder::rawQueryString with placeholders.
      * @param array $bindParameters  Parameters QueryBuilder::bindParameters to replace placeholders
@@ -229,16 +222,29 @@ class SafeSQL extends PDO
                     $this->resultSet[] = $row;
                 }
                 $this->numOfRows = count($this->resultSet);
-                $this->numOfColumns = count($this->resultSet[0]);
+                if ($this->numOfRows === 0) {
+                    $this->numOfColumns = 0;
+                } else {
+                    foreach ($this->resultSet as $row) {
+                        $this->numOfColumns = count($row);
+                        break;
+                    }
+                }
                 return $this->resultSet;
             } else {
                 throw new SafeSQLException('005', "sql request is failed");
             }
         } else {
+            $this->sqlResultSet = null;
+            $this->resultSet = null;
+            $this->numOfRows = null;
+            $this->numOfColumns = null;
             $this->numOfAffectedRows = $this->exec($queryString);
             if ($this->numOfAffectedRows === false) {
                 $this->numOfAffectedRows = null;
                 throw new SafeSQLException('005', "sql request is failed");
+            } else {
+                return $this->numOfAffectedRows;
             }
         }
     }
@@ -335,16 +341,3 @@ class SafeSQL extends PDO
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

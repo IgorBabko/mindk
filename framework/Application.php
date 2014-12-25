@@ -68,7 +68,7 @@ class Application
      *  - reflects namespaces to its particular directories;
      *  - collects information about all needed services to successfully resolve all class dependencies.
      *
-     * @throws \Framework\Exception\LoaderException
+     * @throws \Framework\Exception\LoaderException LoaderException instance.
      *
      * @return \Framework\Application Application instance.
      */

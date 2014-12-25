@@ -11,8 +11,6 @@
 
 namespace Framework\Exception;
 
-require_once('FrameworkException.php');
-
 /**
  * Class QueryBuilderException is used to represent exceptions
  * that might happen while creating sql request.
