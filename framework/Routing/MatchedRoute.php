@@ -23,7 +23,7 @@ class MatchedRoute
     /**
      * @var string $controller Controller for matched route
      */
-    public $controller = 'Blog\\Controller\\HelloController';
+    public $controller;
     /**
      * @var string $action Action for matched route to be executed
      */

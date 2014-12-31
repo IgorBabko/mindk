@@ -149,7 +149,7 @@ class Router
     {
 
         if (!isset($this->routeCollection->routes[$routeName])) {
-            throw new RouterException("No route with name $routeName has been found.");
+            throw new RouterException("001", "No route with name $routeName has been found.");
         }
 
         $route = $this->routeCollection->routes[$routeName];

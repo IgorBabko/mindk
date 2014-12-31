@@ -1,7 +1,7 @@
 <?php
 /**
- * File /Framework/Exception/ValidatorException.php contains ValidatorException class
- * to represent exceptions related to validation.
+ * File /Framework/Exception/SanitizerException.php contains SanitizerException class
+ * to represent exceptions related to sanitization.
  *
  * PHP version 5
  *
@@ -12,21 +12,21 @@
 namespace Framework\Exception;
 
 /**
- * Class ValidatorException is used to represent exceptions
- * that might happen during validation.
+ * Class SanitizerException is used to represent exceptions
+ * that might happen during sanitization.
  *
  * @package Framework\Exception
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
-class ValidatorException extends FrameworkException
+class SanitizerException extends FrameworkException
 {
     /**
-     * ValidatorException constructor.
+     * SanitizerException constructor.
      *
      * @param string $code    Exception code.
      * @param string $message Exception message.
      *
-     * @return \Framework\Exception\ValidatorException ValidatorException instance.
+     * @return \Framework\Exception\SanitizerException SanitizerException instance.
      */
     function __construct($code, $message)
     {
