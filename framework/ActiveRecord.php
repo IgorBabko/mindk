@@ -11,8 +11,9 @@
 
 namespace Framework;
 
-use Framework\Application;
 use Framework\Exception\ActiveRecordException;
+use Framework\Validation\Constraints\Constraint;
+use Framework\Sanitization\Filters\Filter;
 
 /**
  * Class ActiveRecord is used to represent and work with data models.
@@ -47,6 +48,16 @@ class ActiveRecord
     protected $modelName;
 
     /**
+     * @var array $constraints Validation constraints
+     */
+    protected $constraints;
+
+    /**
+     * @var array $filters Sanitization filters
+     */
+    protected $filters;
+
+    /**
      * Method to make query to database.
      *
      * @param string $rawQuery Raw query string (with placeholders).
@@ -70,8 +81,8 @@ class ActiveRecord
     /**
      * Magic setter.
      *
-     * @param $field Field name to set new value to.
-     * @param $value New value to assign to $field.
+     * @param string $field Field name to set new value to.
+     * @param mixed  $value New value to assign to $field.
      *
      * @return void
      */
@@ -83,7 +94,7 @@ class ActiveRecord
     /**
      * Magic getter.
      *
-     * @param $field Field name to get value from.
+     * @param string $field Field name to get value from.
      *
      * @return mixed
      */
@@ -96,13 +107,20 @@ class ActiveRecord
      * Constructor takes model name ( NameModel ) as a parameter
      * then by getting rid word "Model" and making first letter small in model name
      * it defines table name which current model represents.
+     * Also it assigns validation constraints and sanitization filters
+     * for current model if such has been passed.
      *
-     * @param $modelName
+     * @param  string $modelName   Model name.
+     * @param  array  $constraints Validation constraints.
+     * @param  array  $filters     Sanitization filters.
      *
-     * @return ActiveRecord ActiveRecord instance.
+     * @return ActiveRecord ActiveRecord object.
      */
-    public function __construct($modelName)
+    public function __construct($modelName, $constraints = null, $filters = null)
     {
+        $this->constraints = isset($constraints) ? $constraints : array();
+        $this->filters     = isset($filters)     ? $filters     : array();
+
         $this->modelName = $modelName;
         $this->tableName = strtolower(preg_replace("/Model/", '', $modelName));
     }
@@ -112,10 +130,12 @@ class ActiveRecord
      * to ActiveRecord object depending on $fields array which stands for condition
      * what record must be loaded.
      *
-     * @param array $fields (Fields => Values) array for query condition to specify record to load.
+     * @param  array $fields (Fields => Values) array for query condition to specify record to load.
      *
-     * @return \Framework\ActiveRecord ActiveRecord object.
      * @throws ActiveRecordException ActiveRecordException instance.
+     *
+     * @return ActiveRecord ActiveRecord object.
+     *
      */
     public function load($fields = array())
     {
@@ -163,8 +183,9 @@ class ActiveRecord
      *
      * @param array $fields Array to specify the record which is needed to update.
      *
-     * @return \Framework\ActiveRecord ActiveRecord object.
-     * @throws ActiveRecordException   ActiveRecord instance.
+     * @throws ActiveRecordException ActiveRecordException instance.
+     *
+     * @return ActiveRecord ActiveRecord object.
      */
     public function save($fields = array())
     {
@@ -222,7 +243,7 @@ class ActiveRecord
      * Method to remove record from ActiveRecord::tableName table
      * represented by current ActiveRecord object.
      *
-     * @return \Framework\ActiveRecord ActiveRecord object.
+     * @return ActiveRecord ActiveRecord object.
      */
     public function remove()
     {
@@ -249,5 +270,127 @@ class ActiveRecord
             Application::$queryBuilder->getBindParameters()
         );
         return $this;
+    }
+
+    /**
+     * Method to set validation constraints for current model.
+     *
+     * @param  string $fieldName   Field name to set constraints for.
+     * @param  array  $constraints Validation constraints.
+     *
+     * @throws ActiveRecordException ActiveRecordException instance.
+     *
+     * @return void
+     */
+    public function setConstraints($fieldName = null, $constraints = array())
+    {
+        if (is_array($constraints)) {
+            if (is_string($fieldName)) {
+                $this->constraints[$fieldName] = $constraints;
+            } else {
+                $this->constraints = $constraints;
+            }
+        } else {
+            throw new ActiveRecordException(
+                "003",
+                "Validation constraints must be given as array in form 'fieldName' => array(constraint1, constraint2, ...)"
+            );
+        }
+    }
+
+    /**
+     * Method to get validation constraints of current model.
+     *
+     * @param  string $fieldName Field name which to get constraints for.
+     *
+     * @return array Validation constraints.
+     */
+    public function getConstraints($fieldName = null)
+    {
+        if (is_string($fieldName)) {
+            return $this->constraints[$fieldName];
+        } else {
+            return $this->constraints;
+        }
+    }
+
+    /**
+     * Method to add validation constraint for current model.
+     *
+     * @param  string     $fieldName  Field name to add constraint for.
+     * @param  Constraint $constraint Validation constraint.
+     *
+     * @throws ActiveRecordException ActiveRecordException instance.
+     *
+     * @return void
+     */
+    public function addConstraint($fieldName, Constraint $constraint)
+    {
+        if (is_string($fieldName)) {
+            $this->constraints[$fieldName][] = $constraint;
+        } else {
+            throw new ActiveRecordException("004", "Field name to add constraint to has not been specified");
+        }
+    }
+
+    /**
+     * Method to set sanitization filters for current model.
+     *
+     * @param  string $fieldName Field name to set filters for.
+     * @param  array  $filters   Sanitization filters.
+     *
+     * @throws ActiveRecordException ActiveRecordException instance.
+     *
+     * @return void
+     */
+    public function setFilters($fieldName = null, $filters = array())
+    {
+        if (is_array($filters)) {
+            if (is_string($fieldName)) {
+                $this->filters[$fieldName] = $filters;
+            } else {
+                $this->filters = $filters;
+            }
+        } else {
+            throw new ActiveRecordException(
+                "003",
+                "Sanitization filters must be given as array in form 'fieldName' => array(filter1, filter2, ...)"
+            );
+        }
+    }
+
+    /**
+     * Method to get sanitization filters of current model.
+     *
+     * @param  string $fieldName Field name which to get filters for.
+     *
+     * @return array Sanitization filters.
+     */
+    public function getFilters($fieldName = null)
+    {
+        if (is_string($fieldName)) {
+            return $this->filters[$fieldName];
+        } else {
+            return $this->filters;
+        }
+    }
+
+    /**
+     * Method to add sanitization filter for current model.
+     *
+     * @param  string $fieldName Field name to add filter for.
+     * @param  Filter $filter    Sanitization filter.
+     *
+     * @throws ActiveRecordException ActiveRecordException instance.
+     *
+     * @return void
+     */
+    public function addFilter($fieldName, Filter $filter)
+    {
+        if (is_string($fieldName)) {
+            $this->filters[$fieldName][] = $filter;
+        } else {
+            throw new ActiveRecordException("004", "Field name to add filter to has not been specified");
+        }
     }
 }
