@@ -9,59 +9,58 @@ return array(
         '_requirements' => array()
     ),
 
-    'testRoute1'            => array(
-        'pattern'    => '/testRoute1/:id/edit',
-        'controller' => 'Blog\\Controller\\TestRoute2Controller',
+    'test'            => array(
+        'pattern'    => '/test/{id}/edit',
+        'controller' => 'Blog\\Controllers\\HelloController',
         'action'     => 'edit',
         '_requirements' => array('_method' => 'GET', 'id' => '\d+')
     ),
 
-    'testRoute2'        => array(
-        'pattern'    => '/testRoute2/:id/:name',
-        'controller' => 'Blog\\Controller\\MyController',
+    'test2'        => array(
+        'pattern'    => '/test2/{id}/{name}',
+        'controller' => 'Blog\\Controllers\\HelloController',
         'action'     => 'index',
-        '_requirements' => array('_method' => 'GET', 'id' => '\d+', 'name' => '\w+')
+        '_requirements' => array('_method' => 'GET', 'id' => '\d+', 'name' => '[123]*')
     ),
     'hello'          => array(
         'pattern'    => '/hello',
-        'controller' => 'Blog\\Controller\\HelloController',
+        'controller' => 'Blog\\Controllers\\HelloController',
         'action'     => 'index',
-        'security'   => array('niko', 'bellic'),
         '_requirements' => array('_method' => 'GET', 'id' => '\d+')
     ),
     'home'           => array(
         'pattern'    => '/',
-        'controller' => 'Blog\\Controller\\HelloController',  //PostController,
+        'controller' => 'Blog\\Controllers\\HelloController',  //PostController,
         'action'     => 'index'
     ),
     'testredirect'   => array(
         'pattern'    => '/test_redirect',
-        'controller' => 'Blog\\Controller\\TestController',
+        'controller' => 'Blog\\Controllers\\TestController',
         'action'     => 'redirect',
     ),
     'test_json' => array(
         'pattern'    => '/test_json',
-        'controller' => 'Blog\\Controller\\TestController',
+        'controller' => 'Blog\\Controllers\\TestController',
         'action'     => 'getJson',
     ),
     'signin'         => array(
         'pattern'    => '/signin',
-        'controller' => 'Blog\\Controller\\SecurityController',
+        'controller' => 'Blog\\Controllers\\SecurityController',
         'action'     => 'signin'
     ),
     'login'          => array(
         'pattern'    => '/login',
-        'controller' => 'Blog\\Controller\\SecurityController',
+        'controller' => 'Blog\\Controllers\\SecurityController',
         'action'     => 'login'
     ),
     'logout'         => array(
         'pattern'    => '/logout',
-        'controller' => 'Blog\\Controller\\SecurityController',
+        'controller' => 'Blog\\Controllers\\SecurityController',
         'action'     => 'logout'
     ),
     'update_profile' => array(
         'pattern'       => '/profile',
-        'controller'    => 'CMS\\Controller\\ProfileController',
+        'controller'    => 'CMS\\Controllers\\ProfileController',
         'action'        => 'update',
         '_requirements' => array(
             '_method' => 'POST'
@@ -69,18 +68,18 @@ return array(
     ),
     'profile'        => array(
         'pattern'    => '/profile',
-        'controller' => 'CMS\\Controller\\ProfileController',
+        'controller' => 'CMS\\controller\\ProfileController',
         'action'     => 'get'
     ),
     'add_post'       => array(
         'pattern'    => '/posts/add',
-        'controller' => 'Blog\\Controller\\PostController',
+        'controller' => 'Blog\\controller\\PostController',
         'action'     => 'add',
         'security'   => array('ROLE_USER'),
     ),
     'show_post'      => array(
         'pattern'       => '/posts/{id}',
-        'controller'    => 'Blog\\Controller\\PostController',
+        'controller'    => 'Blog\\controller\\PostController',
         'action'        => 'show',
         '_requirements' => array(
             'id' => '\d+'
@@ -88,7 +87,7 @@ return array(
     ),
     'edit_post'      => array(
         'pattern'       => '/posts/{id}/edit',
-        'controller'    => 'CMS\\Controller\\BlogController',
+        'controller'    => 'CMS\\controller\\BlogController',
         'action'        => 'edit',
         '_requirements' => array(
             'id'      => '\d+',
