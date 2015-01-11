@@ -1,6 +1,6 @@
 <?php
 /**
- * File /Framework/Exception/SafeSQLException.php contains SafeSQLException class
+ * File /framework/exception/SafeSQLException.php contains SafeSQLException class
  * to represent exceptions related to SafeSQL class.
  *
  * PHP version 5
@@ -23,8 +23,8 @@ class SafeSQLException extends FrameworkException
     /**
      * SafeSQLException constructor.
      *
-     * @param string $code    Exception code.
-     * @param string $message Exception message.
+     * @param  string $code    exception code.
+     * @param  string $message exception message.
      *
      * @return \Framework\Exception\SafeSQLException SafeSQLException instance.
      */

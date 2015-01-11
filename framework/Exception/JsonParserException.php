@@ -1,7 +1,7 @@
 <?php
 /**
- * File /framework/exception/TemplateEngineException.php contains TemplateEngineException class
- * to represent exceptions related to rendering views.
+ * File /framework/exception/JsonParserException.php contains JsonParserException class
+ * to represent exceptions that can occur while working with json format.
  *
  * PHP version 5
  *
@@ -12,21 +12,20 @@
 namespace Framework\Exception;
 
 /**
- * Class TemplateEngineException is used to represent exceptions
- * that might happen while rendering view.
+ * Class JsonParserException is used to represent exceptions that can occur while working with json format.
  *
  * @package Framework\Exception
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
-class TemplateEngineException extends FrameworkException
+class JsonParserException extends FrameworkException
 {
     /**
-     * TemplateEngineException constructor.
+     * JsonParserException constructor.
      *
      * @param  string $code    exception code.
      * @param  string $message exception message.
      *
-     * @return \Framework\Exception\TemplateEngineException TemplateEngineException instance.
+     * @return \Framework\Exception\JsonParserException JsonParserException instance.
      */
     function __construct($code, $message)
     {

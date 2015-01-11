@@ -1,7 +1,7 @@
 <?php
 /**
- * File /framework/exception/TemplateEngineException.php contains TemplateEngineException class
- * to represent exceptions related to rendering views.
+ * File /framework/exception/ResponseRedirectException.php contains ResponseRedirectException class
+ * to represent exceptions that can occur while redirecting.
  *
  * PHP version 5
  *
@@ -12,21 +12,21 @@
 namespace Framework\Exception;
 
 /**
- * Class TemplateEngineException is used to represent exceptions
- * that might happen while rendering view.
+ * Class ResponseRedirectException is used to represent exceptions
+ * that might happen while redirecting.
  *
  * @package Framework\Exception
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
-class TemplateEngineException extends FrameworkException
+class ResponseRedirectException extends FrameworkException
 {
     /**
-     * TemplateEngineException constructor.
+     * ResponseRedirectException constructor.
      *
      * @param  string $code    exception code.
      * @param  string $message exception message.
      *
-     * @return \Framework\Exception\TemplateEngineException TemplateEngineException instance.
+     * @return \Framework\Exception\ResponseRedirectException ResponseRedirectException instance.
      */
     function __construct($code, $message)
     {

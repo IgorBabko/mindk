@@ -1,7 +1,7 @@
 <?php
 /**
- * File /framework/exception/TemplateEngineException.php contains TemplateEngineException class
- * to represent exceptions related to rendering views.
+ * File /framework/exception/MatchedRouteException.php contains MatchedRouteException class
+ * to represent exceptions related to matched route.
  *
  * PHP version 5
  *
@@ -12,21 +12,21 @@
 namespace Framework\Exception;
 
 /**
- * Class TemplateEngineException is used to represent exceptions
- * that might happen while rendering view.
+ * Class MatchedRouteException is used to represent exceptions
+ * related to matched route.
  *
  * @package Framework\Exception
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
-class TemplateEngineException extends FrameworkException
+class MatchedRouteException extends FrameworkException
 {
     /**
-     * TemplateEngineException constructor.
+     * MatchedRouteException constructor.
      *
      * @param  string $code    exception code.
      * @param  string $message exception message.
      *
-     * @return \Framework\Exception\TemplateEngineException TemplateEngineException instance.
+     * @return \Framework\Exception\MatchedRouteException MatchedRouteException instance.
      */
     function __construct($code, $message)
     {

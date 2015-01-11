@@ -1,6 +1,6 @@
 <?php
 /**
- * File /Framework/Exception/FilterException.php contains FilterException class
+ * File /framework/exception/FilterException.php contains FilterException class
  * to represent exceptions of sanitization filters.
  *
  * PHP version 5
@@ -22,8 +22,8 @@ class FilterException extends FrameworkException
     /**
      * FilterException constructor.
      *
-     * @param string $code    Exception code
-     * @param string $message Exception message.
+     * @param  string $code    exception code
+     * @param  string $message exception message.
      *
      * @return \Framework\Exception\FilterException FilterException instance.
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * File /framework/exception/AppException.php contains ApplicationException class
+ * File /framework/exception/AppException.php contains AppException class
  * to represent common exceptions in application.
  *
  * PHP version 5
@@ -12,20 +12,20 @@
 namespace Framework\Exception;
 
 /**
- * Class ApplicationException is used to represent common exceptions in application.
+ * Class AppException is used to represent common exceptions in application.
  *
  * @package Framework\Exception
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
-class ApplicationException extends FrameworkException
+class AppException extends FrameworkException
 {
     /**
-     * ApplicationException constructor.
+     * AppException constructor.
      *
      * @param  string $code    exception code
      * @param  string $message exception message.
      *
-     * @return \Framework\Exception\ApplicationException ApplicationException instance.
+     * @return \Framework\Exception\AppException AppException instance.
      */
     function __construct($code, $message)
     {

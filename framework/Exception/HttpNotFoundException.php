@@ -1,6 +1,6 @@
 <?php
 /**
- * File /Framework/Exception/HttpNotFoundException.php contains HttpNotFoundException class
+ * File /framework/exception/HttpNotFoundException.php contains HttpNotFoundException class
  * to represent exceptions with code 404 (not found).
  *
  * PHP version 5
@@ -23,8 +23,8 @@ class HttpNotFoundException extends FrameworkException
     /**
      * HttpNotFoundException constructor.
      *
-     * @param string $code    Exception code.
-     * @param string $message Exception message.
+     * @param  string $code    exception code.
+     * @param  string $message exception message.
      *
      * @return \Framework\Exception\HttpNotFoundException HttpNotFoundException instance.
      */

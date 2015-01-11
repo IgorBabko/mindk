@@ -1,6 +1,6 @@
 <?php
 /**
- * File /Framework/Exception/RouterException.php contains RouterException class
+ * File /framework/exception/RouterException.php contains RouterException class
  * to represent exceptions related to router.
  *
  * PHP version 5
@@ -23,8 +23,8 @@ class RouterException extends FrameworkException
     /**
      * RouterException constructor.
      *
-     * @param string $code    Exception code.
-     * @param string $message Exception message.
+     * @param  string $code    exception code.
+     * @param  string $message exception message.
      *
      * @return \Framework\Exception\RouterException RouterException instance.
      */

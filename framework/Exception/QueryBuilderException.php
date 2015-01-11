@@ -1,6 +1,6 @@
 <?php
 /**
- * File /Framework/Exception/QueryBuilderException.php contains QueryBuilderException class
+ * File /framework/exception/QueryBuilderException.php contains QueryBuilderException class
  * to represent exceptions related to QueryBuilder class.
  *
  * PHP version 5
@@ -23,8 +23,8 @@ class QueryBuilderException extends FrameworkException
     /**
      * QueryBuilderException constructor.
      *
-     * @param string $code    Exception code.
-     * @param string $message Exception message.
+     * @param  string $code    exception code.
+     * @param  string $message exception message.
      *
      * @return \Framework\Exception\QueryBuilderException QueryBuilderException instance.
      */

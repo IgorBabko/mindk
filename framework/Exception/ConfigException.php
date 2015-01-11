@@ -1,7 +1,7 @@
 <?php
 /**
- * File /framework/exception/TemplateEngineException.php contains TemplateEngineException class
- * to represent exceptions related to rendering views.
+ * File /framework/exception/ConfigException.php contains ConfigException class
+ * to represent exceptions related to app configurations.
  *
  * PHP version 5
  *
@@ -12,21 +12,21 @@
 namespace Framework\Exception;
 
 /**
- * Class TemplateEngineException is used to represent exceptions
- * that might happen while rendering view.
+ * Class ConfigException is used to represent exceptions
+ * related to app configurations.
  *
  * @package Framework\Exception
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
-class TemplateEngineException extends FrameworkException
+class ConfigException extends FrameworkException
 {
     /**
-     * TemplateEngineException constructor.
+     * ConfigException constructor.
      *
      * @param  string $code    exception code.
      * @param  string $message exception message.
      *
-     * @return \Framework\Exception\TemplateEngineException TemplateEngineException instance.
+     * @return \Framework\Exception\ConfigException ConfigException instance.
      */
     function __construct($code, $message)
     {

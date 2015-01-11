@@ -1,6 +1,6 @@
 <?php
 /**
- * File /Framework/Exception/SanitizerException.php contains SanitizerException class
+ * File /framework/exception/SanitizerException.php contains SanitizerException class
  * to represent exceptions related to sanitization.
  *
  * PHP version 5
@@ -23,8 +23,8 @@ class SanitizerException extends FrameworkException
     /**
      * SanitizerException constructor.
      *
-     * @param string $code    Exception code.
-     * @param string $message Exception message.
+     * @param  string $code    exception code.
+     * @param  string $message exception message.
      *
      * @return \Framework\Exception\SanitizerException SanitizerException instance.
      */

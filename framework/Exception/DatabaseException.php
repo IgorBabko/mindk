@@ -1,6 +1,6 @@
 <?php
 /**
- * File /Framework/Exception/DatabaseException.php contains DatabaseException class
+ * File /framework/exception/DatabaseException.php contains DatabaseException class
  * to represent exceptions related to database.
  *
  * PHP version 5
@@ -23,8 +23,8 @@ class DatabaseException extends FrameworkException
     /**
      * DatabaseException constructor.
      *
-     * @param string $code    Exception code.
-     * @param string $message Exception message.
+     * @param  string $code    exception code.
+     * @param  string $message exception message.
      *
      * @return \Framework\Exception\DatabaseException DatabaseException instance.
      */

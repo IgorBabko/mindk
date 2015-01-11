@@ -1,6 +1,6 @@
 <?php
 /**
- * File /Framework/Exception/ResponseException.php contains ResponseException class
+ * File /framework/exception/ResponseException.php contains ResponseException class
  * to represent exceptions related to http response.
  *
  * PHP version 5
@@ -23,8 +23,8 @@ class ResponseException extends FrameworkException
     /**
      * ResponseException constructor.
      *
-     * @param string $code    Exception code.
-     * @param string $message Exception message.
+     * @param  string $code    exception code.
+     * @param  string $message exception message.
      *
      * @return \Framework\Exception\ResponseException ResponseException instance.
      */

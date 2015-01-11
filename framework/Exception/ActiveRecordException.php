@@ -1,6 +1,6 @@
 <?php
 /**
- * File /Framework/Exception/ActiveRecordException.php contains ActiveRecordException class
+ * File /framework/exception/ActiveRecordException.php contains ActiveRecordException class
  * to represent exceptions related to data models.
  *
  * PHP version 5
@@ -23,8 +23,8 @@ class ActiveRecordException extends FrameworkException
     /**
      * ActiveRecordException constructor.
      *
-     * @param string $code    Exception code.
-     * @param string $message Exception message.
+     * @param  string $code    exception code.
+     * @param  string $message exception message.
      *
      * @return \Framework\Exception\ActiveRecordException ActiveRecordException instance.
      */

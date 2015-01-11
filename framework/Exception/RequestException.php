@@ -1,6 +1,6 @@
 <?php
 /**
- * File /Framework/Exception/RequestException.php contains RequestException class
+ * File /framework/exception/RequestException.php contains RequestException class
  * to represent exceptions related to http request.
  *
  * PHP version 5
@@ -23,8 +23,8 @@ class RequestException extends FrameworkException
     /**
      * RequestException constructor.
      *
-     * @param string $code    Exception code.
-     * @param string $message Exception message.
+     * @param  string $code    exception code.
+     * @param  string $message exception message.
      *
      * @return \Framework\Exception\RequestException RequestException instance.
      */
