@@ -4,11 +4,11 @@
  *
  * PHP version 5
  *
- * @package Framework\sanitization\filter
+ * @package Framework\Sanitization\Filter
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework\Sanitization\Filters;
+namespace Framework\Sanitization\Filter;
 
 use Framework\Exception\FilterException;
 
@@ -16,16 +16,15 @@ use Framework\Exception\FilterException;
  * FCustom filter class is used to sanitize value according to callback function.
  * Callback function defines algorithm for sanitization.
  *
- * @package Framework\sanitization\filter
+ * @package Framework\Sanitization\Filter
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 class FCustom extends Filter
 {
-
     /**
-     * @var string $callback Function name for sanitization
+     * @var string $_callback Function name for sanitization
      */
-    private $callback;
+    private $_callback;
 
     /**
      * FCustom constructor which takes name of the function that will sanitize value.
@@ -36,13 +35,44 @@ class FCustom extends Filter
      */
     public function __construct($callback)
     {
-        $this->callback = $callback;
+        $this->_callback = $callback;
+    }
+
+    /**
+     * Method to get name of callback function.
+     *
+     * @return string Name of callback function.
+     */
+    public function getCallback()
+    {
+        return $this->_callback;
+    }
+
+    /**
+     * Method to set callback function.
+     *
+     * @param  string $callback Name of callback function.
+     *
+     * @throws FilterException FilterException instance.
+     *
+     * @return void
+     */
+    public function setCallback($callback)
+    {
+        if (is_string($callback)) {
+            $this->_callback = $callback;
+        } else {
+            $parameterType = gettype($callback);
+            throw new FilterException(
+                "001", "Parameter for FCustom::setCallback method must be 'string', '$parameterType' is given"
+            );
+        }
     }
 
     /**
      * Method to make sanitization according to callback function.
      *
-     * @param mixed $value Value to sanitize.
+     * @param  mixed $value Value to sanitize.
      *
      * @return mixed Filtered value.
      *
@@ -50,11 +80,11 @@ class FCustom extends Filter
      */
     public function sanitize($value)
     {
-        if (isset($value) && is_string($this->callback)) {
-            if (function_exists($this->callback)) {
-                return filter_var($value, FILTER_CALLBACK, array('options' => $this->callback));
+        if (isset($value) && is_string($this->_callback)) {
+            if (function_exists($this->_callback)) {
+                return filter_var($value, FILTER_CALLBACK, array('options' => $this->_callback));
             } else {
-                throw new FilterException("005", "Callback function '{$this->callback}' does not exist");
+                throw new FilterException("005", "Callback function '{$this->_callback}' does not exist");
             }
         } elseif (!isset($value)) {
             throw new FilterException("006", "Parameter for FCustom::sanitize is NULL");

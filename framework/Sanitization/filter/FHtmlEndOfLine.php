@@ -1,34 +1,33 @@
 <?php
 /**
- * File framework/sanitization/filter/FHtmlEndOfLine.php contains FHtmlEndOfLine filter class.
+ * File /framework/sanitization/filter/FHtmlEndOfLine.php contains FHtmlEndOfLine filter class.
  *
  * PHP version 5
  *
- * @package Framework\sanitization\filter
+ * @package Framework\Sanitization\Filter
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework\Sanitization\Filters;
+namespace Framework\Sanitization\Filter;
 
 use Framework\Exception\FilterException;
 
 /**
  * FHtmlEndOfLine filter class is used to replace all end-line characters on '<br />' tag.
  *
- * @package Framework\sanitization\filter
+ * @package Framework\Sanitization\Filter
  * @author  Igor Babko <i.i.babko@gmail.comm>
  */
 class FHtmlEndOfLine extends Filter
 {
-
     /**
      * Method to replace all end-line characters on '<br />' tag.
      *
      * @param  string $value Source string.
      *
-     * @return string Filtered string.
-     *
      * @throws FilterException FilterException object.
+     *
+     * @return string Filtered string.
      */
     public function sanitize($value)
     {

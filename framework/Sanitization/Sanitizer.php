@@ -1,34 +1,29 @@
 <?php
 /**
- * File framework/Sanitization/Sanitizer.php contains class for sanitization.
+ * File /framework/sanitization/Sanitizer.php contains Sanitizer class for sanitization.
  *
  * PHP version 5
  *
- * @package Framework\Validation
+ * @package Framework\Sanitization
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
 namespace Framework\Sanitization;
 
 use Framework\Exception\SanitizerException;
-use Framework\Sanitization\Filters\Filter;
+use Framework\Sanitization\Filter\Filter;
 
 /**
  * Class Sanitizer is used to sanitize data.
+ * Default implementation of {@link SanitizerInterface}.
  *
- * @package Framework\Validation
+ * @package Framework\Sanitization
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
-class Sanitizer
+class Sanitizer implements SanitizerInterface
 {
     /**
-     * Method to filter objects.
-     *
-     * @param mixed $object Object that must be filtered.
-     *
-     * @return mixed Filtered object.
-     *
-     * @throws SanitizerException SanitizerException instance.
+     * {@inheritdoc}
      */
     public static function sanitize($object)
     {
@@ -55,14 +50,7 @@ class Sanitizer
     }
 
     /**
-     * Method to filter values of primitive data types.
-     *
-     * @param mixed        $value   Values that must be filtered.
-     * @param array|Filter $filters Filter object or array of filter objects.
-     *
-     * @return mixed Filtered value.
-     *
-     * @throws SanitizerException SanitizerException instance.
+     * {@inheritdoc}
      */
     public static function sanitizeValue($value, $filters)
     {

@@ -4,31 +4,30 @@
  *
  * PHP version 5
  *
- * @package Framework\sanitization\filter
+ * @package Framework\Sanitization\Filter
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework\Sanitization\Filters;
+namespace Framework\Sanitization\Filter;
 
 use Framework\Exception\FilterException;
 
 /**
  * FAlpha filter class is used to delete all non-alphabetic characters from source string.
  *
- * @package Framework\sanitization\filter
+ * @package Framework\Sanitization\Filter
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 class FAlpha extends Filter
 {
-
     /**
      * Method to make alpha sanitization.
      *
      * @param  string $value Source string.
      *
-     * @return string Filtered string.
-     *
      * @throws FilterException FilterException instance.
+     *
+     * @return string Filtered string.
      */
     public function sanitize($value)
     {

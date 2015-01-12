@@ -1,30 +1,29 @@
 <?php
 /**
- * File framework/sanitization/filter/FSlash.php contains FSlash filter class.
+ * File /framework/sanitization/filter/FSlash.php contains FSlash filter class.
  *
  * PHP version 5
  *
- * @package Framework\sanitization\filter
+ * @package Framework\Sanitization\Filter
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework\Sanitization\Filters;
+namespace Framework\Sanitization\Filter;
 
 use Framework\Exception\FilterException;
 
 /**
  * FSlash filter class is used to strip or add slashes to source string.
  *
- * @package Framework\sanitization\filter
+ * @package Framework\Sanitization\Filter
  * @author  Igor Babko <i.i.babko@gmail.comm>
  */
 class FSlash extends Filter
 {
-
     /**
-     * @var string $action Defines whether 'strip' or 'add' slashes to source string
+     * @var string $_action Defines whether 'strip' or 'add' slashes to source string
      */
-    private $action;
+    private $_action;
 
     /**
      * FSlash constructor takes action name ('strip', 'add') to define filter behavior.
@@ -35,7 +34,36 @@ class FSlash extends Filter
      */
     public function __construct($action = 'add')
     {
-        $this->action = ($action === 'add')?'add':'strip';
+        $this->_action = ($action === 'add')?'add':'strip';
+    }
+
+    /**
+     * Method to get action.
+     *
+     * @return array Action.
+     */
+    public function getAction()
+    {
+        return $this->_action;
+    }
+
+    /**
+     * Method to set action.
+     *
+     * @param  string $action Action.
+     *
+     * @throws FilterException FilterException instance.
+     *
+     * @return void
+     */
+    public function setAction($action)
+    {
+        if ($action === 'add' || $action === 'strip') {
+            $this->_action = $action;
+        } else {
+            throw new FilterException(
+                "001", "Parameter value for PSlash::setAction method must be 'add' || 'strip'");
+        }
     }
 
     /**
@@ -43,14 +71,14 @@ class FSlash extends Filter
      *
      * @param  string $value Source string.
      *
-     * @return string Filtered string.
-     *
      * @throws FilterException FilterException instance.
+     *
+     * @return string Filtered string.
      */
     public function sanitize($value)
     {
         if (is_string($value)) {
-            if ($this->action === 'add') {
+            if ($this->_action === 'add') {
                 return addslashes($value);
             } else {
                 return stripslashes($value);

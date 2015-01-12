@@ -1,34 +1,33 @@
 <?php
 /**
- * File framework/sanitization/filter/FHtmlEntity.php contains FHtmlEntity filter class.
+ * File /framework/sanitization/filter/FHtmlEntity.php contains FHtmlEntity filter class.
  *
  * PHP version 5
  *
- * @package Framework\sanitization\filter
+ * @package Framework\Sanitization\Filter
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework\Sanitization\Filters;
+namespace Framework\Sanitization\Filter;
 
 use Framework\Exception\FilterException;
 
 /**
  * FHtmlEntity filter class is used to convert some characters to HTML entities.
  *
- * @package Framework\sanitization\filter
+ * @package Framework\Sanitization\Filter
  * @author  Igor Babko <i.i.babko@gmail.comm>
  */
 class FHtmlEntity extends Filter
 {
-
     /**
      * Method to convert some characters to HTML entities.
      *
-     * @param string $value Source string.
-     *
-     * @return string Filtered string.
+     * @param  string $value Source string.
      *
      * @throws FilterException FilterException instance.
+     *
+     * @return string Filtered string.
      */
     public function sanitize($value)
     {

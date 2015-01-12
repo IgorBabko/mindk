@@ -5,27 +5,23 @@
  *
  * PHP version 5
  *
- * @package Framework\sanitization\filter
+ * @package Framework\Sanitization\Filter
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework\Sanitization\Filters;
+namespace Framework\Sanitization\Filter;
 
 /**
  * Filter class is a superclass class for all filters.
+ * Default implementation of {@link FilterInterface}.
  *
- * @package Framework\sanitization\filter
+ * @package Framework\Sanitization\Filter
  * @author  Igor Babko <i.i.babko@gmail.comm>
  */
-abstract class Filter
+abstract class Filter implements FilterInterface
 {
-
     /**
-     * Method to sanitize value. Will be overridden by derived filter classes.
-     *
-     * @param  mixed $value Value to sanitize.
-     *
-     * @return mixed Filtered value.
+     * {@inheritdoc}
      */
     abstract public function sanitize($value);
 }

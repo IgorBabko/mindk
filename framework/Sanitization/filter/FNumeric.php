@@ -1,34 +1,33 @@
 <?php
 /**
- * File framework/sanitization/filter/FNumeric.php contains FNumeric filter class.
+ * File /framework/sanitization/filter/FNumeric.php contains FNumeric filter class.
  *
  * PHP version 5
  *
- * @package Framework\sanitization\filter
+ * @package Framework\Sanitization\Filter
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework\Sanitization\Filters;
+namespace Framework\Sanitization\Filter;
 
 use Framework\Exception\FilterException;
 
 /**
  * FNumeric filter class is used to delete all non-numeric characters from source string.
  *
- * @package Framework\sanitization\filter
+ * @package Framework\Sanitization\Filter
  * @author  Igor Babko <i.i.babko@gmail.comm>
  */
 class FNumeric extends Filter
 {
-
     /**
      * Method to delete all non-numeric characters.
      *
      * @param  string $value Source string.
      *
-     * @return string Filtered string.
-     *
      * @throws FilterException FilterException instance.
+     *
+     * @return string Filtered string.
      */
     public function sanitize($value)
     {

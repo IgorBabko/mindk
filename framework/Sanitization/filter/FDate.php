@@ -4,11 +4,11 @@
  *
  * PHP version 5
  *
- * @package Framework\sanitization\filter
+ * @package Framework\Sanitization\Filter
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework\Sanitization\Filters;
+namespace Framework\Sanitization\Filter;
 
 use Framework\Exception\FilterException;
 
@@ -16,16 +16,15 @@ use Framework\Exception\FilterException;
  * FDate filter class is used to sanitize date.
  * User can define manually which characters he wants to be present in date.
  *
- * @package Framework\sanitization\filter
+ * @package Framework\Sanitization\Filter
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 class FDate extends Filter
 {
-
     /**
      * @var array $allowedSymbols Allowed characters in date.
      */
-    private $allowedSymbols = array();
+    private $_allowedSymbols = array();
 
     /**
      * FDate constructor takes array of allowed characters.
@@ -35,7 +34,38 @@ class FDate extends Filter
      */
     public function __construct($allowedSymbols = array())
     {
-        $this->allowedSymbols = $allowedSymbols;
+        $this->_allowedSymbols = $allowedSymbols;
+    }
+
+    /**
+     * Method to get allowed symbols.
+     *
+     * @return array Allowed symbols.
+     */
+    public function getAllowedSymbols()
+    {
+        return $this->_allowedSymbols;
+    }
+
+    /**
+     * Method to set allowed symbols.
+     *
+     * @param  array $allowedSymbols Allowed symbols.
+     *
+     * @throws FilterException FilterException instance.
+     *
+     * @return void
+     */
+    public function setAllowedSymbols($allowedSymbols)
+    {
+        if (is_array($allowedSymbols)) {
+            $this->_allowedSymbols = $allowedSymbols;
+        } else {
+            $parameterType = gettype($allowedSymbols);
+            throw new FilterException(
+                "001", "Parameter for FDate::setAllowedSymbols method must be 'array', '$parameterType' is given"
+            );
+        }
     }
 
     /**
@@ -50,8 +80,8 @@ class FDate extends Filter
     public function sanitize($value)
     {
         $allow = "";
-        if (!empty($this->allowedSymbols)) {
-            foreach ($this->allowedSymbols as $item) {
+        if (!empty($this->_allowedSymbols)) {
+            foreach ($this->_allowedSymbols as $item) {
                 $allow .= "\\$item";
             }
         }

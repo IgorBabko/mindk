@@ -1,21 +1,21 @@
 <?php
 /**
- * File framework/sanitization/filter/FInt.php contains FInt filter class.
+ * File /framework/sanitization/filter/FInt.php contains FInt filter class.
  *
  * PHP version 5
  *
- * @package Framework\sanitization\filter
+ * @package Framework\Sanitization\Filter
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework\Sanitization\Filters;
+namespace Framework\Sanitization\Filter;
 
 use Framework\Exception\FilterException;
 
 /**
  * FInt filter class is used to sanitize integer value given as a string.
  *
- * @package Framework\sanitization\filter
+ * @package Framework\Sanitization\Filter
  * @author  Igor Babko <i.i.babko@gmail.comm>
  */
 class FInt extends Filter
@@ -25,9 +25,9 @@ class FInt extends Filter
      *
      * @param  string|int $value Value to sanitize.
      *
-     * @return string|int Filtered value.
-     *
      * @throws FilterException FilterException instance.
+     *
+     * @return string|int Filtered value.
      */
     public function sanitize($value)
     {

@@ -4,31 +4,31 @@
  *
  * PHP version 5
  *
- * @package Framework\sanitization\filter
+ * @package Framework\Sanitization\Filter
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework\Sanitization\Filters;
+namespace Framework\Sanitization\Filter;
 
 use Framework\Exception\FilterException;
 
 /**
  * FFloat filter class is used to filter float values given as a string.
  *
- * @package Framework\sanitization\filter
+ * @package Framework\Sanitization\Filter
  * @author  Igor Babko <i.i.babko@gmail.comm>
  */
 class FFloat extends Filter
 {
     /**
-     * @var bool $allowedFraction Defines whether allow fraction or not.
+     * @var bool $_allowedFraction Defines whether allow fraction or not.
      */
-    private $allowedFraction;
+    private $_allowedFraction;
 
     /**
-     * @var bool $allowedScientific Defines whether allow scientific (E) notation or not.
+     * @var bool $_allowedScientific Defines whether allow scientific (E) notation or not.
      */
-    private $allowedScientific;
+    private $_allowedScientific;
 
     /**
      * FFloat constructor takes bool values that define behavior of float sanitization.
@@ -40,8 +40,70 @@ class FFloat extends Filter
      */
     public function __construct($allowedFraction = true, $allowedScientific = true)
     {
-        $this->allowedFraction   = ($allowedFraction === true)?true:false;
-        $this->allowedScientific = ($allowedScientific === true)?true:false;
+        $this->_allowedFraction   = ($allowedFraction === true)?true:false;
+        $this->_allowedScientific = ($allowedScientific === true)?true:false;
+    }
+
+    /**
+     * Method to get FFloat::_allowedFraction.
+     *
+     * @return bool FFloat::_allowedFraction.
+     */
+    public function getAllowedFraction()
+    {
+        return $this->_allowedFraction;
+    }
+
+    /**
+     * Method to set FFloat::_allowedFraction.
+     *
+     * @param  bool $allow Value for FFloat::_allowedFraction.
+     *
+     * @throws FilterException FilterException instance.
+     *
+     * @return void
+     */
+    public function allowFraction($allow = true)
+    {
+        if (is_bool($allow)) {
+            $this->_allowedFraction = $allow;
+        } else {
+            $parameterType = gettype($allow);
+            throw new FilterException(
+                "001", "Parameter for FFloat::allowFraction method must be 'bool', '$parameterType' is given"
+            );
+        }
+    }
+
+    /**
+     * Method to get FFloat::_allowedScientific.
+     *
+     * @return bool FFloat::_allowedScientific.
+     */
+    public function getAllowedScientific()
+    {
+        return $this->_allowedScientific;
+    }
+
+    /**
+     * Method to set FFloat::_allowedScientific.
+     *
+     * @param  bool $allow Value for FFloat::_allowedScientific.
+     *
+     * @throws FilterException FilterException instance.
+     *
+     * @return void
+     */
+    public function allowScientific($allow = true)
+    {
+        if (is_bool($allow)) {
+            $this->_allowedScientific = $allow;
+        } else {
+            $parameterType = gettype($allow);
+            throw new FilterException(
+                "001", "Parameter for FFloat::allowScientific method must be 'bool', '$parameterType' is given"
+            );
+        }
     }
 
     /**
@@ -57,15 +119,15 @@ class FFloat extends Filter
     public function sanitize($value)
     {
         if (is_string($value) || is_float($value) || is_int($value)) {
-            if ($this->allowedFraction === true && $this->allowedScientific === true) {
+            if ($this->_allowedFraction === true && $this->_allowedScientific === true) {
                 return filter_var(
                     $value,
                     FILTER_SANITIZE_NUMBER_FLOAT,
                     FILTER_FLAG_ALLOW_FRACTION | FILTER_FLAG_ALLOW_SCIENTIFIC
                 );
-            } elseif ($this->allowedFraction === true) {
+            } elseif ($this->_allowedFraction === true) {
                 return filter_var($value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-            } elseif ($this->allowedScientific === true) {
+            } elseif ($this->_allowedScientific === true) {
                 return filter_var($value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_SCIENTIFIC);
             } else {
                 return filter_var($value, FILTER_SANITIZE_NUMBER_FLOAT);

@@ -1,14 +1,14 @@
 <?php
 /**
- * File framework/sanitization/filter/FTime.php contains FTime filter class.
+ * File /framework/sanitization/filter/FTime.php contains FTime filter class.
  *
  * PHP version 5
  *
- * @package Framework\sanitization\filter
+ * @package Framework\Sanitization\Filter
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework\Sanitization\Filters;
+namespace Framework\Sanitization\Filter;
 
 use Framework\Exception\FilterException;
 
@@ -16,27 +16,57 @@ use Framework\Exception\FilterException;
  * FTime filter class is used to sanitize time.
  * User can specify manually which characters can be present in time string.
  *
- * @package Framework\sanitization\filter
+ * @package Framework\Sanitization\Filter
  * @author  Igor Babko <i.i.babko@gmail.comm>
  */
 class FTime extends Filter
 {
-
     /**
-     * @var array $allowedSymbols Array of characters that can be present in time string.
+     * @var array $_allowedSymbols Array of characters that can be present in time string.
      */
-    private $allowedSymbols = array();
+    private $_allowedSymbols = array();
 
     /**
      * FTime constructor takes array of characters that can be present in time string.
      *
-     * @param array $allowedSymbols Allowed characters.
+     * @param  array $allowedSymbols Allowed characters.
      *
      * @return FTime FTime object.
      */
     public function __construct($allowedSymbols = array())
     {
-        $this->allowedSymbols = $allowedSymbols;
+        $this->_allowedSymbols = $allowedSymbols;
+    }
+
+    /**
+     * Method to get allowed symbols.
+     *
+     * @return array Allowed symbols.
+     */
+    public function getAllowedSymbols()
+    {
+        return $this->_allowedSymbols;
+    }
+
+    /**
+     * Method to set allowed symbols.
+     *
+     * @param  array $allowedSymbols Allowed symbols.
+     *
+     * @throws FilterException FilterException instance.
+     *
+     * @return void
+     */
+    public function setAllowedSymbols($allowedSymbols)
+    {
+        if (is_array($allowedSymbols)) {
+            $this->_allowedSymbols = $allowedSymbols;
+        } else {
+            $parameterType = gettype($allowedSymbols);
+            throw new FilterException(
+                "001", "Parameter for FTime::setAllowedSymbols method must be 'array', '$parameterType' is given"
+            );
+        }
     }
 
     /**
@@ -44,15 +74,15 @@ class FTime extends Filter
      *
      * @param  string $value Source string.
      *
-     * @return string Filtered value.
-     *
      * @throws FilterException FilterException instance.
+     *
+     * @return string Filtered value.
      */
     public function sanitize($value)
     {
         $allow = "";
-        if (!empty($this->allowedSymbols)) {
-            foreach ($this->allowedSymbols as $item) {
+        if (!empty($this->_allowedSymbols)) {
+            foreach ($this->_allowedSymbols as $item) {
                 $allow .= "\\$item";
             }
         }
