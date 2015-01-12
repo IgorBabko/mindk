@@ -1,28 +1,29 @@
 <?php
 /**
- * File /Framework/validation/constraint/Constraint.php contains superclass
+ * File /framework/validation/constraint/Constraint.php contains Constraint superclass
  * for all validation constraints.
  *
  * PHP version 5
  *
- * @package Framework\validation\constraint
+ * @package Framework\Validation\Constraint
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework\Validation\Constraints;
+namespace Framework\Validation\Constraint;
 
 /**
  * Class Constraint is a superclass for all validation constraints.
+ * Default implementation of {@link ConstraintInterface}.
  *
- * @package Framework\validation\constraint
+ * @package Framework\Validation\Constraint
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
-abstract class Constraint
+abstract class Constraint implements ConstraintInterface
 {
     /**
-     * @var string $message Error message for particular constraint
+     * @var string $_message Error message for particular constraint
      */
-    protected $message;
+    protected $_message;
 
     /**
      * Constructor which sets error message for particular constraint.
@@ -33,26 +34,19 @@ abstract class Constraint
      */
     public function __construct($message = '')
     {
-        $this->message = $message;
+        $this->_message = $message;
     }
 
     /**
-     * Method to validate $value according to constraint object. Will be overridden
-     * in derived classes.
-     *
-     * @param  mixed $value Value to validate.
-     *
-     * @return mixed Is value valid or not?
+     * {@inheritdoc}
      */
     abstract public function validate($value);
 
     /**
-     * Method to get error message of particular constraint.
-     *
-     * @return string Error message.
+     * {@inheritdoc}
      */
     public function getMessage()
     {
-        return $this->message;
+        return $this->_message;
     }
 }

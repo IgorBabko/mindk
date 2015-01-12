@@ -5,41 +5,71 @@
  *
  * PHP version 5
  *
- * @package Framework\validation\constraint
+ * @package Framework\Validation\Constraint
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework\Validation\Constraints;
+namespace Framework\Validation\Constraint;
 
 use Framework\Exception\ConstraintException;
 
 /**
  * IP class is used to validate an IP address.
  *
- * @package Framework\validation\constraint
+ * @package Framework\Validation\Constraint
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 class IP extends Constraint
 {
-
     /**
-     * @var string $ipType Type of IP
+     * @var string $_ipType Type of IP
      */
-    private $ipType;
+    private $_ipType;
 
     /**
      * IP constructor takes type of IP and error message.
      *
-     * @param string        $ipType  Type of IP.
-     * @param null|string   $message Error message.
+     * @param  string        $ipType  Type of IP.
+     * @param  null|string   $message Error message.
      *
      * @return IP IP object.
      */
     public function __construct($ipType, $message = null)
     {
-        $this->ipType = empty($ipType)?'both':$ipType;
-        $message      = isset($message)?$message:"must be $ipType IP-address";
+        $this->_ipType = empty($ipType)?'both':$ipType;
+        $message       = isset($message)?$message:"must be $ipType IP-address";
         parent::__construct($message);
+    }
+
+    /**
+     * Method to get type of IP.
+     *
+     * @return string Type of IP.
+     */
+    public function getIpType()
+    {
+        return $this->_ipType;
+    }
+
+    /**
+     * Method to set type of IP.
+     *
+     * @param  string $ipType Type of IP to set.
+     *
+     * @throws ConstraintException ConstraintException instance.
+     *
+     * @return void
+     */
+    public function setIpType($ipType)
+    {
+        $ipTypes = array('both', 'ipv4', 'ipv6');
+        if (in_array($ipType, $ipTypes, true)) {
+            $this->_ipType = $ipType;
+        } else {
+            throw new ConstraintException(
+                "001", "Unknown type of ip '$ipType'"
+            );
+        }
     }
 
     /**
@@ -53,24 +83,24 @@ class IP extends Constraint
      */
     public function validate($value)
     {
-        $this->ipType = strtolower($this->ipType);
-        $ipTypes      = array('both', 'ipv4', 'ipv6');
+        $this->_ipType = strtolower($this->_ipType);
+        $ipTypes       = array('both', 'ipv4', 'ipv6');
 
         if (!is_string($value)) {
             $parameterType = gettype($value);
             throw new ConstraintException(
                 "001", "Value for IP::validate method must be 'string', '$parameterType' is given"
             );
-        } elseif (in_array($this->ipType, $ipTypes, true) !== true) {
-            throw new ConstraintException("002", "Unknown type of IP");
+        } elseif (in_array($this->_ipType, $ipTypes, true) !== true) {
+            throw new ConstraintException("002", "Unknown type of IP '{$this->_ipType}'");
         } else {
-            if ($this->ipType === 'ipv4') {
+            if ($this->_ipType === 'ipv4') {
                 if (filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
                     return true;
                 } else {
                     return false;
                 }
-            } elseif ($this->ipType === 'ipv6') {
+            } elseif ($this->_ipType === 'ipv6') {
                 if (filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
                     return true;
                 } else {

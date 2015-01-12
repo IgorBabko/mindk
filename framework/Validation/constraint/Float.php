@@ -5,18 +5,18 @@
  *
  * PHP version 5
  *
- * @package Framework\validation\constraint
+ * @package Framework\Validation\Constraint
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework\Validation\Constraints;
+namespace Framework\Validation\Constraint;
 
 use Framework\Exception\ConstraintException;
 
 /**
  * Float class is used to validate float values.
  *
- * @package Framework\validation\constraint
+ * @package Framework\Validation\Constraint
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 class Float extends Constraint
@@ -24,9 +24,9 @@ class Float extends Constraint
     /**
      * Float constructor takes error message.
      *
-     * @param null|string $message Error message.
+     * @param  null|string $message Error message.
      *
-     * @return \Framework\Validation\Constraints\Float Float object.
+     * @return \Framework\Validation\Constraint\Float Float object.
      */
     public function __construct($message = null)
     {

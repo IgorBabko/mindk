@@ -5,41 +5,71 @@
  *
  * PHP version 5
  *
- * @package Framework\validation\constraint
+ * @package Framework\Validation\Constraint
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework\Validation\Constraints;
+namespace Framework\Validation\Constraint;
 
 use Framework\Exception\ConstraintException;
 
 /**
  * True class is used to check whether value is true or not.
  *
- * @package Framework\validation\constraint
+ * @package Framework\Validation\Constraint
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 class True extends Constraint
 {
-
     /**
-     * @var array $booleanList Array of values that represent true
+     * @var array $_booleanList Array of values that represent true
      */
-    private $booleanList;
+    private $_booleanList;
 
     /**
      * True constructor takes array of values that represent true and error message.
      *
-     * @param array       $booleanList Array of values that represent true.
-     * @param null|string $message     Error message.
+     * @param  array       $booleanList Array of values that represent 'true'.
+     * @param  null|string $message     Error message.
      *
-     * @return \Framework\Validation\Constraints\True True object.
+     * @return \Framework\Validation\Constraint\True True object.
      */
     public function __construct($booleanList = array('1', 'true', 'yes', 'on'), $message = null)
     {
-        $this->booleanList = $booleanList;
-        $message           = isset($message)?$message:"must be true";
+        $this->_booleanList = $booleanList;
+        $message            = isset($message)?$message:"must be true";
         parent::__construct($message);
+    }
+
+    /**
+     * Method to get array of values that represent 'true'.
+     *
+     * @return array Boolean list.
+     */
+    public function getBooleanList()
+    {
+        return $this->_booleanList;
+    }
+
+    /**
+     * Method to set array of values that represent 'true'.
+     *
+     * @param  array $booleanList Array of values that represent 'true'.
+     *
+     * @throws ConstraintException ConstraintException instance.
+     *
+     * @return void
+     */
+    public function setBooleanList($booleanList)
+    {
+        if (is_array($booleanList)) {
+            $this->_booleanList = $booleanList;
+        } else {
+            $parameterType = gettype($booleanList);
+            throw new ConstraintException(
+                "001", "Value for True::setBooleanList method must be 'array', '$parameterType' is given"
+            );
+        }
     }
 
     /**
@@ -54,7 +84,7 @@ class True extends Constraint
     public function validate($value)
     {
         if (is_string($value) || is_int($value) || is_float($value) || is_bool($value)) {
-            if (in_array($value, $this->booleanList)) {
+            if (in_array($value, $this->_booleanList)) {
                 return true;
             } else {
                 return false;

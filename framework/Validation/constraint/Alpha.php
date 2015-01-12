@@ -1,22 +1,22 @@
 <?php
 /**
- * File /Framework/validation/constraint/Alpha.php contains Alpha constraint class
+ * File /framework/validation/constraint/Alpha.php contains Alpha constraint class
  * for alphabetic values.
  *
  * PHP version 5
  *
- * @package Framework\validation\constraint
+ * @package Framework\Validation\Constraint
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework\Validation\Constraints;
+namespace Framework\Validation\Constraint;
 
 use Framework\Exception\ConstraintException;
 
 /**
  * Class Alpha is used to validate alphabetic values.
  *
- * @package Framework\validation\constraint
+ * @package Framework\Validation\Constraint
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 class Alpha extends Constraint
@@ -26,7 +26,7 @@ class Alpha extends Constraint
      *
      * @param  string $message Error message.
      *
-     * @return \Framework\Validation\Constraints\Alpha Alpha object.
+     * @return Alpha Alpha object.
      */
     public function __construct($message = " must be alphabetic")
     {

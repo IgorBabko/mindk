@@ -5,27 +5,26 @@
  *
  * PHP version 5
  *
- * @package Framework\validation\constraint
+ * @package Framework\Validation\Constraint
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework\Validation\Constraints;
+namespace Framework\Validation\Constraint;
 
 use Framework\Exception\ConstraintException;
 
 /**
  * NotBlank class is used to make sure that value is not blank.
  *
- * @package Framework\validation\constraint
+ * @package Framework\Validation\Constraint
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 class NotBlank extends Constraint
 {
-
     /**
      * NotBlank constructor takes error message.
      *
-     * @param null|string $message Error message.
+     * @param  null|string $message Error message.
      *
      * @return NotBlank NotBlank object.
      */
@@ -53,6 +52,7 @@ class NotBlank extends Constraint
         } elseif (preg_match("/^\\s*$/", $value)) {
             return false;
         } else {
+            info($value);
             return true;
         }
     }

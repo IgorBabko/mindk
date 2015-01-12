@@ -5,41 +5,71 @@
  *
  * PHP version 5
  *
- * @package Framework\validation\constraint
+ * @package Framework\Validation\Constraint
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework\Validation\Constraints;
+namespace Framework\Validation\Constraint;
 
 use Framework\Exception\ConstraintException;
 
 /**
  * RegExp class is used to validate value according to regular expression.
  *
- * @package Framework\validation\constraint
+ * @package Framework\Validation\Constraint
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 class RegExp extends Constraint
 {
-
     /**
-     * @var string $pattern Regular expression for validation
+     * @var string $_pattern Regular expression for validation
      */
-    private $pattern;
+    private $_pattern;
 
     /**
      * RegExp constructor takes regular expression for validation and error message.
      *
-     * @param string        $pattern Regular expression for validation.
-     * @param null|string   $message Error message.
+     * @param  string        $pattern Regular expression for validation.
+     * @param  null|string   $message Error message.
      *
      * @return RegExp RegExp object.
      */
     public function __construct($pattern, $message = null)
     {
-        $this->pattern = $pattern;
+        $this->_pattern = $pattern;
         $message       = isset($message)?$message:"must match pattern: $pattern";
         parent::__construct($message);
+    }
+
+    /**
+     * Method to get pattern.
+     *
+     * @return null|string Pattern.
+     */
+    public function getPattern()
+    {
+        return $this->_pattern;
+    }
+
+    /**
+     * Method to set pattern.
+     *
+     * @param  string $pattern Pattern to set.
+     *
+     * @throws ConstraintException ConstraintException instance.
+     *
+     * @return void
+     */
+    public function setPattern($pattern)
+    {
+        if (is_string($pattern)) {
+            $this->_pattern = $pattern;
+        } else {
+            $parameterType = gettype($pattern);
+            throw new ConstraintException(
+                "001", "Value for RegExp::setPattern method must be 'string', '$parameterType' is given"
+            );
+        }
     }
 
     /**
@@ -54,7 +84,7 @@ class RegExp extends Constraint
     public function validate($value)
     {
         if (is_string($value)) {
-            if (filter_var($value, FILTER_VALIDATE_REGEXP, array('options' => array('regexp' => $this->pattern)))) {
+            if (filter_var($value, FILTER_VALIDATE_REGEXP, array('options' => array('regexp' => $this->_pattern)))) {
                 return true;
             } else {
                 return false;

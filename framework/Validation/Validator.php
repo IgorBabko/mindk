@@ -1,6 +1,6 @@
 <?php
 /**
- * File framework/Validation/Validator.php contains class for validation.
+ * File framework/validation/Validator.php contains Validator class for validation.
  *
  * PHP version 5
  *
@@ -11,52 +11,50 @@
 namespace Framework\Validation;
 
 use Framework\Exception\ValidatorException;
-use Framework\Validation\Constraints\Constraint;
+use Framework\Validation\Constraint\Constraint;
 
 /**
  * Class Validator is used to validate data come from insecure sources such as user input.
+ * Default implementation of {@link ValidatorInterface}.
  *
  * @package Framework\Validation
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
-class Validator
+class Validator implements ValidatorInterface
 {
-
     /**
-     * @var array $errorList Validation errors.
+     * @var array $_errorList Validation errors
      */
-    public static $errorList = array();
+    private static $_errorList = array();
 
     /**
-     * Method to validate objects such as models and forms.
-     *
-     * @param mixed $object Object to validate.
-     *
-     * @throws ValidatorException ValidatorException instance.
-     *
-     * @return array|bool True if data is valid otherwise array of validation errors.
+     * {@inheritdoc}
      */
     public static function validate($object)
     {
         if (is_object($object)) {
             self::resetErrorList();
-            $fieldRules = $object->getRules();
-            $object     = isset($object->data)?$object->data:$object;
-            foreach ($fieldRules as $field => $rules) {
-                foreach ($rules as $rule) {
-                    if ($rule instanceof Constraint) {
-                        if (!$rule->validate($object->$field)) {
-                            self::$errorList[$field] = $rule->getMessage();
+            $fieldConstraints = $object->getConstraints();
+            $data = $object->getData();
+            $object = isset($data) ? $data : $object;
+            info($object);
+            foreach ($fieldConstraints as $field => $constraints) {
+                foreach ($constraints as $constraint) {
+                    if ($constraint instanceof Constraint) {
+                        info($field);
+                        if (!$constraint->validate($object->$field)) {
+                            info($field);
+                            self::$_errorList[$field] = $constraint->getMessage();
                         }
                     } else {
-                        $className = get_class($rule);
+                        $className = get_class($constraint);
                         throw new ValidatorException(
                             "001", "'$className' object is not an instance of Constraint class"
                         );
                     }
                 }
             }
-            return (count(self::$errorList) > 0)?self::$errorList:true;
+            return (count(self::$_errorList) > 0)?self::$_errorList:true;
         } else {
             $parameterType = gettype($object);
             throw new ValidatorException(
@@ -66,14 +64,7 @@ class Validator
     }
 
     /**
-     * Method to validate primitive values (e.g. int, string, ...).
-     *
-     * @param mixed        $value       Value to validate.
-     * @param array|object $constraints Constraints for validation (Constraint object or array of Constraint objects).
-     *
-     * @throws ValidatorException ValidatorException instance.
-     *
-     * @return array|bool         True if data is valid otherwise array of validation errors.
+     * {@inheritdoc}
      */
     public static function validateValue($value, $constraints)
     {
@@ -91,24 +82,30 @@ class Validator
             foreach ($constraints as $constraint) {
                 if ($constraint instanceof Constraint) {
                     if (!$constraint->validate($value)) {
-                        self::$errorList[$value] = $constraint->getMessage();
+                        self::$_errorList[$value] = $constraint->getMessage();
                     }
                 } else {
                     $className = get_class($constraint);
                     throw new ValidatorException("001", "'$className' value is not an instance of Constraint class");
                 }
             }
-            return (count(self::$errorList) > 0)?self::$errorList:true;
+            return (count(self::$_errorList) > 0)?self::$_errorList:true;
         }
     }
 
     /**
-     * Method to get validation errors.
-     *
-     * @return void
+     * {@inheritdoc}
+     */
+    public static function getErrorList()
+    {
+        return self::$_errorList;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public static function resetErrorList()
     {
-        self::$errorList = array();
+        self::$_errorList = array();
     }
 }

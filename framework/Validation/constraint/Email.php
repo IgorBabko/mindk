@@ -5,27 +5,26 @@
  *
  * PHP version 5
  *
- * @package Framework\validation\constraint
+ * @package Framework\Validation\Constraint
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework\Validation\Constraints;
+namespace Framework\Validation\Constraint;
 
 use Framework\Exception\ConstraintException;
 
 /**
  * Email class is used to validate email.
  *
- * @package Framework\validation\constraint
+ * @package Framework\Validation\Constraint
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 class Email extends Constraint
 {
-
     /**
      * Email constructor takes error message.
      *
-     * @param string $message Error message.
+     * @param  string $message Error message.
      *
      * @return Email Email object.
      */
@@ -46,6 +45,7 @@ class Email extends Constraint
      */
     public function validate($value)
     {
+        info($value);
         if (is_string($value)) {
             if (filter_var($value, FILTER_VALIDATE_EMAIL)) {
                 return true;

@@ -5,29 +5,28 @@
  *
  * PHP version 5
  *
- * @package Framework\validation\constraint
+ * @package Framework\Validation\Constraint
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework\Validation\Constraints;
+namespace Framework\Validation\Constraint;
 
 use Framework\Exception\ConstraintException;
 
 /**
  * Int class is used to validate int values.
  *
- * @package Framework\validation\constraint
+ * @package Framework\Validation\Constraint
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 class Int extends Constraint
 {
-
     /**
      * Int constructor takes error message.
      *
-     * @param null|string $message Error message.
+     * @param  null|string $message Error message.
      *
-     * @return \Framework\Validation\Constraints\Int Int object.
+     * @return \Framework\Validation\Constraint\Int Int object.
      */
     public function __construct($message = null)
     {

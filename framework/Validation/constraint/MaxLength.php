@@ -5,41 +5,71 @@
  *
  * PHP version 5
  *
- * @package Framework\validation\constraint
+ * @package Framework\Validation\Constraint
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework\Validation\Constraints;
+namespace Framework\Validation\Constraint;
 
 use Framework\Exception\ConstraintException;
 
 /**
  * MaxLength class is used to check whether length of current string is no more than max length.
  *
- * @package Framework\validation\constraint
+ * @package Framework\Validation\Constraint
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 class MaxLength extends Constraint
 {
-
     /**
-     * @var string $max Max allowed length
+     * @var int $_max Max allowed length
      */
-    private $max;
+    private $_max;
 
     /**
      * MaxLength constructor takes max length and error message.
      *
-     * @param string        $max     Max allowed length.
-     * @param null|string   $message Error message.
+     * @param  int         $max     Max allowed length.
+     * @param  null|string $message Error message.
      *
      * @return MaxLength MaxLength object.
      */
     public function __construct($max, $message = null)
     {
-        $this->max = $max;
-        $message   = isset($message)?$message:"length must be no more than $max character(s)";
+        $this->_max = $max;
+        $message    = isset($message)?$message:"length must be no more than $max character(s)";
         parent::__construct($message);
+    }
+
+    /**
+     * Method to get max value.
+     *
+     * @return int Max value.
+     */
+    public function getMax()
+    {
+        return $this->_max;
+    }
+
+    /**
+     * Method to set max value.
+     *
+     * @param  int $max Max value to set.
+     *
+     * @throws ConstraintException ConstraintException instance.
+     *
+     * @return void
+     */
+    public function setMax($max)
+    {
+        if (is_int($max)) {
+            $this->_max = $max;
+        } else {
+            $parameterType = gettype($max);
+            throw new ConstraintException(
+                "001", "Value for MaxLength::setMax method must be 'int', '$parameterType' is given"
+            );
+        }
     }
 
     /**
@@ -54,7 +84,7 @@ class MaxLength extends Constraint
     public function validate($value)
     {
         if (is_string($value)) {
-            if (strlen($value) <= $this->max) {
+            if (strlen($value) <= $this->_max) {
                 return true;
             } else {
                 return false;

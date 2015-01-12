@@ -5,41 +5,71 @@
  *
  * PHP version 5
  *
- * @package Framework\validation\constraint
+ * @package Framework\Validation\Constraint
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework\Validation\Constraints;
+namespace Framework\Validation\Constraint;
 
 use Framework\Exception\ConstraintException;
 
 /**
  * MinLength class is used to check whether length of current string is not less than min length.
  *
- * @package Framework\validation\constraint
+ * @package Framework\Validation\Constraint
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 class MinLength extends Constraint
 {
-
     /**
-     * @var string $min Min allowed length
+     * @var int $_min Min allowed length
      */
-    private $min;
+    private $_min;
 
     /**
      * MinLength constructor takes min length and error message.
      *
-     * @param string      $min     Min allowed length.
+     * @param int         $min     Min allowed length.
      * @param null|string $message Error message.
      *
      * @return MinLength MinLength object.
      */
     public function __construct($min, $message = null)
     {
-        $this->min = $min;
+        $this->_min = $min;
         $message   = isset($message)?$message:"length must be at least $min character(s)";
         parent::__construct($message);
+    }
+
+    /**
+     * Method to get min value.
+     *
+     * @return int Min value.
+     */
+    public function getMin()
+    {
+        return $this->_min;
+    }
+
+    /**
+     * Method to set min value.
+     *
+     * @param  int $min Min value to set.
+     *
+     * @throws ConstraintException ConstraintException instance.
+     *
+     * @return void
+     */
+    public function setMax($min)
+    {
+        if (is_int($min)) {
+            $this->_min = $min;
+        } else {
+            $parameterType = gettype($min);
+            throw new ConstraintException(
+                "001", "Value for MaxLength::setMin method must be 'int', '$parameterType' is given"
+            );
+        }
     }
 
     /**
@@ -54,7 +84,7 @@ class MinLength extends Constraint
     public function validate($value)
     {
         if (is_string($value)) {
-            if (strlen($value) >= $this->min) {
+            if (strlen($value) >= $this->_min) {
                 return true;
             } else {
                 return false;

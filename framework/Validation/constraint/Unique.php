@@ -5,47 +5,110 @@
  *
  * PHP version 5
  *
- * @package Framework\validation\constraint
+ * @package Framework\Validation\Constraint
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework\Validation\Constraints;
+namespace Framework\Validation\Constraint;
 
+use Framework\Application\App;
 use Framework\Exception\ConstraintException;
 
 /**
  * Unique class is used to check whether value is unique.
  *
- * @package Framework\validation\constraint
+ * @package Framework\Validation\Constraint
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 class Unique extends Constraint
 {
     /**
-     * @var string $tableName Table name where field to check must be taken from
+     * @var string $_tableName Table name where field to check must be taken from
      */
-    private $tableName;
+    private $_tableName;
 
     /**
-     * @var string $fieldName Field name where values to check must be taken from
+     * @var string $_fieldName Field name where values to check must be taken from
      */
-    private $fieldName;
+    private $_fieldName;
 
     /**
      * Unique constructor takes table name, field name and error message.
      *
-     * @param string        $tableName Table name.
-     * @param string        $fieldName Field name.
-     * @param null|string   $message   Error message.
+     * @param  string        $tableName Table name.
+     * @param  string        $fieldName Field name.
+     * @param  null|string   $message   Error message.
      *
      * @return Unique Unique object.
      */
     public function __construct($tableName, $fieldName, $message = null)
     {
-        $this->tableName = $tableName;
-        $this->fieldName = $fieldName;
-        $message         = isset($message)?$message:"already exists";
+        $this->_tableName = $tableName;
+        $this->_fieldName = $fieldName;
+        $message          = isset($message)?$message:"already exists";
         parent::__construct($message);
+    }
+
+    /**
+     * Method to get table name.
+     *
+     * @return string Table name.
+     */
+    public function getTableName()
+    {
+        return $this->_tableName;
+    }
+
+    /**
+     * Method to set table name.
+     *
+     * @param  string $tableName Table name.
+     *
+     * @throws ConstraintException ConstraintException instance.
+     *
+     * @return void
+     */
+    public function setTableName($tableName)
+    {
+        if (is_string($tableName)) {
+            $this->_tableName = $tableName;
+        } else {
+            $parameterType = gettype($tableName);
+            throw new ConstraintException(
+                "001", "Value for Unique::setTableName method must be 'string', '$parameterType' is given"
+            );
+        }
+    }
+
+    /**
+     * Method to get field name.
+     *
+     * @return string Field name.
+     */
+    public function getFieldName()
+    {
+        return $this->_fieldName;
+    }
+
+    /**
+     * Method to set field name.
+     *
+     * @param  string $fieldName Field name.
+     *
+     * @throws ConstraintException ConstraintException instance.
+     *
+     * @return void
+     */
+    public function setFieldName($fieldName)
+    {
+        if (is_string($fieldName)) {
+            $this->_fieldName = $fieldName;
+        } else {
+            $parameterType = gettype($fieldName);
+            throw new ConstraintException(
+                "001", "Value for Unique::setFieldName method must be 'string', '$parameterType' is given"
+            );
+        }
     }
 
     /**
@@ -61,12 +124,11 @@ class Unique extends Constraint
     public function validate($value)
     {
         if (isset($value)) {
+            info($value);
             if (is_int($value) || is_float($value) || is_string($value)) {
-                $rawQuery = is_string(
-                    $value
-                )?$rawQuery = "SELECT ?i FROM ?i WHERE ?i = ?s":"SELECT ?i FROM ?i WHERE ?i = ?n";
-                $bindParameters = array('id', $this->tableName, $this->fieldName, $value);
-                $resultSet = Application::$dbConnection->safeQuery($rawQuery, $bindParameters);
+                $rawQuery = is_string($value) ? $rawQuery = "SELECT ?i FROM ?i WHERE ?i = ?s" : "SELECT ?i FROM ?i WHERE ?i = ?n";
+                $bindParameters = array('id', $this->_tableName, $this->_fieldName, $value);
+                $resultSet = App::getDbConnection()->safeQuery($rawQuery, $bindParameters);
                 if (empty($resultSet)) {
                     return true;
                 } else {
