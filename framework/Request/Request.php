@@ -1,6 +1,6 @@
 <?php
 /**
- * File /Framework/Request/Request.php contains Request class is used
+ * File /framework/request/Request.php contains Request class is used
  * to manipulated with http request easily.
  *
  * PHP version 5
@@ -13,6 +13,7 @@ namespace Framework\Request;
 
 /**
  * Class Request - representation of http request.
+ * Default implementation of {@link RequestInterface}.
  *
  * Class contains all needed information of http request such as cookie, session variables
  * http method, request headers, http url, GET data, POST data, SERVER data etc.
@@ -20,123 +21,136 @@ namespace Framework\Request;
  * @package Framework\Request
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
-class Request
+class Request implements RequestInterface
 {
+    /**
+     * @static
+     * @var \Framework\Request\Request|null Request instance
+     */
+    private static $_instance = null;
 
     /**
-     * @var \Framework\Cookie $_cookie Cookie object
+     * @var \Framework\Cookie\Cookie $_cookie cookie object
      */
-    public $cookie;
+    private $_cookie;
+
     /**
-     * @var \Framework\Session $_session Session object
+     * @var \Framework\Session\Session $_session Session object
      */
-    public $session;
+    private $_session;
+
     /**
-     * @var string $_uri Request uri
+     * @var string $_uri request uri
      */
-    public $uri;
+    private $_uri;
+
     /**
-     * @var string $_method Request method
+     * @var string $_method request method
      */
-    public $method;
+    private $_method;
+
     /**
      * @var array $_headers Array of request headers
      */
-    public $headers = array();
+    private $_headers = array();
 
     /**
      * Request constructor.
      *
      * Request constructor:
-     *  - takes session object and cookie object as parameters;
+     *  - takes Session object and Cookie object as parameters;
      *  - defines request method and request uri.
      *
-     * @param \Framework\Session|null $session Session object.
-     * @param \Framework\Cookie|null  $cookie  Cookie  object.
+     * @param  \Framework\Session\Session|null $session Session object.
+     * @param  \Framework\Cookie\Cookie|null   $cookie  Cookie  object.
      *
      * @return \Framework\Request\Request Request object.
      */
-    public function __construct($session = null, $cookie = null)
+    private function __construct($session = null, $cookie = null)
     {
-        $this->headers = apache_request_headers();
-        $this->method  = $_SERVER['REQUEST_METHOD'];
-        $this->url     = $_SERVER['REQUEST_URI'];
-        $this->session = $session;
-        $this->cookie  = $cookie;
+        $this->_headers  = apache_request_headers();
+        $this->_method   = $_SERVER['REQUEST_METHOD'];
+        $this->_url      = $_SERVER['REQUEST_URI'];
+        $this->_session  = $session;
+        $this->_cookie   = $cookie;
     }
 
     /**
-     * Method which returns request uri.
+     * Method to clone objects of its class.
      *
-     * @return string Request uri.
+     * @return \Framework\Request\Request Request instance.
+     */
+    private function __clone()
+    {
+    }
+
+    /**
+     * Method returns Request instance creating it if it's not been instantiated before
+     * otherwise existed Request object will be returned.
+     *
+     * @param  \Framework\Session\Session|null $session Session object.
+     * @param  \Framework\Cookie\Cookie|null   $cookie  Cookie  object.
+     *
+     * @return \Framework\Request\Request Request instance.
+     */
+    public static function getInstance($session = null, $cookie = null)
+    {
+        if (null === self::$_instance) {
+            self::$_instance = new self($session, $cookie);
+        }
+        return self::$_instance;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getURI()
     {
-        return $this->uri;
+        return $this->_uri;
     }
 
     /**
-     * Method which returns all request headers.
-     *
-     * @return array Request headers.
+     * {@inheritdoc}
      */
     public function getHeaders()
     {
-        return $this->headers;
+        return $this->_headers;
     }
 
     /**
-     * Method returns particular header specified in $name parameter.
-     *
-     * @param string $name Name of request header to be returned.
-     *
-     * @return string|null Request header.
+     * {@inheritdoc}
      */
     public function getHeader($name)
     {
-        return isset($headers[$name])?$headers[$name]:null;
+        return $this->_headers[$name];
     }
 
     /**
-     * Method returns http request method.
-     *
-     * @return string Http request method.
+     * {@inheritdoc}
      */
     public function getRequestMethod()
     {
-        return $this->method;
+        return $this->_method;
     }
 
     /**
-     * Method returns cookie value with name $name.
-     *
-     * @param string $name Cookie name value of to be returned.
-     *
-     * @return string|null Cookie value.
+     * {@inheritdoc}
      */
-    public function getCookie($name)
+    public function getCookie()
     {
-        return $this->cookie->get($name);
+        return $this->_cookie;
     }
 
     /**
-     * Method returns session variable $name.
-     *
-     * @param string $name Name of session variable.
-     *
-     * @return string|null value of session variable $name.
+     * {@inheritdoc}
      */
-    public function getSessionVar($name)
+    public function getSession()
     {
-        return $this->session->get($name);
+        return $this->_session;
     }
 
     /**
-     * Method to return value of environment variable $name.
-     *
-     * @param string $name Name of environment variable value of to be returned.
-     *
-     * @return string|null Value of environment variable $name.
+     * {@inheritdoc}
      */
     public function getEnv($name)
     {
@@ -144,11 +158,7 @@ class Request
     }
 
     /**
-     * Method to return values from $_REQUEST global array.
-     *
-     * @param string $name $_REQUEST variable name.
-     *
-     * @return string|null Value of $_REQUEST $name variable.
+     * {@inheritdoc}
      */
     public function get($name)
     {
@@ -156,11 +166,7 @@ class Request
     }
 
     /**
-     * Method to return values from $_POST global array.
-     *
-     * @param string $name $_POST variable name.
-     *
-     * @return string|null Value of $_POST $name variable.
+     * {@inheritdoc}
      */
     public function getPost($name)
     {
@@ -168,11 +174,7 @@ class Request
     }
 
     /**
-     * Method to return values from $_GET global array.
-     *
-     * @param string $name $_GET variable name.
-     *
-     * @return string|null Value of $_GET $name variable.
+     * {@inheritdoc}
      */
     public function getQuery($name)
     {
@@ -180,11 +182,7 @@ class Request
     }
 
     /**
-     * Method to return values from $_SERVER global array.
-     *
-     * @param string $name $_SERVER variable name.
-     *
-     * @return string|null Value of $_SERVER $name variable.
+     * {@inheritdoc}
      */
     public function getServer($name)
     {
@@ -192,11 +190,7 @@ class Request
     }
 
     /**
-     * Method checks whether variable with specified name exists in $_REQUEST global array or not.
-     *
-     * @param string $name $_REQUEST variable name.
-     *
-     * @return bool Does variable exist in $_REQUEST global array?
+     * {@inheritdoc}
      */
     public function has($name)
     {
@@ -204,11 +198,7 @@ class Request
     }
 
     /**
-     * Method checks whether variable with specified name exists in $_POST global array or not.
-     *
-     * @param string $name $_POST variable name.
-     *
-     * @return bool Does variable exist in $_POST global array?
+     * {@inheritdoc}
      */
     public function hasPost($name)
     {
@@ -216,11 +206,7 @@ class Request
     }
 
     /**
-     * Method checks whether variable with specified name exists in $_GET global array or not.
-     *
-     * @param string $name $_GET variable name.
-     *
-     * @return bool Does variable exist in $_GET global array?
+     * {@inheritdoc}
      */
     public function hasQuery($name)
     {
@@ -228,11 +214,7 @@ class Request
     }
 
     /**
-     * Method checks whether variable with specified name exists in $_SERVER global array or not.
-     *
-     * @param string $name $_SERVER variable name.
-     *
-     * @return bool Does variable exist in $_SERVER global array?
+     * {@inheritdoc}
      */
     public function hasServer($name)
     {
@@ -240,9 +222,7 @@ class Request
     }
 
     /**
-     * Method returns http scheme.
-     *
-     * @return string Http scheme.
+     * {@inheritdoc}
      */
     public function getScheme()
     {
@@ -251,9 +231,7 @@ class Request
     }
 
     /**
-     * Method checks whether request is ajax.
-     *
-     * @return bool Is request ajax?
+     * {@inheritdoc}
      */
     public function isAjax()
     {
@@ -261,9 +239,7 @@ class Request
     }
 
     /**
-     * Method returns server address.
-     *
-     * @return string Server address.
+     * {@inheritdoc}
      */
     public function getServerAddress()
     {
@@ -271,9 +247,7 @@ class Request
     }
 
     /**
-     * Method returns server name.
-     *
-     * @return string Server name.
+     * {@inheritdoc}
      */
     public function getServerName()
     {
@@ -281,9 +255,7 @@ class Request
     }
 
     /**
-     * Method returns http host.
-     *
-     * @return string Http host.
+     * {@inheritdoc}
      */
     public function getHttpHost()
     {
@@ -292,9 +264,7 @@ class Request
     }
 
     /**
-     * Method returns client address.
-     *
-     * @return string Client address.
+     * {@inheritdoc}
      */
     public function getClientAddress()
     {
@@ -302,9 +272,7 @@ class Request
     }
 
     /**
-     * Method returns user agent.
-     *
-     * @return string User agent.
+     * {@inheritdoc}
      */
     public function getUserAgent()
     {
@@ -312,28 +280,10 @@ class Request
     }
 
     /**
-     * Compare http request method with specified method in $name parameter.
-     *
-     * @param string $name Http method name to compare to current request method.
-     *
-     * @return bool Does current http request method matches $name request method?
+     * {@inheritdoc}
      */
     public function isMethod($name)
     {
         return $_SERVER['REQUEST_METHOD'] === strtoupper($name);
-    }
-
-    /**
-     *
-     */
-    public function hasFiles()
-    {
-    }
-
-    /**
-     *
-     */
-    public function getUploadedFiles()
-    {
     }
 }

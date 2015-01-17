@@ -9,7 +9,9 @@
 
 namespace Framework\Security;
 
+use Framework\Config\Config;
 use Framework\Exception\CsrfTokenException;
+use Framework\Session\Session;
 
 /**
  * Class CsrfToken is used to prevent CSRF attacks.
@@ -25,8 +27,8 @@ class CsrfToken implements CsrfTokenInterface
      */
     public static function generate()
     {
-        $tokenName = Application::getConfig()->get('session/token_name');
-        $session   = Application::getSession();
+        $tokenName = Config::getSetting('session/token_name');
+        $session   = Session::getInstance();
         return $session->add($tokenName, md5(uniqid()));
     }
 
@@ -36,8 +38,8 @@ class CsrfToken implements CsrfTokenInterface
     public static function check($token)
     {
         if (is_string($token)) {
-            $tokenName = Application::getConfig()->get('session/token_name');
-            $session   = Application::getSession();
+            $tokenName = Config::getSetting('session/token_name');
+            $session   = Session::getInstance();
             if ($session->exists($tokenName) && $token === $session->get($tokenName)) {
                 $session->remove($tokenName);
                 return true;

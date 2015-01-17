@@ -151,6 +151,7 @@ class XssDefender implements XssDefenderInterface
         return stripslashes($safeInput);
     }
 
+    //@TODO
     /**
      * {@inheritdoc}
      */

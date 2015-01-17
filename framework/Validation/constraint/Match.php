@@ -26,11 +26,6 @@ class Match extends Constraint
      */
     private $_equalValue;
 
-//    /**
-//     * @var string $_fieldName Field name where its value must match
-//     */
-//    private $_fieldName;
-
     /**
      * Match constructor takes value to compare with and error message.
      *
@@ -76,37 +71,6 @@ class Match extends Constraint
             );
         }
     }
-
-//    /**
-//     * Method to get field name where its value must match.
-//     *
-//     * @return null|string Field name.
-//     */
-//    public function getFieldName()
-//    {
-//        return $this->_fieldName;
-//    }
-//
-//    /**
-//     * Method to set field name where its value must match.
-//     *
-//     * @param  string $fieldName Field name.
-//     *
-//     * @throws ConstraintException ConstraintException instance.
-//     *
-//     * @return void
-//     */
-//    public function setFieldName($fieldName)
-//    {
-//        if (is_string($fieldName)) {
-//            $this->_fieldName = $fieldName;
-//        } else {
-//            $parameterType = gettype($fieldName);
-//            throw new ConstraintException(
-//                "001", "Parameter for Match::setFieldName method must be 'string', '$parameterType' is given"
-//            );
-//        }
-//    }
 
     /**
      * Method to check whether values are equal or not.

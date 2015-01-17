@@ -37,7 +37,7 @@ class Date extends Constraint
      */
     public function __construct($pattern = null, $message = null)
     {
-        $this->_pattern = empty($pattern)?"/^([012]\\d|3[01])\\.(0\\d|1[012])\\.20\\d\\d$/":$pattern;
+        $this->_pattern = empty($pattern)?"/^([012]\d|3[01])\.(0\d|1[012])\.20\d\d$/":$pattern;
         $message = isset($message) ? $message : "must be date in a right format";
         parent::__construct($message);
     }

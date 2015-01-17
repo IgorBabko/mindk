@@ -35,15 +35,12 @@ class Validator implements ValidatorInterface
         if (is_object($object)) {
             self::resetErrorList();
             $fieldConstraints = $object->getConstraints();
-            $data = $object->getData();
-            $object = isset($data) ? $data : $object;
-            info($object);
+            $data             = $object->getData();
+            $object           = isset($data)?$data:$object;
             foreach ($fieldConstraints as $field => $constraints) {
                 foreach ($constraints as $constraint) {
                     if ($constraint instanceof Constraint) {
-                        info($field);
                         if (!$constraint->validate($object->$field)) {
-                            info($field);
                             self::$_errorList[$field] = $constraint->getMessage();
                         }
                     } else {

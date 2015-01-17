@@ -1,15 +1,15 @@
 <?php
 /**
- * File /Framework/SafeSQL.php contains the SafeSQL class
+ * File /framework/database/SafeSql.php contains the SafeSQL class
  * which provides secure interaction with database.
  *
  * PHP version 5
  *
- * @package Framework
+ * @package Framework\Database
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework;
+namespace Framework\Database;
 
 use \PDO;
 use \PDOStatement;
@@ -18,6 +18,7 @@ use Framework\Exception\SafeSQLException;
 /**
  * Class SafeSQL is used to make safe sql request to database.
  * It extends Database class.
+ * Default implementation of {@link SafeSqlInterface}.
  *
  * Class uses QueryBuilder::rawQueryString and QueryBuilder::bindParameters to
  * to bind parameters instead of placeholders in QueryBuilder::rawQueryString
@@ -28,141 +29,136 @@ use Framework\Exception\SafeSQLException;
  *     - ?n => SafeSQL::escapeNumber;
  *     - ?s => SafeSQL::escapeString.
  *
- * @package Framework
+ * @package Framework\Database
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
-class SafeSQL extends Database
+class SafeSQL extends Database implements SafeSqlInterface
 {
     /**
-     * @var null|PDOStatement $sqlResultSet PDOStatement object which holds data obtained from database
+     * @var null|PDOStatement $_sqlResultSet PDOStatement object which holds data obtained from database
      */
-    private $sqlResultSet = null;
+    private $_sqlResultSet = null;
+
     /**
-     * @var null|array $resultSet Array of data fetched from PDOStatement object
+     * @var null|array $_resultSet Array of data fetched from PDOStatement object
      */
-    private $resultSet = null;
+    private $_resultSet = null;
+
     /**
-     * @var null|int $numOfRows Holds number of rows fetched by the last 'SELECT' request to database
+     * @var null|int $_numOfRows Holds number of rows fetched by the last 'SELECT' request to database
      */
-    private $numOfRows = null;
+    private $_numOfRows = null;
+
     /**
-     * @var null|int $numOfColumns Holds number of columns fetched by the last 'SELECT' request to database
+     * @var null|int $_numOfColumns Holds number of columns fetched by the last 'SELECT' request to database
      */
-    private $numOfColumns = null;
+    private $_numOfColumns = null;
+
     /**
-     * @var null|integer $numOfAffectedRows Holds number of rows in database affected by the
-     *                                      last 'INSERT', 'UPDATE', OR 'DELETE' requests.
+     * @var null|integer $_numOfAffectedRows Holds number of rows in database affected by the
+     *                                       last 'INSERT', 'UPDATE', OR 'DELETE' requests.
      */
-    private $numOfAffectedRows = null;
+    private $_numOfAffectedRows = null;
 
     /**
      * SafeSQL constructor establishes connection with database.
      *
-     * @param string $engine  Type of database server (e.g. mysql).
-     * @param string $host    Hostname.
-     * @param string $db      Database name.
-     * @param string $user    Username.
-     * @param string $pass    User password.
-     * @param string $charset Charset.
+     * @param  string $engine  Type of database server (e.g. mysql).
+     * @param  string $host    Hostname.
+     * @param  string $db      Database name.
+     * @param  string $user    Username.
+     * @param  string $pass    User password.
+     * @param  string $charset Charset.
      *
-     * @return SafeSQL instance.
+     * @return SafeSql SafeSql instance.
      */
     public function __construct($user, $pass, $db, $engine = "mysql", $host = "localhost", $charset = "utf8")
     {
         parent::__construct($user, $pass, $db, $engine, $host, $charset);
     }
 
-    public function getResultSet() {
-        return $this->resultSet;
+    /**
+     * {@inheritdoc}
+     */
+    public function getResultSet()
+    {
+        return $this->_resultSet;
     }
 
     /**
-     * Method to get number of rows in database affected by the
-     * last 'INSERT', 'UPDATE', OR 'DELETE' requests.
-     *
-     * @return int Number of affected rows.
+     * {@inheritdoc}
+     */
+    public function getSqlResultSet()
+    {
+        return $this->_sqlResultSet;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getNumOfAffectedRows()
     {
-        return $this->numOfAffectedRows;
+        return $this->_numOfAffectedRows;
     }
 
 
     /**
-     * Method to get number of columns fetched by the last 'SELECT' request to database.
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getNumOfColumns()
     {
-        return $this->numOfColumns;
+        return $this->_numOfColumns;
     }
 
     /**
-     * Method to get number of rows fetched by the last 'SELECT' request to database.
-     *
-     * @throws SafeSQLException SafeSQLException instance.
-     * @return int Number of rows.
+     * {@inheritdoc}
      */
     public function getNumOfRows()
     {
-        if ($this->resultSet !== null) {
-            return count($this->resultSet);
+        if ($this->_resultSet !== null) {
+            return count($this->_resultSet);
         } else {
-            throw new SafeSQLException('001', "Can not get number of rows if SafeSQL::resultSet is undefined");
+            throw new SafeSQLException('001', "Can not get number of rows if SafeSQL::_resultSet is undefined");
         }
     }
 
     /**
-     * Method to get first fetched value from sql result set.
-     *
-     * @throws SafeSQLException SafeSQLException instance.
-     * @return mixed First fetched value from sql result set.
+     * {@inheritdoc}
      */
     public function getOne()
     {
-        if (isset($this->resultSet)) {
-            return reset($this->resultSet[0]);
+        if (isset($this->_resultSet)) {
+            return reset($this->_resultSet[0]);
         } else {
-            throw new SafeSQLException('002', "Can not get fetched data if SafeSQL::resultSet is undefined");
+            throw new SafeSQLException('002', "Can not get fetched data if SafeSQL::_resultSet is undefined");
         }
     }
 
     /**
-     * Method to get specified row from sql result set.
-     *
-     * @param int $rowIndex Index of row to get.
-     *
-     * @throws SafeSQLException SafeSQLException instance.
-     * @return array Specified row from sql result set.
+     * {@inheritdoc}
      */
     public function getRow($rowIndex = 1)
     {
-        if (isset($this->resultSet)) {
-            if ($this->numOfRows > $rowIndex && $rowIndex >= 1) {
-                return $this->resultSet[--$rowIndex];
+        if (isset($this->_resultSet)) {
+            if ($this->_numOfRows > $rowIndex && $rowIndex >= 1) {
+                return $this->_resultSet[--$rowIndex];
             } else {
                 throw new SafeSQLException('003', "specified row index doesn't belong to range [1; SafeSQL::numOfRows]");
             }
         } else {
-            throw new SafeSQLException('002', "Can not get fetched data if SafeSQL::resultSet is undefined");
+            throw new SafeSQLException('002', "Can not get fetched data if SafeSQL::_resultSet is undefined");
         }
     }
 
     /**
-     * Method to get specified column from sql result set.
-     *
-     * @param int $columnIndex Index of column to get.
-     *
-     * @throws SafeSQLException SafeSQLException instance.
-     * @return array Specified column from sql result set.
+     * {@inheritdoc}
      */
     public function getColumn($columnIndex = 1)
     {
         $column = array();
-        if (isset($this->resultSet)) {
-            if ($this->numOfColumns >= $columnIndex && $columnIndex >= 1) {
-                foreach ($this->resultSet as $row) {
+        if (isset($this->_resultSet)) {
+            if ($this->_numOfColumns >= $columnIndex && $columnIndex >= 1) {
+                foreach ($this->_resultSet as $row) {
                     $counter = 0;
                     foreach ($row as $value) {
                         $counter++;
@@ -177,87 +173,66 @@ class SafeSQL extends Database
                 throw new SafeSQLException('004', "specified column index doesn't belong to range [1; SafeSQL::numOfColumns]");
             }
         } else {
-            throw new SafeSQLException('002', "Can not get fetched data if SafeSQL::resultSet is undefined");
+            throw new SafeSQLException('002', "Can not get fetched data if SafeSQL::_resultSet is undefined");
         }
     }
 
     /**
-     * Method to get all fetched data from sql result set.
-     *
-     * @throws SafeSQLException SafeSQLException instance.
-     * @return array Fetched data from sql result set.
+     * {@inheritdoc}
      */
     public function getAll()
     {
-        if (isset($this->resultSet)) {
-            return $this->resultSet;
+        if (isset($this->_resultSet)) {
+            return $this->_resultSet;
         } else {
-            throw new SafeSQLException('002', "Can not get fetched data if SafeSQL::resultSet is undefined");
+            throw new SafeSQLException('002', "Can not get fetched data if SafeSQL::_resultSet is undefined");
         }
     }
 
     /**
-     * Method to make safe sql request to database.
-     *
-     * It returns data fetched from the database if there was 'SELECT' request
-     * otherwise count of affected rows is returned.
-     * In the case of request failure method throws an error.
-     *
-     * @param string $rawQueryString Query string QueryBuilder::rawQueryString with placeholders.
-     * @param array $bindParameters  Parameters QueryBuilder::bindParameters to replace placeholders
-     *                               in QueryBuilder::rawQueryString.
-     *
-     * @throws SafeSQLException SafeSQLException object.
-     * @return void|array Array of data fetched from the database if there was 'SELECT' request
-     *                    otherwise it returns void.
+     * {@inheritdoc}
      */
     public function safeQuery($rawQueryString, $bindParameters)
     {
         $queryString = $this->prepareQuery($rawQueryString, $bindParameters);
         if (strpos($queryString, "SELECT") !== false) {
-            $this->sqlResultSet = $this->query($queryString);
-            if ($this->sqlResultSet !== false) {
-                $this->resultSet = array();
-                while ($row = $this->sqlResultSet->fetch(PDO::FETCH_ASSOC)) {
-                    $this->resultSet[] = $row;
+            $this->_sqlResultSet = $this->query($queryString);
+            if ($this->_sqlResultSet !== false) {
+                $this->_resultSet = array();
+                while ($row = $this->_sqlResultSet->fetch(PDO::FETCH_ASSOC)) {
+                    $this->_resultSet[] = $row;
                 }
-                $this->numOfRows = count($this->resultSet);
-                if ($this->numOfRows === 0) {
-                    $this->numOfColumns = 0;
+                $this->_numOfRows = count($this->_resultSet);
+                if ($this->_numOfRows === 0) {
+                    $this->_numOfColumns = 0;
                 } else {
-                    foreach ($this->resultSet as $row) {
-                        $this->numOfColumns = count($row);
+                    foreach ($this->_resultSet as $row) {
+                        $this->_numOfColumns = count($row);
                         break;
                     }
                 }
-                return $this->resultSet;
+                return $this->_resultSet;
             } else {
                 throw new SafeSQLException('005', "sql request is failed");
             }
         } else {
-            $this->sqlResultSet = null;
-            $this->resultSet = null;
-            $this->numOfRows = null;
-            $this->numOfColumns = null;
-            $this->numOfAffectedRows = $this->exec($queryString);
-            if ($this->numOfAffectedRows === false) {
-                $this->numOfAffectedRows = null;
+            $this->_sqlResultSet = null;
+            $this->_resultSet = null;
+            $this->_numOfRows = null;
+            $this->_numOfColumns = null;
+            info($queryString);
+            $this->_numOfAffectedRows = $this->exec($queryString);
+            if ($this->_numOfAffectedRows === false) {
+                $this->_numOfAffectedRows = null;
                 throw new SafeSQLException('005', "sql request is failed");
             } else {
-                return $this->numOfAffectedRows;
+                return $this->_numOfAffectedRows;
             }
         }
     }
 
     /**
-     * Method to replace placeholders in QueryBuilder::rawQueryString with its particular
-     * QueryBuilder::bindParameters and escape them before replacing.
-     *
-     * @param string $rawQueryString Query string QueryBuilder::rawQueryString with placeholders.
-     * @param array  $bindParameters Parameters QueryBuilder::bindParameters to replace placeholders
-     *                               in QueryBuilder::rawQueryString.
-     *
-     * @return string Query string.
+     * {@inheritdoc}
      */
     public function prepareQuery($rawQueryString, $bindParameters)
     {
@@ -285,12 +260,7 @@ class SafeSQL extends Database
     }
 
     /**
-     * Method to escape number before binding it into query string.
-     *
-     * @param mixed $value Number to escape.
-     *
-     * @throws SafeSQLException SafeSQLException instance.
-     * @return mixed Escaped number.
+     * {@inheritdoc}
      */
     public function escapeNumber($value = null)
     {
@@ -308,12 +278,7 @@ class SafeSQL extends Database
     }
 
     /**
-     * Method to escape string before binding it into query string.
-     *
-     * @param string $value String to escape.
-     *
-     * @throws SafeSQLException SafeSQLException instance.
-     * @return float Escaped string.
+     * {@inheritdoc}
      */
     public function escapeString($value)
     {
@@ -325,12 +290,7 @@ class SafeSQL extends Database
     }
 
     /**
-     * Method to escape identifier before binding it into query string.
-     *
-     * @param string $value Identifier to escape.
-     *
-     * @throws SafeSQLException SafeSQLException instance.
-     * @return string Escaped identifier.
+     * {@inheritdoc}
      */
     public function escapeIdentifier($value = null)
     {

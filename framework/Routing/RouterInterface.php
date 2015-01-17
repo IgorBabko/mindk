@@ -60,19 +60,17 @@ interface RouterInterface
      *
      * Method runs foreach loop to take each route and check it for matching with request. It's necessary to check
      * whether current route has some http method restrictions. Empty array which is supposed to hold all allowed http methods
-     * for route means that any method is allowed, but if http methods array specified and current http request doesn't match
+     * for route means that any method is allowed, but if http methods array specified and current http request does not match
      * any of methods from method array loop gets next iteration with next route to check.
      * If current route holds any placeholders they have to be replaced with its regular expressions from requirements array.
-     * If all specified parameters in url satisfy its regular expressions MatchedRoute object instantiates
-     * according to the parameters taken from url.
+     * If all specified parameters in url satisfy its regular expressions route object that satisfies route pattern is returned from route collection.
      * When there's no placeholders in url it simply compares url with each route pattern and if match happens
-     * the MatchedRoute object instantiates based on route pattern of which has matched with url.
-     * If method could not detect any valid route from routeCollection for specified url it instantiates the MatchedRoute object
-     * based on ErrorController to inform of error.
+     * route that satisfies route pattern will be returned.
+     * If method could not detect any valid route from routeCollection for specified url it throws an HttpNotFountException instance.
      *
      * @throws HttpNotFoundException HttpNotFoundException instance.
      *
-     * @return \Framework\Routing\MatchedRoute Route which will handle http request.
+     * @return \Framework\Routing\Route Route which will handle http request.
      */
     public function matchCurrentRequest();
 

@@ -10,6 +10,10 @@
 
 namespace Framework\Model;
 
+use Framework\Database\SafeSQL;
+use Framework\Exception\ActiveRecordException;
+use Framework\Util\QueryBuilder;
+
 /**
  * Interface ActiveRecordInterface is used to be implemented by ActiveRecord class.
  *
@@ -20,6 +24,42 @@ namespace Framework\Model;
  */
 interface ActiveRecordInterface
 {
+    /**
+     * Method to get database connection.
+     *
+     * @return SafeSQL Database connection.
+     */
+    public static function getDbConnection();
+
+    /**
+     * Method to get query builder.
+     *
+     * @return QueryBuilder QueryBuilder object.
+     */
+    public static function getQueryBuilder();
+
+    /**
+     * Method to establish connection with database.
+     *
+     * @param  object $dbConnection Database connection.
+     *
+     * @throws ActiveRecordException ActiveRecordException instance.
+     *
+     * @return void
+     */
+    public static function setDbConnection($dbConnection);
+
+    /**
+     * Method to set query builder.
+     *
+     * @param  QueryBuilder $queryBuilder Query builder.
+     *
+     * @throws ActiveRecordException ActiveRecordException instance.
+     *
+     * @return void
+     */
+    public static function setQueryBuilder($queryBuilder);
+
     /**
      * Method to make query to database.
      *
@@ -58,35 +98,6 @@ interface ActiveRecordInterface
      */
     public static function getTable();
 
-//    /**
-//     * Method to set table name that current ActiveRecord class will represent.
-//     *
-//     * @param  string $tableName Table name to set.
-//     *
-//     * @throws \Framework\Exception\ActiveRecordException ActiveRecordException instance.
-//     *
-//     * @return ActiveRecord ActiveRecord object.
-//     */
-//    public function setTable($tableName);
-
-//    /**
-//     * Method to get model name.
-//     *
-//     * @return string models name.
-//     */
-//    public function getModel();
-//
-//    /**
-//     * Method to set model name.
-//     *
-//     * @param  string $modelName models name to set.
-//     *
-//     * @throws \Framework\Exception\ActiveRecordException ActiveRecordException instance.
-//     *
-//     * @return ActiveRecord ActiveRecord object.
-//     */
-//    public function setModel($modelName);
-
     /**
      * Method loads data from particular record of table ActiveRecord::getTable()
      * to ActiveRecord object depending on $columns array which stands for condition
@@ -122,73 +133,19 @@ interface ActiveRecordInterface
      */
     public function remove();
 
-//    /**
-//     * Method to set validation constraints for current model.
-//     *
-//     * @param  string $fieldName   Field name to set constraints for.
-//     * @param  array  $constraints validation constraints.
-//     *
-//     * @throws \Framework\Exception\ActiveRecordException ActiveRecordException instance.
-//     *
-//     * @return void
-//     */
-//    public function setConstraints($fieldName, $constraints);
-//
-//    /**
-//     * Method to get validation constraints of current model.
-//     *
-//                                                  * @param  string $fieldName Field name which to get constraints for.
     /**
      * Method to get validation constraints for current model.
      *
+     * @param  string $context Validation context.
+     *
      * @return array  Validation constraints.
      */
-    public static function getConstraints();
-//
-//    /**
-//     * Method to add validation constraint for current model.
-//     *
-//     * @param  string     $fieldName  Field name to add constraint for.
-//     * @param  Constraint $constraint validation constraint.
-//     *
-//     * @throws \Framework\Exception\ActiveRecordException ActiveRecordException instance.
-//     *
-//     * @return void
-//     */
-//    public function addConstraint($fieldName, Constraint $constraint);
-//
-//    /**
-//     * Method to set sanitization filters for current model.
-//     *
-//     * @param  string $fieldName Field name to set filters for.
-//     * @param  array  $filters   sanitization filters.
-//     *
-//     * @throws \Framework\Exception\ActiveRecordException ActiveRecordException instance.
-//     *
-//     * @return void
-//     */
-//    public function setFilters($fieldName, $filters);
-//
-//    /**
-//     * Method to get sanitization filters of current model.
-//     *
-//                                                 * @param  string $fieldName Field name which to get filters for.
+    public static function getConstraints($context);
+
     /**
      * Method to set sanitization filters for current model.
      *
      * @return array Sanitization filters.
      */
     public static function getFilters();
-//
-//    /**
-//     * Method to add sanitization filter for current model.
-//     *
-//     * @param  string $fieldName Field name to add filter for.
-//     * @param  Filter $filter    sanitization filter.
-//     *
-//     * @throws \Framework\Exception\ActiveRecordException ActiveRecordException instance.
-//     *
-//     * @return void
-//     */
-//    public function addFilter($fieldName, Filter $filter);
 }

@@ -42,9 +42,9 @@ class URL extends Constraint
      */
     public function __construct($pathRequired = false, $queryRequired = false, $message = null)
     {
-        $this->_pathRequired = $pathRequired;
+        $this->_pathRequired  = $pathRequired;
         $this->_queryRequired = $queryRequired;
-        $message = isset($message)?$message:"must be URL";
+        $message              = isset($message)?$message:"must be URL";
         parent::__construct($message);
     }
 
@@ -61,7 +61,7 @@ class URL extends Constraint
     /**
      * Method to set URL::_pathRequired.
      *
-     * @param  bool $pathRequired  Value for URL::_pathRequired.
+     * @param  bool $pathRequired Value for URL::_pathRequired.
      *
      * @throws ConstraintException ConstraintException instance.
      *

@@ -1,19 +1,19 @@
 <?php
 /**
- * File /framework/database/ActiveRecord.php contains ActiveRecord class
+ * File /framework/model/ActiveRecord.php contains ActiveRecord class
  * to represent data models.
  *
  * PHP version 5
  *
- * @package Framework\Database
+ * @package Framework\Model
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework\Database;
+namespace Framework\Model;
 
+use Framework\Database\SafeSQL;
 use Framework\Exception\ActiveRecordException;
-use Framework\Validation\Constraint\Constraint;
-use Framework\Sanitization\Filter\Filter;
+use Framework\Util\QueryBuilder;
 
 /**
  * Class ActiveRecord is used to represent and work with data models.
@@ -26,37 +26,72 @@ use Framework\Sanitization\Filter\Filter;
  * SomeModel extends ActiveRecord;
  * $m = new SomeModel(__CLASS__);
  *
- *     - $m->load(array('field1' => 'value1', 'field2' => 'value2')) -
- *       loads record where 'field1' = 'value1' and 'field2' = 'value2' to ActiveRecord object;
+ *     - $m->load(array('column1' => 'value1', 'column2' => 'value2')) -
+ *       loads record where 'column1' = 'value1' and 'column2' = 'value2' to ActiveRecord object;
  *     - $m->save() - insert data currently held in ActiveRecord object to the table;
- *     - $m->save(array('field1' => 'value1')) - update table record where 'field1' = 'value1';
+ *     - $m->save(array('column1' => 'value1')) - update table record where 'column1' = 'value1';
  *     - $m->delete() - delete record from table represented by ActiveRecord object.
  *
- * @package Framework\Database
+ * @package Framework\Model
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
-class ActiveRecord implements ActiveRecordInterface
+abstract class ActiveRecord implements ActiveRecordInterface
 {
     /**
-     * @var string $_tableName Name of table which records (represented by objects of this class)
-     *                         belong to
+     * @var SafeSql $_dbConnection SafeSql object to work with database safely
      */
-    protected $_tableName;
+    private static $_dbConnection;
 
     /**
-     * @var string $_modelName Name of particular model
+     * @var QueryBuilder $_safeSql QueryBuilder object to create sql queries
      */
-    protected $_modelName;
+    private static $_queryBuilder;
 
     /**
-     * @var array $_constraints validation constraints
+     * {@inheritdoc}
      */
-    protected $_constraints;
+    public static function getDbConnection()
+    {
+        return self::$_dbConnection;
+    }
 
     /**
-     * @var array $_filters sanitization filters
+     * {@inheritdoc}
      */
-    protected $_filters;
+    public static function getQueryBuilder()
+    {
+        return self::$_queryBuilder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function setDbConnection($dbConnection)
+    {
+        if (is_object($dbConnection)) {
+            self::$_dbConnection = $dbConnection;
+        } else {
+            $parameterType = gettype($dbConnection);
+            throw new ActiveRecordException(
+                "001", "Parameter for ActiveRecord::setDbConnection method must be 'object', '$parameterType' is given"
+            );
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function setQueryBuilder($queryBuilder)
+    {
+        if (is_object($queryBuilder)) {
+            self::$_queryBuilder = $queryBuilder;
+        } else {
+            $parameterType = gettype($queryBuilder);
+            throw new ActiveRecordException(
+                "001", "Parameter for ActiveRecord::setQueryBuilder method must be 'object', '$parameterType' is given"
+            );
+        }
+    }
 
     /**
      * {@inheritdoc}
@@ -64,7 +99,7 @@ class ActiveRecord implements ActiveRecordInterface
     public static function query($rawQuery, $params)
     {
         if (is_string($rawQuery) && is_array($params)) {
-            return Application::$dbConnection->safeQuery($rawQuery, $params);
+            return self::$_dbConnection->safeQuery($rawQuery, $params);
         } else {
             throw new ActiveRecordException(
                 "001",
@@ -76,126 +111,73 @@ class ActiveRecord implements ActiveRecordInterface
     /**
      * {@inheritdoc}
      */
-    public function __set($field, $value)
+    public function __set($fieldName, $value)
     {
-        $this->$field = $value;
+        $this->$fieldName = $value;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function __get($field)
+    public function __get($fieldName)
     {
-        return $this->$field;
-    }
-
-    /**
-     * Constructor takes model name ( NameModel ) as a parameter
-     * then by getting rid word "Model" and making first letter small in model name
-     * it defines table name which current model represents.
-     * Also it assigns validation constraints and sanitization filters
-     * for current model if such has been passed.
-     *
-     * @param  string $modelName   Model name.
-     * @param  array  $constraints validation constraints.
-     * @param  array  $filters     sanitization filters.
-     *
-     * @return ActiveRecord ActiveRecord object.
-     */
-    public function __construct($modelName = null, $constraints = null, $filters = null)
-    {
-        $this->_constraints = isset($constraints) ? $constraints : array();
-        $this->_filters     = isset($filters)     ? $filters     : array();
-
-        if (is_string($modelName)) {
-            $this->_modelName = $modelName;
-            $this->_tableName = strtolower(preg_replace("/Model/", '', $modelName));
-        }
+        return $this->$fieldName;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getTable()
+    public static function getTable()
     {
-        return $this->_tableName;
+        return '';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setTable($tableName)
+    public static function getColumns()
     {
-        if (is_string($tableName)) {
-            $this->_tableName = $tableName;
-            return $this;
-        } else {
-            $parameterType = gettype($tableName);
+        return array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function load($columns = array())
+    {
+        self::$_queryBuilder->createRawQuery('select');
+        self::$_queryBuilder->select('*', static::getTable());
+        if (!is_array($columns)) {
+            $parameterType = gettype($columns);
             throw new ActiveRecordException(
-                "001", "Parameter for ActiveRecord::setTable method must be 'string', '$parameterType' is given"
+                "001", "Parameter for ActiveRecord::load method must be 'array', '$parameterType' is given"
             );
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getModel()
-    {
-        return $this->_modelName;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setModel($modelName)
-    {
-        if (is_string($modelName)) {
-            $this->_modelName = $modelName;
-            return $this;
-        } else {
-            $parameterType = gettype($modelName);
-            throw new ActiveRecordException(
-                "001", "Parameter for ActiveRecord::setModel method must be 'string', '$parameterType' is given"
-            );
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function load($fields = array())
-    {
-        Application::$queryBuilder->createRawQuery('select');
-        Application::$queryBuilder->select('*', $this->_tableName);
-        if (!is_array($fields)) {
-            throw new ActiveRecordException("001", "Wrong parameter for ActiveRecord::load method, must be an array.");
-        } elseif (count($fields) > 1) {
-            $fieldNames = array_keys($fields);
-            $firstField = array($fieldNames[0] => $fields[$fieldNames[0]]);
-            array_shift($fields);
-            foreach ($firstField as $field => $value) {
-                Application::$queryBuilder->where($field, '=', $value);
+        } elseif (count($columns) > 1) {
+            $columnNames = array_keys($columns);
+            $firstColumn = array($columnNames[0] => $columns[$columnNames[0]]);
+            array_shift($columns);
+            foreach ($firstColumn as $columnName => $value) {
+                self::$_queryBuilder->where($columnName, '=', $value);
             }
-            foreach ($fields as $field => $value) {
-                Application::$queryBuilder->addAND($field, '=', $value);
+            foreach ($columns as $columnName => $value) {
+                self::$_queryBuilder->addAND($columnName, '=', $value);
             }
         } else {
-            foreach ($fields as $field => $value) {
-                Application::$queryBuilder->where($field, '=', $value);
+            foreach ($columns as $columnName => $value) {
+                self::$_queryBuilder->where($columnName, '=', $value);
             }
         }
-        $resultSet = Application::$dbConnection->safeQuery(
-            Application::$queryBuilder->getRawQuery(),
-            Application::$queryBuilder->getBindParameters()
+        $resultSet = self::$_dbConnection->safeQuery(
+            self::$_queryBuilder->getRawQuery(),
+            self::$_queryBuilder->getBindParameters()
         );
         if (!empty($resultSet)) {
             $resultRow = $resultSet[0];
             if (isset($resultRow)) {
-                foreach ($resultRow as $field => $value) {
-                    if ($field !== 'id') {
-                        $this->$field = $value;
-                    }
+                $columnNames = static::getColumns();
+                foreach ($resultRow as $columnName => $value) {
+                    $fieldName        = array_search($columnName, $columnNames);
+                    $this->$fieldName = $value;
                 }
             }
         }
@@ -205,52 +187,57 @@ class ActiveRecord implements ActiveRecordInterface
     /**
      * {@inheritdoc}
      */
-    public function save($fields = array())
+    public function save($columns = array())
     {
-        if (!is_array($fields)) {
+        $model = get_class($this);
+        if (!is_array($columns)) {
             throw new ActiveRecordException("001", "Wrong parameter for ActiveRecord::save method, must be an array.");
         } else {
-            $classInfo     = new ReflectionClass($this->_modelName);
+            $classInfo     = new \ReflectionClass($model);
             $newRecordData = array();
-            if (empty($fields)) {
-                foreach ($this as $field => $value) {
-                    if ($classInfo->getProperty($field)->getDeclaringClass()->getName() !== "ActiveRecord") {
-                        $newRecordData[$field] = $value;
+            $columnNames   = static::getColumns();
+            if (empty($columns)) {
+                foreach ($this as $fieldName => $value) {
+                    echo $fieldName.'<br />';
+                    if ($classInfo->getProperty($fieldName)->getDeclaringClass()->getName() !== "ActiveRecord") {
+                        $columnName                 = $columnNames[$fieldName];
+                        $newRecordData[$columnName] = $value;
                     }
                 }
-                Application::$queryBuilder->createRawQuery('insert');
-                Application::$queryBuilder->insert($this->_tableName, $newRecordData);
-                Application::$dbConnection->safeQuery(
-                    Application::$queryBuilder->getRawQuery(),
-                    Application::$queryBuilder->getBindParameters()
+                self::$_queryBuilder->createRawQuery('insert');
+                self::$_queryBuilder->insert(static::getTable()/*$this->_tableName*/, $newRecordData);
+                self::$_dbConnection->safeQuery(
+                    self::$_queryBuilder->getRawQuery(),
+                    self::$_queryBuilder->getBindParameters()
                 );
                 return $this;
             } else {
-                foreach ($this as $field => $value) {
-                    if ($classInfo->getProperty($field)->getDeclaringClass()->getName() !== "ActiveRecord") {
-                        $newRecordData[$field] = $value;
+                foreach ($this as $fieldName => $value) {
+                    if ($classInfo->getProperty($fieldName)->getDeclaringClass()->getName() !== "ActiveRecord") {
+                        $columnName                 = $columnNames[$fieldName];
+                        $newRecordData[$columnName] = $value;
                     }
                 }
-                Application::$queryBuilder->createRawQuery('update');
-                Application::$queryBuilder->update($this->_tableName, $newRecordData);
-                if (count($fields) > 1) {
-                    $fieldNames = array_keys($fields);
-                    $firstField = array($fieldNames[0] => $fields[$fieldNames[0]]);
-                    array_shift($fields);
-                    foreach ($firstField as $field => $value) {
-                        Application::$queryBuilder->where($field, '=', $value);
+                self::$_queryBuilder->createRawQuery('update');
+                self::$_queryBuilder->update(static::getTable(), $newRecordData);
+                if (count($columns) > 1) {
+                    $columnNames = array_keys($columns);
+                    $firstColumn = array($columnNames[0] => $columns[$columnNames[0]]);
+                    array_shift($columns);
+                    foreach ($firstColumn as $columnName => $value) {
+                        self::$_queryBuilder->where($columnName, '=', $value);
                     }
-                    foreach ($fields as $field => $value) {
-                        Application::$queryBuilder->addAND($field, '=', $value);
+                    foreach ($columns as $columnName => $value) {
+                        self::$_queryBuilder->addAND($columnName, '=', $value);
                     }
                 } else {
-                    foreach ($fields as $field => $value) {
-                        Application::$queryBuilder->where($field, '=', $value);
+                    foreach ($columns as $columnName => $value) {
+                        self::$_queryBuilder->where($columnName, '=', $value);
                     }
                 }
-                Application::$dbConnection->safeQuery(
-                    Application::$queryBuilder->getRawQuery(),
-                    Application::$queryBuilder->getBindParameters()
+                self::$_dbConnection->safeQuery(
+                    self::$_queryBuilder->getRawQuery(),
+                    self::$_queryBuilder->getBindParameters()
                 );
                 return $this;
             }
@@ -262,114 +249,47 @@ class ActiveRecord implements ActiveRecordInterface
      */
     public function remove()
     {
-        $classInfo = new ReflectionClass($this->_modelName);
+        $model      = get_class($this);
+        $classInfo  = new \ReflectionClass($model);
+        $recordData = array();
         foreach ($this as $field => $value) {
             if ($classInfo->getProperty($field)->getDeclaringClass()->getName() !== 'ActiveRecord') {
                 $recordData[$field] = $value;
             }
         }
-        Application::$queryBuilder->createRawQuery('delete');
-        Application::$queryBuilder->delete($this->_tableName);
+        self::$_queryBuilder->createRawQuery('delete');
+        self::$_queryBuilder->delete(static::getTable());
         $fieldNames = array_keys($recordData);
         $firstField = array($fieldNames[0] => $recordData[$fieldNames[0]]);
         array_shift($recordData);
 
+        $columnNames = static::getColumns();
         foreach ($firstField as $field => $value) {
-            Application::$queryBuilder->where($field, '=', $value);
+            self::$_queryBuilder->where($columnNames[$field], '=', $value);
         }
         foreach ($recordData as $field => $value) {
-            Application::$queryBuilder->addAND($field, '=', $value);
+            self::$_queryBuilder->addAND($columnNames[$field], '=', $value);
         }
-        Application::$dbConnection->safeQuery(
-            Application::$queryBuilder->getRawQuery(),
-            Application::$queryBuilder->getBindParameters()
+        self::$_dbConnection->safeQuery(
+            self::$_queryBuilder->getRawQuery(),
+            self::$_queryBuilder->getBindParameters()
         );
         return $this;
     }
 
     /**
-     * @{inheritdoc}
+     * {@inheritdoc}
      */
-    public function setConstraints($fieldName = null, $constraints = array())
+    public static function getConstraints($context = null)
     {
-        if (is_array($constraints)) {
-            if (is_string($fieldName)) {
-                $this->_constraints[$fieldName] = $constraints;
-            } else {
-                $this->_constraints = $constraints;
-            }
-        } else {
-            throw new ActiveRecordException(
-                "003",
-                "validation constraints must be given as array in form 'fieldName' => array(constraint1, constraint2, ...)"
-            );
-        }
+        return array();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getConstraints($fieldName = null)
+    public static function getFilters()
     {
-        if (is_string($fieldName)) {
-            return $this->_constraints[$fieldName];
-        } else {
-            return $this->_constraints;
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addConstraint($fieldName, Constraint $constraint)
-    {
-        if (is_string($fieldName)) {
-            $this->_constraints[$fieldName][] = $constraint;
-        } else {
-            throw new ActiveRecordException("004", "Field name to add constraint to has not been specified");
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setFilters($fieldName = null, $filters = array())
-    {
-        if (is_array($filters)) {
-            if (is_string($fieldName)) {
-                $this->_filters[$fieldName] = $filters;
-            } else {
-                $this->_filters = $filters;
-            }
-        } else {
-            throw new ActiveRecordException(
-                "003",
-                "sanitization filters must be given as array in form 'fieldName' => array(filter1, filter2, ...)"
-            );
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFilters($fieldName = null)
-    {
-        if (is_string($fieldName)) {
-            return $this->_filters[$fieldName];
-        } else {
-            return $this->_filters;
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addFilter($fieldName, Filter $filter)
-    {
-        if (is_string($fieldName)) {
-            $this->_filters[$fieldName][] = $filter;
-        } else {
-            throw new ActiveRecordException("004", "Field name to add filter to has not been specified");
-        }
+        return array();
     }
 }

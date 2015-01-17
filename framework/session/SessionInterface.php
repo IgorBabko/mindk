@@ -10,6 +10,8 @@
 
 namespace Framework\Session;
 
+use Framework\Exception\SessionException;
+
 /**
  * Interface SessionInterface is used to be implemented by Session class.
  *
@@ -68,7 +70,6 @@ interface SessionInterface
      */
     public function exists($name);
 
-
     /**
      * Method gets value of session variable $name if exists.
      *
@@ -79,7 +80,6 @@ interface SessionInterface
      * @return mixed Value of session variable $name or null.
      */
     public function get($name);
-
 
     /**
      * Method sets session variable $name with value $value.
@@ -105,17 +105,15 @@ interface SessionInterface
     public function remove($name);
 
     /**
-     * Method to flash session variable.
+     * Method to add flash message to $_SESSION['flashMsgs'] array.
+     * Note: flash message is message that exists until next redirection.
      *
-     * If sesion variable $name does not exist then it will be set
-     * otherwise this variable is going to be removed and its value will be returned.
-     * 
-     * @param  string $name  Name  of session variable.
-     * @param  string $value Value of session variable.
+     * @param  string $name  Name of flash message.
+     * @param  string $value Flash message.
      *
      * @throws SessionException SessionException instance.
      *
-     * @return mixed Value of session variable or void.
+     * @return void
      */
     public function flash($name, $value);
 }

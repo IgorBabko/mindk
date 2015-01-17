@@ -1,71 +1,104 @@
 <?php
 /**
- * File /Framework\Session.php contains Session class is used to easily manipulate
+ * File /framework/session/Session.php contains Session class to easily manipulate
  * with session variables.
  *
  * PHP version 5
  *
- * @package Framework
+ * @package Framework\Session
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework;
+namespace Framework\Session;
 
 use Framework\Exception\SessionException;
 
 /**
  * Class Session represents objects to work with sessions.
+ * Default implementation of {@link SessionInterface}.
  *
- * @package Framework
+ * @package Framework\Session
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
-class Session
+class Session implements SessionInterface
 {
+    /**
+     * @static
+     * @var Session|null $_instance Session instance
+     */
+    private static $_instance = null;
+
     /**
      * @var string $_meta Session variable that keeps general information of current session
      */
     private $_meta = '__meta';
+
     /**
      * @var bool $_started Is session started?
      */
-    private $started = false;
+    private $_started = false;
 
     /**
-     * Methods checks whether session is started or not.
+     * Session constructor.
      *
-     * @return bool Is session started?
+     * @return \Framework\Session\Session Session object.
      */
-    public function isStarted()
+    private function __construct()
     {
-        return $this->started;
     }
 
     /**
-     * Method starts session. In a case it's already been started method do nothing but returns void.
-     * Also it sets session variable __meta with general information of current session.
+     * Method to clone objects of its class.
      *
-     * @return void
+     * @return \Framework\Session\Session Session instance.
+     */
+    private function __clone()
+    {
+    }
+
+    /**
+     * Method returns Session instance creating it if it's not been instantiated before
+     * otherwise existed Session object will be returned.
+     *
+     * @return \Framework\Session\Session Session instance.
+     */
+    public static function getInstance()
+    {
+        if (null === self::$_instance) {
+            self::$_instance = new self();
+        }
+        return self::$_instance;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isStarted()
+    {
+        return $this->_started;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function start()
     {
-        if ($this->started === true) {
+        if ($this->_started === true) {
             return;
         }
 
         session_start();
-        if (!isset($_SESSION[$this->meta])) {
+        if (!isset($_SESSION[$this->_meta])) {
             $this->init();
         } else {
-            $_SESSION[$this->meta]['activity'] = $_SERVER['REQUEST_TIME'];
+            $_SESSION[$this->_meta]['activity'] = $_SERVER['REQUEST_TIME'];
         }
 
-        $this->started = true;
+        $this->_started = true;
     }
 
     /**
-     * Method destroys session by setting up expired session cookie and remove all session variables.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function destroy()
     {
@@ -86,9 +119,7 @@ class Session
     }
 
     /**
-     * Method returns session name.
-     *
-     * @return string Session name.
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -96,14 +127,11 @@ class Session
     }
 
     /**
-     * Method sets session variable with name __meta which holds
-     * general information of current session.
-     *
-     * @return void
+     * {@inheritdoc}
      */
-    private function init()
+    public function init()
     {
-        $_SESSION[$this->meta] = array(
+        $_SESSION[$this->_meta] = array(
             'ip'       => $_SERVER['REMOTE_ADDR'],
             'name'     => session_name(),
             'created'  => $_SERVER['REQUEST_TIME'],
@@ -112,77 +140,68 @@ class Session
     }
 
     /**
-     * Method checks if given session variable $name exists or not.
-     *
-     * @param string $name Name of session variable to be checked.
-     *
-     * @throws SessionException SessionException instance.
-     *
-     * @return bool Does session variable $name exist?
+     * {@inheritdoc}
      */
     public function exists($name)
     {
-        if ($this->started === true) {
+        if ($this->_started === true) {
             return isset($_SESSION[$name]);
+        } else {
+            throw new SessionException("001", "Session isn't started.");
         }
-
-        throw new SessionException("Session isn't started.");
     }
 
-
     /**
-     * Method gets value of session variable $name if exists.
-     *
-     * @param string $name Name of session variable value of to be returned.
-     *
-     * @throws SessionException SessionException instance.
-     *
-     * @return string|null Value of session variable $name or null.
+     * {@inheritdoc}
      */
     public function get($name)
     {
-        if ($this->started === true) {
-            return $_SESSION[$name]?$_SESSION[$name]:null;
+        if ($this->_started === true) {
+            return isset($_SESSION[$name])?$_SESSION[$name]:null;
+        } else {
+            throw new SessionException("001", "Session isn't started.");
         }
-
-        throw new SessionException("Session isn't started.");
     }
 
-
     /**
-     * Method sets session variable $name with value $value.
-     *
-     * @param string $name  Name of session variable to be added.
-     * @param string $value Value of session variable with name $name.
-     *
-     * @throws SessionException SessionException instance.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function add($name, $value)
     {
-        if ($this->started === true) {
+        if ($this->_started === true) {
             $_SESSION[$name] = $value;
+            return $value;
+        } else {
+            throw new SessionException("001", "Session isn't started.");
         }
-
-        throw new SessionException("Session isn't started.");
     }
 
     /**
-     * Method removes specified session variable.
-     *
-     * @param string $name Name of session variable to remove.
-     *
-     * @throws SessionException SessionException instance.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function remove($name)
     {
-        if ($this->started === true) {
+        if ($this->_started !== true) {
+            throw new SessionException("002", "Session isn't started.");
+        } else {
             unset($_SESSION[$name]);
         }
+    }
 
-        throw new SessionException("Session isn't started.");
+    /**
+     * {@inheritdoc}
+     */
+    public function flash($name, $value)
+    {
+        if (!is_string($value)) {
+            $parameterType = gettype($value);
+            throw new SessionException(
+                "004", "Second parameter for Session::flash method must be 'string', '$parameterType' is given"
+            );
+        } else {
+            $flashMsgs = $this->exists('flashMsgs') ? $this->get('flashMsgs') : array();
+            $flashMsgs[$name] = $value;
+            $this->add('flashMsgs', $flashMsgs);
+        }
     }
 }

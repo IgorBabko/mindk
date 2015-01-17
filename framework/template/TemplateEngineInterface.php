@@ -39,24 +39,6 @@ interface TemplateEngineInterface
      */
     public function setData($name, $value);
 
-//    /**
-//     * Method to get template directory.
-//     *
-//     * @return string Template directory.
-//     */
-//    public function getTemplateDir();
-
-//    /**
-//     * Method to set template directory.
-//     *
-//     * @param  string $templateDir Template directory.
-//     *
-//     * @throws \Framework\Exception\TemplateEngineException TemplateEngineException instance.
-//     *
-//     * @return void
-//     */
-//    public function setTemplateDir($templateDir);
-
     /**
      * Method removes data with key $key from
      * TemplateEngine::_data array.
@@ -79,14 +61,11 @@ interface TemplateEngineInterface
     /**
      * Method renders pages with specified view. All data contained in TemplateEngine::_data array
      * will be available into the view while rendering.
-     * Also it puts flash messages of session into TemplateEngine::_data array under key 'flashMsgs'
-     * After page rendering all flash messages will be removed from session.
      *
-     * Note: flash message is message that exists until next redirection.
-     *
-     * @param  string $viewPath Path to the view.
+     * @param  string $layout Path to layout.
+     * @param  string $view   Path to view.
      *
      * @return void
      */
-    public function render($viewPath);
+    public function render($layout, $view);
 }

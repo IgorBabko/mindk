@@ -96,9 +96,9 @@ class FIP extends Filter
             );
         } else {
             if ($this->_type === 'ipv4') {
-                return preg_replace("/[^\\d\\.]|\\.{2,}/", "", $value);
+                return preg_replace("/[^\d\.]|\.{2,}/", "", $value);
             } else {
-                return preg_replace("/[^\\da-fA-F\\.:]|\\.{2,}|:{3,}/", "", $value);
+                return preg_replace("/[^\da-fA-F\.:]|\.{2,}|:{3,}/", "", $value);
             }
         }
     }

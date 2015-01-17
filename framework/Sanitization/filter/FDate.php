@@ -87,7 +87,7 @@ class FDate extends Filter
         }
 
         if (is_string($value)) {
-            return preg_replace("/[^{$allow}\\d]/", "", $value);
+            return preg_replace("/[^{$allow}\d]/", "", $value);
         } else {
             $parameterType = gettype($value);
             throw new FilterException(

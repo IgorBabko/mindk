@@ -1,50 +1,62 @@
 <?php
 /**
- * File /Framework/cookie.php contains cookie class to easy manipulate with cookies.
+ * File /framework/cookie/Cookie.php contains Cookie class to easy manipulate with cookies.
  *
  * PHP version 5
  *
- * @package Framework
+ * @package Framework\Cookie
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework;
+namespace Framework\Cookie;
 
 use Framework\Exception\CookieException;
 
 /**
  * Class cookie represents objects to work with cookies.
+ * Default implementation of {@link CookieInterface}.
  *
- * @package Framework
+ * @package Framework\Cookie
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
-class Cookie
+class Cookie implements CookieInterface
 {
+    /**
+     * @static
+     * @var Cookie|null $_instance Cookie instance
+     */
+    private static $_instance = null;
 
     /**
      * @const null SESSION Set cookie for a session.
      */
     const SESSION = null;
+    
     /**
      * @const int DAY Set cookie for a day.
      */
     const DAY = 86400;
+    
     /**
      * @const int WEEK Set cookie for a week.
      */
     const WEEK = 604800;
+    
     /**
      * @const int MONTH Set cookie for a month.
      */
     const MONTH = 2592000;
+    
     /**
      * @const int SIX_MONTHS Set cookie for six months.
      */
     const SIX_MONTHS = 15811200;
+    
     /**
      * @const int YEAR Set cookie for a year.
      */
     const YEAR = 31536000;
+    
     /**
      * @const int FOREVER Set cookie forever.
      */
@@ -53,63 +65,92 @@ class Cookie
     /**
      * @var array $_cookies Cookies to be sent
      */
-    public $cookies = array();
-
+    private $_cookies = array();
 
     /**
-     * Method checks whether cookie with specified name $name exists or not.
+     * Cookie constructor.
      *
-     * @param string $name cookie name to check.
-     *
-     * @return bool Does cookie $name exist?
+     * @return \Framework\Cookie\Cookie Cookie object.
      */
-    public function exists($name)
+    private function __construct()
     {
-        return isset($this->cookies[$name]);
     }
 
     /**
-     * Method sends all defined cookies.
+     * Method to clone objects of its class.
      *
-     * @throws CookieException CookieException instance.
-     *
-     * @return void
+     * @return \Framework\Cookie\Cookie Cookie instance.
      */
-    public function sendCookie()
+    private function __clone()
+    {
+    }
+
+    /**
+     * Method returns Cookie instance creating it if it's not been instantiated before
+     * otherwise existed Cookie object will be returned.
+     *
+     * @return \Framework\Cookie\Cookie Cookie instance.
+     */
+    public static function getInstance()
+    {
+        if (null === self::$_instance) {
+            self::$_instance = new self();
+        }
+        return self::$_instance;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCookies()
+    {
+        return $this->_cookies;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function exists($name)
+    {
+        if (is_string($name)) {
+            return isset($_COOKIE[$name]);
+        } else {
+            $parameterType = gettype($name);
+            throw new CookieException("001", "Parameter for Cookie::exists method must be 'string', '$parameterType' is given");
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function send()
     {
         if (!headers_sent()) {
-            foreach ($this->cookies as $cookieName => $cookieInfo) {
-                $retval = setcookie(
+            foreach ($this->_cookies as $cookieName => $cookieInfo) {
+                $returnValue = setcookie(
                     $cookieName,
                     $cookieInfo['value'],
                     $cookieInfo['expiry'],
                     $cookieInfo['path'],
                     $cookieInfo['domain']
                 );
-                if ($retval) {
+                if ($returnValue) {
                     $_COOKIE[$cookieName] = $cookieInfo['value'];
+                } else {
+                    throw new CookieException("003", "Cookie '$cookieName' has not be set successfully.");
                 }
             }
+        } else {
+            throw new CookieException("001", "Headers has already been sent.");
         }
-
-        throw new CookieException("Headers has already been set.");
+        return true;
     }
 
-
     /**
-     * Method adds cookie to $_cookies array.
-     *
-     * @param string $name   Name of cookie to be added.
-     * @param string $value  Value of cookie $name.
-     * @param int    $expiry cookie expiration date.
-     * @param string $path   Path where cookie will be available.
-     * @param bool   $domain Domain where cookie will be available.
-     *
-     * @return void
+     * {@inheritdoc}
      */
-    public function add($name, $value, $expiry = self::ONE_YEAR, $path = '/', $domain = false)
+    public function add($name, $value, $expiry = self::YEAR, $path = '/', $domain = false)
     {
-
         if ($expiry === -1) {
             $expiry = 1893456000;
         } elseif (is_numeric($expiry)) {
@@ -117,7 +158,7 @@ class Cookie
         } else {
             $expiry = strtotime($expiry);
         }
-        $this->cookies[$name] = array(
+        $this->_cookies[$name] = array(
             'value'  => $value,
             'expiry' => $expiry,
             'path'   => $path,
@@ -126,43 +167,19 @@ class Cookie
     }
 
     /**
-     * Method gets all cookies from $cookies array.
-     *
-     * @return array Cookies array.
-     */
-    public function getCookies()
-    {
-        return $this->cookies;
-    }
-
-
-    /**
-     * Method checks whether specified cookie is empty or not.
-     *
-     * @param string $name cookie name to check.
-     *
-     * @throws CookieException CookieException instance.
-     *
-     * @return bool Is cookie $name empty?
+     * {@inheritdoc}
      */
     public function isEmpty($name)
     {
-
         if ($this->exists($name)) {
-            return empty($this->cookie[$name]);
+            return empty($this->_cookies[$name]);
+        } else {
+            throw new CookieException("003", "cookie '$name' doesn't exists.");
         }
-
-        throw new CookieException("cookie $name doesn't exists.");
     }
 
     /**
-     * Method returns cookie with specified name $name. When there's no cookie $name
-     * it returns value specified in second parameter.
-     *
-     * @param string $name    Name of cookie value of to be returned.
-     * @param mixed  $default Default value to be returned.
-     *
-     * @return mixed Value of cookie with name $name or default value.
+     * {@inheritdoc}
      */
     public function get($name, $default = '')
     {
@@ -170,30 +187,23 @@ class Cookie
     }
 
     /**
-     * Method removes cookie with specified name $name.
-     * When $global is true then cookie also will be removed from $_COOKIE global array.
-     *
-     * @param string $name   Name of cookie to be removed.
-     * @param string $path   Path where cookie is available.
-     * @param bool   $domain Domain where cookie is available.
-     * @param bool   $global Should cookie be removed from $_COOKIE global array.
-     *
-     * @return bool Is cookie successfully removed?
+     * {@inheritdoc}
      */
-    public function remove($name, $path = '/', $domain = false, $global = false)
+    public function remove($name, $path = '/', $domain = false, $global = true)
     {
-        $retval = false;
         if (!headers_sent()) {
             if ($domain === false) {
                 $domain = $_SERVER['HTTP_HOST'];
             }
 
-            $retval = setcookie($name, '', time() - 3600, $path, $domain);
+            $returnValue = setcookie($name, '', time() - 3600, $path, $domain);
 
             if ($global) {
                 unset($_COOKIE[$name]);
             }
+            return $returnValue;
+        } else {
+            throw new CookieException("003", "Headers has been sent already");
         }
-        return $retval;
     }
 }

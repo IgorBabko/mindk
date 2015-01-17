@@ -33,19 +33,26 @@ class Unique extends Constraint
     private $_fieldName;
 
     /**
+     * @var array $_allowedValues Values that are allowed to be repeated.
+     */
+    private $_allowedValues;
+
+    /**
      * Unique constructor takes table name, field name and error message.
      *
-     * @param  string        $tableName Table name.
-     * @param  string        $fieldName Field name.
-     * @param  null|string   $message   Error message.
+     * @param  string      $tableName     Table name.
+     * @param  string      $fieldName     Field name.
+     * @param  null|array  $allowedValues Values that are allowed to be repeated.
+     * @param  null|string $message       Error message.
      *
      * @return Unique Unique object.
      */
-    public function __construct($tableName, $fieldName, $message = null)
+    public function __construct($tableName, $fieldName, $allowedValues = null, $message = null)
     {
-        $this->_tableName = $tableName;
-        $this->_fieldName = $fieldName;
-        $message          = isset($message)?$message:"already exists";
+        $this->_tableName     = $tableName;
+        $this->_fieldName     = $fieldName;
+        $this->_allowedValues = $allowedValues;
+        $message              = isset($message)?$message:"already exists";
         parent::__construct($message);
     }
 
@@ -112,6 +119,37 @@ class Unique extends Constraint
     }
 
     /**
+     * Method to get values that are allowed to be repeated.
+     *
+     * @return array Allowed values.
+     */
+    public function getAllowedValues()
+    {
+        return $this->_allowedValues;
+    }
+
+    /**
+     * Method to set values that are allowed to be repeated.
+     *
+     * @param  array $allowedValues Values that are allowed to be repeated.
+     *
+     * @throws ConstraintException ConstraintException instance.
+     *
+     * @return void
+     */
+    public function setAllowedValues($allowedValues)
+    {
+        if (is_array($allowedValues)) {
+            $this->_allowedValues = $allowedValues;
+        } else {
+            $parameterType = gettype($allowedValues);
+            throw new ConstraintException(
+                "001", "Value for Unique::setAllowedValues method must be 'array', '$parameterType' is given"
+            );
+        }
+    }
+
+    /**
      * Method to check whether value is unique
      * by taking set of unique values from specified field of specified table.
      *
@@ -124,14 +162,17 @@ class Unique extends Constraint
     public function validate($value)
     {
         if (isset($value)) {
-            info($value);
             if (is_int($value) || is_float($value) || is_string($value)) {
-                $rawQuery = is_string($value) ? $rawQuery = "SELECT ?i FROM ?i WHERE ?i = ?s" : "SELECT ?i FROM ?i WHERE ?i = ?n";
-                $bindParameters = array('id', $this->_tableName, $this->_fieldName, $value);
+                $rawQuery = is_string($value) ? $rawQuery = "SELECT * FROM ?i WHERE ?i = ?s" : "SELECT ?i FROM ?i WHERE ?i = ?n";
+                $bindParameters = array($this->_tableName, $this->_fieldName, $value);
                 $resultSet = App::getDbConnection()->safeQuery($rawQuery, $bindParameters);
                 if (empty($resultSet)) {
                     return true;
                 } else {
+                    if (isset($this->_allowedValues)) {
+                        $value = $resultSet[0][$this->_fieldName];
+                        return in_array($value, $this->_allowedValues) ? true : false;
+                    }
                     return false;
                 }
             } else {

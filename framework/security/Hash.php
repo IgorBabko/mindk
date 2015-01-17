@@ -64,14 +64,4 @@ class Hash implements HashInterface
             throw new HashException("002", "Parameter for Hash::generateSalt method must be 'int', '$parameterType' is given");
         }
     }
-
-//    /**
-//     * Method to
-//     *
-//     * @return string
-//     */
-//    public static function unique()
-//    {
-//        return self::generatePass(uniqid());
-//    }*/
 }

@@ -32,7 +32,7 @@ interface ResponseRedirectInterface
     /**
      * Method to go back to previous page.
      *
-     * @param  bool $permanent Whether redirect permanently or not?
+     * @param  bool $permanent Whether to redirect permanently or not?
      *
      * @return void
      */

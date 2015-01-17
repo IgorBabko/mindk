@@ -37,7 +37,7 @@ class Phone extends Constraint
     public function __construct($pattern = null, $message = null)
     {
         $this->_pattern = empty($pattern)?"/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/":$pattern;
-        $message       = isset($message)?$message:"must be phone number matching pattern: {$this->pattern}";
+        $message        = isset($message)?$message:"must be phone number matching pattern: {$this->pattern}";
         parent::__construct($message);
     }
 

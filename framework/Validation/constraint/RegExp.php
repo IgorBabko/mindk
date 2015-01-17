@@ -37,7 +37,7 @@ class RegExp extends Constraint
     public function __construct($pattern, $message = null)
     {
         $this->_pattern = $pattern;
-        $message       = isset($message)?$message:"must match pattern: $pattern";
+        $message        = isset($message)?$message:"must match pattern: $pattern";
         parent::__construct($message);
     }
 

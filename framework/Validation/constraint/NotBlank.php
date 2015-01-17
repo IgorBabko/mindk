@@ -49,7 +49,7 @@ class NotBlank extends Constraint
             throw new ConstraintException("001", "Value for NotBlank::validate method is NULL");
         } elseif (empty($value) && $value != '0') {
             return false;
-        } elseif (preg_match("/^\\s*$/", $value)) {
+        } elseif (preg_match("/^\s*$/", $value)) {
             return false;
         } else {
             info($value);

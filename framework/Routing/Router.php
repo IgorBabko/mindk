@@ -1,6 +1,6 @@
 <?php
 /**
- * File /Framework/Routing/Router.php contains Router class which is used to resolve
+ * File /framework/routing/Router.php contains Router class which is used to resolve
  * what controller must be used to handle http request.
  *
  * PHP version 5
@@ -13,10 +13,11 @@ namespace Framework\Routing;
 
 use Framework\Exception\RouterException;
 use Framework\Exception\HttpNotFoundException;
-use Framework\DI\Service;
+use Framework\Template\TemplateEngine;
 
 /**
  * Class Router.
+ * Default implementation of {@link RouterInterface}.
  *
  * Class represents routing system defining controller and its action
  * to handle the http request depending on url.
@@ -24,83 +25,119 @@ use Framework\DI\Service;
  * @package Framework\Routing
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
-class Router
+class Router implements RouterInterface
 {
+    /**
+     * @static
+     * @var Router|null $_instance Router instance
+     */
+    private static $_instance = null;
 
     /**
-     * @var array|null $routeCollection Holds all routes defined in application
+     * @var RouteCollection $_routeCollection Holds all routes defined in application
      */
-    public $routeCollection = array();
+    private $_routeCollection;
+
     /**
-     * @var string $host Host
+     * @var string $_host Host
      */
-    public $host;
+    private $_host;
 
     /**
      * Router constructor.
      *
-     * Constructor takes routeCollection to know all available paths in application.
+     * Constructor takes RouteCollection object to know all available paths in application.
      *
-     * @param \Framework\Routing\RouteCollection|null $routeCollection Collection of all defined routes.
+     * @param  \Framework\Routing\RouteCollection|null $routeCollection Collection of all defined routes.
      *
      * @return \Framework\Routing\Router Router object.
      */
-    public function __construct($routeCollection = null)
+    private function __construct($routeCollection = null)
     {
-        $this->host            = 'http://'.$_SERVER['HTTP_HOST'];
-        $this->routeCollection = $routeCollection;
+        $this->_host            = 'http://'.$_SERVER['HTTP_HOST'];
+        $this->_routeCollection = $routeCollection;
     }
 
     /**
-     * Method to add route to routeCollection.
+     * Method to clone objects of its class.
      *
-     * @param string $routeName Name of new route.
-     * @param array  $routeInfo Info about new route.
-     *
-     * @return void
+     * @return \Framework\Routing\Router Router instance.
      */
-    public function addRoute($routeName, $routeInfo)
+    private function __clone()
     {
-        $this->routeCollection->add($routeName, $routeInfo);
     }
 
     /**
-     * Method which defines matched route.
+     * Method returns Router instance creating it if it's not been instantiated before
+     * otherwise existed Router object will be returned.
      *
-     * Method runs foreach loop to take each route and check it for matching with request. It's necessary to check
-     * whether current route has some http method restrictions. Empty array which is supposed to hold all allowed http methods
-     * for route means that any method is allowed, but if http methods array specified and current http request doesn't match
-     * any of methods from method array loop gets next iteration with next route to check.
-     * If current route holds any placeholders they have to be replaced with its regular expressions from requirements array.
-     * If all specified parameters in url satisfy its regular expressions MatchedRoute object instantiates
-     * according to the parameters taken from url.
-     * When there's no placeholders in url it simply compares url with each route pattern and if match happens
-     * the MatchedRoute object instantiates based on route pattern of which has matched with url.
-     * If method could not detect any valid route from routeCollection for specified url it instantiates the MatchedRoute object
-     * based on ErrorController to inform of error.
+     * @param  \Framework\Routing\RouteCollection|null $routeCollection Collection of all defined routes.
      *
-     * @throws HttpNotFoundException HttpNotFoundException instance.
-     *
-     * @return \Framework\Routing\MatchedRoute Route which will handle http request.
+     * @return \Framework\Routing\Router Router instance.
+     */
+    public static function getInstance($routeCollection = null)
+    {
+        if (null === self::$_instance) {
+            self::$_instance = new self($routeCollection);
+        }
+        return self::$_instance;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRouteCollection()
+    {
+        return $this->_routeCollection;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setRouteCollection($routeCollection)
+    {
+        $this->_routeCollection = $routeCollection;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getHost()
+    {
+        return $this->_host;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addRoute($routeName, Route $route)
+    {
+        $this->_routeCollection->setRoute($routeName, $route);
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function matchCurrentRequest()
     {
         $url = '/'.trim($_SERVER['REQUEST_URI'], '/');
 
-        foreach ($this->routeCollection->routes as $routeName => $routeInfo) {
+        $templateEngine = TemplateEngine::getInstance();
+        $templateEngine->setData('router', $this);
+        foreach ($this->_routeCollection->getRoutes() as $routeName => $routeInfo) {
 
-            if (isset($routeInfo->requirements['_method']) && $routeInfo->requirements['_method'] !== $_SERVER['REQUEST_METHOD']) {
+            if (isset($routeInfo->getRequirements()['_method']) && $routeInfo->getRequirements()['_method'] !== $_SERVER['REQUEST_METHOD']) {
                 continue;
             }
 
-            if (strpos($routeInfo->pattern, ':') !== false) {
-                $pattern = $routeInfo->pattern;
-                preg_match_all('/:(\w+)/', $pattern, $paramNames);
+            if (strpos($routeInfo->getPattern(), '{') !== false) {
+                $pattern = $routeInfo->getPattern();
+                preg_match_all('/{(\w+)}/', $pattern, $paramNames);
                 $paramNames = $paramNames[1];
 
                 foreach ($paramNames as $paramName) {
-                    if (isset($routeInfo->requirements[$paramName])) {
-                        $pattern = preg_replace('/:(\w+)/', '('.$routeInfo->requirements[$paramName].')', $pattern, 1);
+                    if (isset($routeInfo->getRequirements()[$paramName])) {
+                        $pattern = preg_replace('/{(\w+)}/', '('.$routeInfo->getRequirements()[$paramName].')', $pattern, 1);
                     }
                 }
 
@@ -110,57 +147,40 @@ class Router
                 $pattern = '/'.$pattern.'/';
 
                 if (preg_match($pattern, $url, $params) !== 0) {
-
                     array_shift($params);
-                    Service::setParams('route', array('routeInfo' => (array)$routeInfo));
-                    Service::setParams('matchedRoute', array('params' => $params));
-                    return Service::resolve('matchedRoute');
+                    $routeInfo->setParameters($params);
+                    $templateEngine->setData('activeRoute', $routeName);
+                    $templateEngine->setData('params', $params);
+                    return $routeInfo;
                 }
             }
 
-            if ($routeInfo->pattern === $url) {
-                Service::setParams('route', array('routeInfo' => (array)$routeInfo));
-                return Service::resolve('matchedRoute');
+            if ($routeInfo->getPattern() === $url) {
+                $templateEngine->setData('activeRoute', $routeName);
+                return $routeInfo;
             }
         }
-
         throw new HttpNotFoundException(404, "Not Found");
     }
 
-
     /**
-     * Method to generate url according to given parameters and route name.
-     *
-     * Method generates url according to specified name (first parameter)
-     * and list of parameters of the route (second parameter). If no such name of route is found
-     * in routeCollection Exception throws. If search of route by name succeed it gets pattern of found route.
-     * In case parameters array for url to be generated isn't set then method immediately returns pattern but
-     * when parameters array isn't empty it replaces all placeholders from pattern on its particular values from
-     * parameters array and only then generated url will be returned.
-     *
-     * @param string $routeName Name of route to generate.
-     * @param array  $params    Params for route to generate.
-     *
-     * @throws \Framework\Exception\RouterException RouterException instance.
-     *
-     * @return string Generated url.
+     * {@inheritdoc}
      */
-    public function generateUrl($routeName = 'hello', $params = array())
+    public function generateRoute($routeName = 'hello', $params = array())
     {
-
-        if (!isset($this->routeCollection->routes[$routeName])) {
-            throw new RouterException("001", "No route with name $routeName has been found.");
+        if (!isset($this->_routeCollection->getRoutes()[$routeName])) {
+            throw new RouterException("001", "No route with name '$routeName' has been found.");
         }
 
-        $route = $this->routeCollection->routes[$routeName];
-        $url   = $route->pattern;
+        $route = $this->_routeCollection->getRoutes()[$routeName];
+        $url   = $route->getPattern();
 
-        if ($params && preg_match_all('/:(\w+)/', $url, $param_keys)) {
+        if ($params && preg_match_all('/{(\w+)}/', $url, $param_keys)) {
             $param_keys = $param_keys[1];
 
             foreach ($param_keys as $key) {
                 if (isset($params[$key])) {
-                    $url = preg_replace('/:(\w+)/', $params[$key], $url, 1);
+                    $url = preg_replace('/{(\w+)}/', $params[$key], $url, 1);
                 }
             }
         }

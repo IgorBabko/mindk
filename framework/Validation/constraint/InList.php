@@ -37,7 +37,7 @@ class InList extends Constraint
     public function __construct($list = array(), $message = null)
     {
         $this->_list = $list;
-        $message    = isset($message)?$message:"must be from specified list";
+        $message     = isset($message)?$message:"must be from specified list";
         parent::__construct($message);
     }
 

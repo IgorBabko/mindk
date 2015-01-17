@@ -11,7 +11,7 @@
 
 namespace Framework\Util;
 
-use Framework\Application;
+use Framework\Template\TemplateEngine;
 
 /**
  * Class ExceptionHandler.
@@ -26,67 +26,31 @@ use Framework\Application;
 class ExceptionHandler implements ExceptionHandlerInterface
 {
     /**
-     * @var \Framework\Util\ExceptionHandler|null $_instance ExceptionHandler instance
-     */
-    private static $_instance = null;
-
-    /**
+     * @static
      * @var \Framework\Exception\FrameworkException|null $_exception Occurred exception
      */
-    private $_exception = null;
+    private static $_exception = null;
 
     /**
-     * ExceptionHandler constructor is private to deny creating objects outside of the class.
-     *
-     * @return \Framework\Util\ExceptionHandler ExceptionHandler instance.
+     * {@inheritdoc}
      */
-    private function __construct()
+    public static function getException()
     {
-    }
-
-    /**
-     * Method to clone objects of its class. It's private to deny cloning objects outside of the class.
-     *
-     * @return \Framework\Util\ExceptionHandler ExceptionHandler instance.
-     */
-    private function __clone()
-    {
-    }
-
-    /**
-     * Method returns ExceptionHandler instance creating it if it's not been instantiated before
-     * otherwise existed ExceptionHandler will be returned.
-     *
-     * @return \Framework\Util\ExceptionHandler ExceptionHandler instance.
-     */
-    public static function getInstance()
-    {
-        if (null === self::$_instance) {
-            self::$_instance = new self();
-        }
-        return self::$_instance;
+        return self::$_exception;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getException()
+    public static function registerHandler()
     {
-        return $this->_exception;
+        set_exception_handler(array(__CLASS__, 'handle'));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function registerHandler()
-    {
-        set_exception_handler(array($this, 'handle'));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function unregisterHandler()
+    public static function unregisterHandler()
     {
         restore_exception_handler();
     }
@@ -94,16 +58,10 @@ class ExceptionHandler implements ExceptionHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function handle($exception)
+    public static function handle($exception)
     {
-        $templateEngine = Application::getTemplateEngine();
-
-        $templateEngine->setData('code'   ,   $exception->getCode());
-        $templateEngine->setData('message',   $exception->getMessage());
-        $templateEngine->setData('type'   ,   get_class($exception));
-        $templateEngine->setData('file'   ,   $exception->getFile());
-        $templateEngine->setData('line'   ,   $exception->getLine());
-
-        $templateEngine->render('exception.html.php');
+        $templateEngine = TemplateEngine::getInstance();
+        $templateEngine->setData('exception',   $exception);
+        $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS.'500.html.php');
     }
 }

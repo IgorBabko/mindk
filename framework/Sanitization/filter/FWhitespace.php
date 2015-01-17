@@ -34,7 +34,7 @@ class FWhitespace extends Filter
         if (is_string($value)) {
             $value = trim($value);
             $value = preg_replace("/[\n\r\t]+/", "", $value);
-            return preg_replace("/\\s{2,}/", " ", $value);
+            return preg_replace("/\s{2,}/", " ", $value);
         } else {
             $parameterType = gettype($value);
             throw new FilterException(

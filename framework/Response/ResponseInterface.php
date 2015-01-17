@@ -276,7 +276,6 @@ interface ResponseInterface
      */
     public function _getUTCDate($time);
 
-
     /**
      * Method sets Cache-Control header.
      *

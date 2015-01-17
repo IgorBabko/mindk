@@ -32,7 +32,7 @@ class FNumeric extends Filter
     public function sanitize($value)
     {
         if (is_string($value)) {
-            return preg_replace("/[^\\d\\.]|\\.{2,}/", "", $value);
+            return preg_replace("/[^\d\.]|\.{2,}/", "", $value);
         } else {
             $parameterType = gettype($value);
             throw new FilterException(
