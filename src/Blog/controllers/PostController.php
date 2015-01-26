@@ -1,68 +1,120 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dgilan
- * Date: 10/15/14
- * Time: 12:49 PM
- */
 
-namespace Blog\Controller;
+namespace Blog\Controllers;
 
-use Blog\Model\Post;
+use Blog\Models\Comment;
+use Blog\Models\Post;
+use Blog\Util;
+use CMS\Models\Category;
+use Framework\Config\Config;
 use Framework\Controller\Controller;
-use Framework\DI\Service;
-use Framework\Exception\DatabaseException;
-use Framework\Exception\HttpNotFoundException;
-use Framework\Request\Request;
-use Framework\Response\Response;
-use Framework\Validation\Validator;
 
 class PostController extends Controller
 {
-
     public function indexAction()
     {
-        return $this->render('index.html', array('posts' => Post::find('all')));
-    }
+        $args       = func_get_args();
+        $categoryId = empty($args[0])?0:$args[0][0];
+        $pageId     = empty($args[0])?1:$args[0][1];
 
-    public function getPostAction($id)
-    {
-        return new Response('Post: #'.$id);
-    }
+        $session = $this->getRequest()->getSession();
+        $session->start();
 
-    public function addAction()
-    {
-        if ($this->getRequest()->isPost()) {
-            try{
-                $post          = new Post();
-                $date          = new \DateTime();
-                $post->title   = $this->getRequest()->post('title');
-                $post->content = trim($this->getRequest()->post('content'));
-                $post->date    = $date->format('Y-m-d H:i:s');
+        $request        = $this->getRequest();
+        $templateEngine = $this->getTemplateEngine();
 
-                $validator = new Validator($post);
-                if ($validator->isValid()) {
-                    $post->save();
-                    return $this->redirect($this->generateRoute('home'), 'The data has been saved successfully');
-                } else {
-                    $error = $validator->getErrors();
-                }
-            } catch(DatabaseException $e){
-                $error = $e->getMessage();
+        $posts = array();
+        if ($request->isMethod('POST')) {
+            if (isset($_POST['search_reset'])) {
+                $session->remove('searchQuery');
+                $router = $this->getRouter();
+                $this->getResponseRedirect()->to(
+                    $router->generateRoute('posts', array('categoryId' => 0, 'pageId' => 1))
+                );
+                exit();
+            } else {
+                $rawQueryString = "SELECT * FROM ?i WHERE ?i LIKE ?s OR ?i LIKE ?s OR ?i LIKE ?s";
+                $bindParameters =
+                    array(
+                        Post::getTable(),
+                        'title',
+                        '%'.$_POST['search'].'%',
+                        'small_text',
+                        '%'.$_POST['search'].'%',
+                        'text',
+                        '%'.$_POST['search'].'%'
+                    );
+
+                $session->add(
+                    'searchQuery',
+                    array('rawQueryString' => $rawQueryString, 'bindParameters' => $bindParameters)
+                );
+                $session->add('categoryId', 'search');
+                $router = $this->getRouter();
+                $this->getResponseRedirect()->to(
+                    $router->generateRoute('posts', array('categoryId' => 'search', 'pageId' => 1))
+                );
             }
+        } elseif ($session->exists('searchQuery') && $categoryId == $_SESSION['categoryId']) {
+            $searchQuery = $session->get('searchQuery');
+            $posts       = Post::query($searchQuery['rawQueryString'], $searchQuery['bindParameters']);
+            $templateEngine->setData('searchResult', 'Search result: '.count($posts).' items');
+        } else {
+            $session->remove('searchQuery');
+            if ($categoryId == 0) {
+                $rawQueryString = "SELECT * FROM ?i";
+                $bindParameters = array(Post::getTable());
+            } else {
+                $category       = new Category(array('id' => $categoryId));
+                $categoryName   = $category->getName();
+                $rawQueryString = "SELECT * FROM ?i WHERE ?i = ?s";
+                $bindParameters = array(Post::getTable(), 'category', $categoryName);
+            }
+            $session->add('categoryId', $categoryId);
+            $posts = Post::query($rawQueryString, $bindParameters);
         }
 
-        return $this->render(
-            'add.html',
-            array('action' => $this->generateRoute('add_post'), 'errors' => isset($error)?$error:null)
+        $categories = Category::query('SELECT * FROM ?i', array(Category::getTable()));
+        foreach ($categories as &$category) {
+            $count             = Post::query(
+                "SELECT COUNT(*) AS 'count' FROM ?i WHERE ?i = ?s",
+                array(Post::getTable(), 'category', $category['name'])
+            );
+            $category['count'] = $count[0]['count'];
+        }
+        $totalAmountOfPosts = Post::query('SELECT COUNT(*) AS "count" FROM ?i', array(Post::getTable()))[0]['count'];
+        array_unshift($categories, array('id' => 0, 'name' => 'All', 'count' => $totalAmountOfPosts));
+
+        $templateEngine->setData('categories', $categories);
+
+        $itemsPerPage = Config::getSetting('pagination/items_per_page');
+        $pagination   = Util::pagination(
+            'posts',
+            array('categoryId' => $categoryId, 'pageId' => $pageId),
+            count($posts)
         );
+
+        $start = ($pageId - 1) * $itemsPerPage;
+        $templateEngine->setData('posts', array_slice($posts, $start, $itemsPerPage));
+        $templateEngine->setData('router', $this->getRouter());
+        $templateEngine->setData('pagination', $pagination);
+        $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS.'post/index.html.php');
     }
 
-    public function showAction($id)
+    public function showAction()
     {
-        if (!$post = Post::find((int)$id)) {
-            throw new HttpNotFoundException('Page Not Found!');
-        }
-        return $this->render('show.html', array('post' => $post));
+        $session = $this->getRequest()->getSession();
+        $session->start();
+        $id = func_get_args()[0][0];;
+        $post           = new Post(array('id' => $id));
+        $comments       = Comment::query(
+            'SELECT * FROM ?i WHERE ?i = ?s ORDER BY ?i DESC',
+            array(Comment::getTable(), 'post_title', $post->getTitle(), 'created_date')
+        );
+        $templateEngine = $this->getTemplateEngine();
+        $templateEngine->setData('router', $this->getRouter());
+        $templateEngine->setData('post', $post);
+        $templateEngine->setData('comments', $comments);
+        $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS.'post/show.html.php');
     }
 }

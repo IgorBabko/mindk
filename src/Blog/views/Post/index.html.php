@@ -1,21 +1,17 @@
-<div class="col-sm-8 blog-main">
-    <?php foreach ($posts as $post) { ?>
-
-        <div class="blog-post">
-            <h2 class="blog-post-title"><a href="/posts/<?php echo $post->id ?>"> <?php echo $post->title ?></a></h2>
-
-            <p class="blog-post-meta"><?php echo date('F j, Y', strtotime($post->date)) ?> by <a
-                    href="#"><?php echo $post->name ?></a>
-            </p>
-
-            <?php echo htmlspecialchars_decode($post->content) ?>
+<?= $this->pagination; ?>
+<?php foreach ($this->posts as $post) { ?>
+    <div style="color: black; background-color: rgb(245,245,245);" class="panel panel-black">
+        <div class="panel-heading panel-title">
+            <?= $post['title']; ?><p class="text-right" style="font-size: 12px; padding: 0; margin: 0;">
+                <i>Comments: <?= $post['amount_of_comments']; ?> | Date: <?= $post['posted_date']; ?></i></p>
         </div>
-
-    <?php } ?>
-
-    <div>
-        <?php $include('Blog\\Controller\\PostController', 'getPost', array('id' => 'TestId')) ?>
+        <div class="panel-body">
+            <?= html_entity_decode($post['small_text']); ?>
+        </div>
+        <div class="panel-footer" style="text-align: right;">
+            <a class='btn btn-default' style="color: black;" role='button'
+               href='<?= $this->router->generateRoute('post', array('id' => $post['id'])); ?>'>Read more</a>
+        </div>
     </div>
-
-</div>
-
+<?php } ?>
+<?= $this->pagination; ?>

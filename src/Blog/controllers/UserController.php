@@ -8,8 +8,9 @@
 
 namespace Blog\Controllers;
 
+use Blog\Models\Post;
 use Blog\Models\User;
-use Blog\Models\UserSession;
+use CMS\Models\Category;
 use Framework\Config\Config;
 use Framework\Controller\Controller;
 use Framework\Exception\FrameworkException;
@@ -19,153 +20,205 @@ use Framework\Validation\Validator;
 
 class UserController extends Controller
 {
-    private $user;
-
-    public function __construct()
+    public function signupAction()
     {
-        $this->user = new User();
-
-        $sessionName = Config::getSetting('user_session');
-        $cookieName  = Config::getSetting('remember');
-
-        $session = $this->getRequest()->getSession();
-        $cookie  = $this->getRequest()->getCookie();
-
-        if ($session->exists($sessionName)) {
-            $id = $session->get($sessionName);
-
-            $this->user->load(
-                array(
-                    'id' => $id
-                )
-            );
-        } elseif ($cookie->exists($cookieName)) {
-            $hash        = $cookie->get($cookieName);
-            $userSession = new UserSession();
-            $userSession->load(
-                array(
-                    'hash' => $hash
-                )
-            );
-
-            $this->user->load(array(
-                'id' => $userSession->getUserId())
-            );
-        }
-    }
-
-    public function signinAction()
-    {
-
-        $request        = $this->getRequest();
+        $request = $this->getRequest();
+        $session = $request->getSession();
+        $session->start();
         $templateEngine = $this->getTemplateEngine();
 
+        $view = 'user/signup.html.php';
         if ($request->isMethod('POST')) {
             try{
                 $user = new User();
-                $form = new Form($user);
+                $form = new Form($user, 'signup');
 
                 if ($form->isValid()) {
-
                     $form->bindDataToModel();
-                    $user->setSalt(Hash::salt(32));
-                    $user->setPassword(Hash::make($user->getPassword(), $user->getSalt()));
+                    $user->setSalt(Hash::generateSalt(32));
+                    $user->setPassword(Hash::generatePass($user->getPassword(), $user->getSalt()));
                     $user->setRole('USER');
-                    $user->setJoined(date('Y-m-d H:i:s'));
+                    $user->setJoinedDate(date('Y-m-d H:i:s'));
                     $user->save();
 
-                    $router   = $this->getRouter();
-                    $session  = $request->getSession();
                     $redirect = $this->getResponseRedirect();
-
-                    $session->flash('home', 'You have been registered and can now log in!');
-                    $redirect->to($router->generateRoute('home'));
+                    $session->flash(
+                        'registered',
+                        "<div class='flash-success well well-sm'>You have been registered and can now log in!</div>"
+                    );
+                    $redirect->route('signup');
                     exit();
                 } else {
                     $errors = Validator::getErrorList();
                     $templateEngine->setData('errors', $errors);
-                    $templateEngine->render('signin.html');
                 }
             } catch(FrameworkException $e){
-                $templateEngine->setData('message', $e->getMessage());
-                $templateEngine->render('500.html.php');
+                $templateEngine->setData('exception', $e);
+                $view = 'error.html.php';
             }
-        } else {
-            $templateEngine->render('signin.html');
         }
+
+        $categories = Category::query('SELECT * FROM ?i', array(Category::getTable()));
+        foreach ($categories as &$category) {
+            $count             = Post::query(
+                "SELECT COUNT(*) AS 'count' FROM ?i WHERE ?i = ?s",
+                array(Post::getTable(), 'category', $category['name'])
+            );
+            $category['count'] = $count[0]['count'];
+        }
+        $totalAmountOfPosts = Post::query('SELECT COUNT(*) AS "count" FROM ?i', array(Post::getTable()))[0]['count'];
+        array_unshift($categories, array('id' => 0, 'name' => 'All', 'count' => $totalAmountOfPosts));
+
+        $templateEngine->setData('categories', $categories);
+        $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS.$view);
     }
 
     public function loginAction()
     {
-
         $templateEngine = $this->getTemplateEngine();
         $request        = $this->getRequest();
+        $session        = $request->getSession();
 
         if ($request->isMethod('POST')) {
             try{
                 $user = new User();
-                $user->load(
-                    array(
-                        'login' => $request->getPost('login')
-                    )
-                );
+                $user->load(array('username' => $request->getPost('_username')));
+                $username = $user->getUsername();
+                if (isset($username)) {
+                    $hashedPassword = Hash::generatePass($request->getPost('_password'), $user->getSalt());
+                    if ($hashedPassword === $user->getPassword()) {
 
-                if (!empty($user->login)) {
-                    $password = Hash::make($request->getPost('password'), $user->getSalt());
-                    if ($user->getPassword() === $password) {
                         $remember = $request->getPost('remember');
-                        $path     = '/';
                         if ($remember === 'yes') {
-                            $hash = Hash::unique();
-
-                            $userSession = new UserSession();
-                            $userSession->setUserId($user->getId());
-                            $userSession->setHash($hash);
-                            $userSession->save();
-
-                            $cookie = $request->getCookie();
-                            $cookie->add(Config::getSetting('remember'), $hash);
-                            $cookie->send();
-
-                            $path = $cookie->get('previousPage');
+                            session_set_cookie_params(Config::getSetting('session_cookie_lifetime'));
                         }
-
+                        $session->start();
+                        $session->add(
+                            'user',
+                            array(
+                                'name'  => $user->getUsername(),
+                                'email' => $user->getEmail(),
+                                'role'  => $user->getRole()
+                            )
+                        );
                         $redirect = $this->getResponseRedirect();
-                        $redirect->to($path);
+                        $redirect->to('/');
                         exit();
                     }
                 }
-                $templateEngine->setData('message', 'Invalid login or password');
-                $templateEngine->render('login.html');
+                $templateEngine->setData('fail', 'Invalid login or password');
             } catch(FrameworkException $e){
-                $templateEngine->render('500.html.php');
+                $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS.'error.html.php');
+            }
+        }
+        $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS.'user/login.html.php');
+    }
+
+    public function updateAction()
+    {
+
+        $request = $this->getRequest();
+        $session = $request->getSession();
+        $session->start();
+        $templateEngine = $this->getTemplateEngine();
+
+        $user = new User();
+        $user->load(array('username' => $session->get('user')['name']));
+
+        if ($request->isMethod('POST')) {
+            try{
+                $redirect = $this->getResponseRedirect();
+                $form     = new Form($user, 'update');
+
+                if ($form->isValid()) {
+                    $form->bindDataToModel();
+                    $user->save(array('username' => $session->get('user')['name']));
+                    $session->add(
+                        'user',
+                        array(
+                            'name'  => $user->getUsername(),
+                            'email' => $user->getEmail(),
+                            'role'  => $user->getRole()
+                        )
+                    );
+                    $session->flash('updated', "<div class='flash-success well well-sm'>Your data has been updated successfully!</div>");
+                    $redirect->route('update');
+                    exit();
+                } else {
+                    $errors = Validator::getErrorList();
+                    $templateEngine->setData('errors', $errors);
+                    $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS.'user/update.html.php');
+                }
+            } catch(FrameworkException $e){
+                $templateEngine->setData('exception', $e);
+                $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS.'error.html.php');
             }
         } else {
-            $templateEngine->render('login.html');
+            $_POST['_username'] = $user->getUsername();
+            $_POST['_email']    = $user->getEmail();
+            $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS.'user/update.html.php');
         }
     }
 
-    public function isAuthenticated()
+    public function changePasswordAction()
     {
-        $id = $this->user->getId();
-        return isset($id);
+        $request = $this->getRequest();
+        $session = $request->getSession();
+        $session->start();
+        $templateEngine = $this->getTemplateEngine();
+
+        $user = new User();
+        $user->load(array('username' => $session->get('user')['name']));
+
+        if ($request->isMethod('POST')) {
+
+            $currentPassword = $user->getPassword();
+            $salt            = $user->getSalt();
+
+            $form = new Form($user, 'change_password');
+            if ($form->isValid()) {
+
+                $redirect = $this->getResponseRedirect();
+                if (Hash::generatePass($_POST['current_password'], $salt) !== $currentPassword) {
+                    $session->flash('wrong_password', "<div class='flash-error well well-sm-error'>Current password is wrong!</div>");
+                    $redirect->route('change_password');
+                    exit();
+                }
+
+                $user->setSalt(Hash::generateSalt(32));
+                $user->setPassword(Hash::generatePass($request->getPost('_password'), $user->getSalt()));
+                $user->save(array('username' => $session->get('user')['name']));
+
+                $session->flash(
+                    'password_changed',
+                    "<div class='flash-success well well-sm'>Your password has been updated successfully!</div>"
+                );
+                $redirect->route('change_password');
+                exit();
+            } else {
+                $errors = Validator::getErrorList();
+                $templateEngine->setData('errors', $errors);
+                $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS.'user/change_password.html.php');
+            }
+        } else {
+            $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS.'user/change_password.html.php');
+        }
     }
 
     public function logoutAction()
     {
-        $userSession = new UserSession();
-        $userSession->load(
-            array(
-                'user_id' => $this->user->getId()
-            )
-        );
-        $userSession->remove();
         $session = $this->getRequest()->getSession();
-        $cookie  = $this->getRequest()->getCookie();
+        $session->start();
+        $session->destroy();
+        $this->getResponseRedirect()->to('/');
+    }
 
-        $session->remove(Config::getSetting('user_session'));
-        $cookie->remove(Config::getSetting('remember'));
-        $redirect = $this->getResponseRedirect();
-        $redirect->to('/');
+    public function isAuthenticated()
+    {
+        $session = $this->getRequest()->getSession();
+        if (!$session->isstarted()) {
+            $session->start();
+        }
+        return $session->exists('user');
     }
 }

@@ -4,7 +4,7 @@
         $errors = array();
     } ?>
 
-    <form class="form-signin" role="form" method="post" action="<?php echo $getRoute('signin')?>">
+    <form class="form-signin" role="form" method="post" action="<?php echo $getRoute('signin') ?>">
         <h2 class="form-signin-heading">Please sign in</h2>
         <?php foreach ($errors as $error) { ?>
             <div class="alert alert-danger alert-dismissible" role="alert">
@@ -13,10 +13,10 @@
                 <strong>Error!</strong> <?php echo $error ?>
             </div>
         <?php } ?>
-        <input type="email" class="form-control" placeholder="Email address" required autofocus name="email">
-        <input type="password" class="form-control" placeholder="Password" required name="password">
+        <input autocomplete="off" type="email" class="form-control" placeholder="Email address" required autofocus name="email">
+        <input autocomplete="off" type="password" class="form-control" placeholder="Password" required name="password">
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        <?php $generateToken()?>
+        <?php $generateToken() ?>
     </form>
 
 </div>
