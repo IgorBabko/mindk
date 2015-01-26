@@ -20,4 +20,16 @@ namespace Framework\Exception;
  */
 abstract class FrameworkException extends \Exception implements FrameworkExceptionInterface
 {
+    /**
+     * FrameworkException constructor.
+     *
+     * @param  int    $code    Exception code.
+     * @param  string $message Exception message.
+     *
+     * @return \Framework\Exception\FrameworkException FrameworkException instance.
+     */
+    public function __construct($code, $message)
+    {
+        parent::__construct($message, $code);
+    }
 }

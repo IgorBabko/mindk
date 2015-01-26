@@ -23,14 +23,13 @@ class RouteException extends FrameworkException
     /**
      * RouteException constructor.
      *
-     * @param  string $code    exception code.
-     * @param  string $message exception message.
+     * @param  int    $code    Exception code.
+     * @param  string $message Exception message.
      *
      * @return \Framework\Exception\RouteException RouteException instance.
      */
     function __construct($code, $message)
     {
-        $this->code = $code;
-        $this->message = $message;
+        parent::__construct($code, $message);
     }
 }

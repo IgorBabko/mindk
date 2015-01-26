@@ -1,7 +1,7 @@
 <?php
 /**
- * File /framework/exception/SafeSQLException.php contains SafeSQLException class
- * to represent exceptions related to SafeSQL class.
+ * File /framework/exception/SafeSqlException.php contains SafeSqlException class
+ * to represent exceptions related to SafeSql class.
  *
  * PHP version 5
  *
@@ -12,25 +12,24 @@
 namespace Framework\Exception;
 
 /**
- * Class SafeSQLException is used to represent exceptions
+ * Class SafeSqlException is used to represent exceptions
  * that might happen while working with database.
  *
  * @package Framework\Exception
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
-class SafeSQLException extends FrameworkException
+class SafeSqlException extends FrameworkException
 {
     /**
-     * SafeSQLException constructor.
+     * SafeSqlException constructor.
      *
-     * @param  string $code    exception code.
-     * @param  string $message exception message.
+     * @param  int    $code    Exception code.
+     * @param  string $message Exception message.
      *
-     * @return \Framework\Exception\SafeSQLException SafeSQLException instance.
+     * @return \Framework\Exception\SafeSqlException SafeSqlException instance.
      */
     function __construct($code, $message)
     {
-        $this->code = $code;
-        $this->message = $message;
+        parent::__construct($code, $message);
     }
 }
