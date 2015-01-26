@@ -52,7 +52,7 @@ interface SafeSqlInterface
     /**
      * Method to get number of rows fetched by the last 'SELECT' request to database.
      *
-     * @throws \Framework\Exception\SafeSQLException SafeSQLException instance.
+     * @throws \Framework\Exception\SafeSqlException SafeSqlException instance.
      *
      * @return int|null Number of rows.
      */
@@ -61,7 +61,7 @@ interface SafeSqlInterface
     /**
      * Method to get first fetched value from sql result set.
      *
-     * @throws \Framework\Exception\SafeSQLException SafeSQLException instance.
+     * @throws \Framework\Exception\SafeSqlException SafeSqlException instance.
      *
      * @return mixed First fetched value from sql result set.
      */
@@ -72,7 +72,7 @@ interface SafeSqlInterface
      *
      * @param  int $rowIndex Index of row to get.
      *
-     * @throws \Framework\Exception\SafeSQLException SafeSQLException instance.
+     * @throws \Framework\Exception\SafeSqlException SafeSqlException instance.
      *
      * @return array Specified row from sql result set.
      */
@@ -83,7 +83,7 @@ interface SafeSqlInterface
      *
      * @param  int $columnIndex Index of column to get.
      *
-     * @throws \Framework\Exception\SafeSQLException SafeSQLException instance.
+     * @throws \Framework\Exception\SafeSqlException SafeSqlException instance.
      *
      * @return array Specified column from sql result set.
      */
@@ -92,7 +92,7 @@ interface SafeSqlInterface
     /**
      * Method to get all fetched data from sql result set.
      *
-     * @throws \Framework\Exception\SafeSQLException SafeSQLException instance.
+     * @throws \Framework\Exception\SafeSqlException SafeSqlException instance.
      *
      * @return array Fetched data from sql result set.
      */
@@ -109,7 +109,7 @@ interface SafeSqlInterface
      * @param  array $bindParameters  Parameters QueryBuilder::bindParameters to replace placeholders
      *                               in QueryBuilder::rawQueryString.
      *
-     * @throws \Framework\Exception\SafeSQLException SafeSQLException object.
+     * @throws \Framework\Exception\SafeSqlException SafeSqlException object.
      *
      * @return void|array Array of data fetched from the database if there was 'SELECT' request
      *                    otherwise it returns void.
@@ -133,7 +133,7 @@ interface SafeSqlInterface
      *
      * @param  mixed $value Number to escape.
      *
-     * @throws \Framework\Exception\SafeSQLException SafeSQLException instance.
+     * @throws \Framework\Exception\SafeSqlException SafeSqlException instance.
      *
      * @return mixed Escaped number.
      */
@@ -144,7 +144,7 @@ interface SafeSqlInterface
      *
      * @param  string $value String to escape.
      *
-     * @throws \Framework\Exception\SafeSQLException SafeSQLException instance.
+     * @throws \Framework\Exception\SafeSqlException SafeSqlException instance.
      * @return float Escaped string.
      */
     public function escapeString($value);
@@ -154,7 +154,7 @@ interface SafeSqlInterface
      *
      * @param  string $value Identifier to escape.
      *
-     * @throws \Framework\Exception\SafeSQLException SafeSQLException instance.
+     * @throws \Framework\Exception\SafeSqlException SafeSqlException instance.
      * @return string Escaped identifier.
      */
     public function escapeIdentifier($value);

@@ -46,7 +46,10 @@ class Numeric extends Constraint
     public function validate($value)
     {
         if (!isset($value)) {
-            throw new ConstraintException("001", "Value for Numeric::validate method is NULL");
+            throw new ConstraintException(
+                500,
+                "<strong>Internal server error:</strong> value for Numeric::validate method is NULL"
+            );
         } elseif (is_numeric($value)) {
             return true;
         } else {

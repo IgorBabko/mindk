@@ -46,7 +46,7 @@ class Validator implements ValidatorInterface
                     } else {
                         $className = get_class($constraint);
                         throw new ValidatorException(
-                            "001", "'$className' object is not an instance of Constraint class"
+                            500, "<strong>Internal server error:</strong> '$className' object is not an instance of Constraint class"
                         );
                     }
                 }
@@ -55,7 +55,7 @@ class Validator implements ValidatorInterface
         } else {
             $parameterType = gettype($object);
             throw new ValidatorException(
-                "002", "Parameter for Validator::validate method must be 'object', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for Validator::validate method must be 'object', '$parameterType' is given"
             );
         }
     }
@@ -66,11 +66,14 @@ class Validator implements ValidatorInterface
     public static function validateValue($value, $constraints)
     {
         if (!isset($value)) {
-            throw new ValidatorException("003", "First parameter for Validator::validateValue method is NULL");
+            throw new ValidatorException(
+                500,
+                "<strong>Internal server error:</strong> first parameter for Validator::validateValue method is NULL"
+            );
         } elseif (!is_array($constraints) && !is_object($constraints)) {
             $parameterType = gettype($constraints);
             throw new ValidatorException(
-                "004", "Second parameter for Validator::validateValue method is $parameterType,
+                500, "<strong>Internal server error:</strong> second parameter for Validator::validateValue method is $parameterType,
                         must be Constraint object or array of Constraint objects"
             );
         } else {
@@ -83,7 +86,9 @@ class Validator implements ValidatorInterface
                     }
                 } else {
                     $className = get_class($constraint);
-                    throw new ValidatorException("001", "'$className' value is not an instance of Constraint class");
+                    throw new ValidatorException(
+                        500, "<strong>Internal server error:</strong> '$className' value is not an instance of Constraint class"
+                    );
                 }
             }
             return (count(self::$_errorList) > 0)?self::$_errorList:true;

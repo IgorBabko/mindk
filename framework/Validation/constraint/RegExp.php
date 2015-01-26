@@ -29,8 +29,8 @@ class RegExp extends Constraint
     /**
      * RegExp constructor takes regular expression for validation and error message.
      *
-     * @param  string        $pattern Regular expression for validation.
-     * @param  null|string   $message Error message.
+     * @param  string      $pattern Regular expression for validation.
+     * @param  null|string $message Error message.
      *
      * @return RegExp RegExp object.
      */
@@ -67,7 +67,7 @@ class RegExp extends Constraint
         } else {
             $parameterType = gettype($pattern);
             throw new ConstraintException(
-                "001", "Value for RegExp::setPattern method must be 'string', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> value for RegExp::setPattern method must be 'string', '$parameterType' is given"
             );
         }
     }
@@ -92,7 +92,7 @@ class RegExp extends Constraint
         } else {
             $parameterType = gettype($value);
             throw new ConstraintException(
-                "001", "Value for RegExp::validate method must be 'string', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> value for RegExp::validate method must be 'string', '$parameterType' is given"
             );
         }
     }

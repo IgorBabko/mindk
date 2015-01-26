@@ -11,6 +11,7 @@
 
 namespace Framework\Routing;
 
+use Framework\DI\Service;
 use Framework\Exception\RouterException;
 use Framework\Exception\HttpNotFoundException;
 use Framework\Template\TemplateEngine;
@@ -54,7 +55,7 @@ class Router implements RouterInterface
      */
     private function __construct($routeCollection = null)
     {
-        $this->_host            = 'http://'.$_SERVER['HTTP_HOST'];
+        $this->_host = 'http://'.$_SERVER['HTTP_HOST'];
         $this->_routeCollection = $routeCollection;
     }
 
@@ -120,13 +121,21 @@ class Router implements RouterInterface
      */
     public function matchCurrentRequest()
     {
-        $url = '/'.trim($_SERVER['REQUEST_URI'], '/');
+        $request = Service::resolve('request');
+        $url     = '/'.trim($request->getURI(), '/');
 
         $templateEngine = TemplateEngine::getInstance();
         $templateEngine->setData('router', $this);
         foreach ($this->_routeCollection->getRoutes() as $routeName => $routeInfo) {
 
-            if (isset($routeInfo->getRequirements()['_method']) && $routeInfo->getRequirements()['_method'] !== $_SERVER['REQUEST_METHOD']) {
+            if (isset($routeInfo->getRequirements()['_ajax']) && !$request->isAjax()) {
+                continue;
+            }
+
+            if (isset($routeInfo->getRequirements()['_method']) && !$request->isMethod(
+                    $routeInfo->getRequirements()['_method']
+                )
+            ) {
                 continue;
             }
 
@@ -137,7 +146,12 @@ class Router implements RouterInterface
 
                 foreach ($paramNames as $paramName) {
                     if (isset($routeInfo->getRequirements()[$paramName])) {
-                        $pattern = preg_replace('/{(\w+)}/', '('.$routeInfo->getRequirements()[$paramName].')', $pattern, 1);
+                        $pattern = preg_replace(
+                            '/{(\w+)}/',
+                            '('.$routeInfo->getRequirements()[$paramName].')',
+                            $pattern,
+                            1
+                        );
                     }
                 }
 
@@ -146,7 +160,7 @@ class Router implements RouterInterface
                 $pattern = str_replace('/', '\/', $pattern);
                 $pattern = '/'.$pattern.'/';
 
-                if (preg_match($pattern, $url, $params) !== 0) {
+                if (preg_match($pattern, $url, $params) != 0) {
                     array_shift($params);
                     $routeInfo->setParameters($params);
                     $templateEngine->setData('activeRoute', $routeName);
@@ -169,7 +183,9 @@ class Router implements RouterInterface
     public function generateRoute($routeName = 'hello', $params = array())
     {
         if (!isset($this->_routeCollection->getRoutes()[$routeName])) {
-            throw new RouterException("001", "No route with name '$routeName' has been found.");
+            throw new RouterException(
+                500, "<strong>Internal server error:</strong> no route with name '$routeName' has been found."
+            );
         }
 
         $route = $this->_routeCollection->getRoutes()[$routeName];

@@ -31,32 +31,32 @@ class Cookie implements CookieInterface
      * @const null SESSION Set cookie for a session.
      */
     const SESSION = null;
-    
+
     /**
      * @const int DAY Set cookie for a day.
      */
     const DAY = 86400;
-    
+
     /**
      * @const int WEEK Set cookie for a week.
      */
     const WEEK = 604800;
-    
+
     /**
      * @const int MONTH Set cookie for a month.
      */
     const MONTH = 2592000;
-    
+
     /**
      * @const int SIX_MONTHS Set cookie for six months.
      */
     const SIX_MONTHS = 15811200;
-    
+
     /**
      * @const int YEAR Set cookie for a year.
      */
     const YEAR = 31536000;
-    
+
     /**
      * @const int FOREVER Set cookie forever.
      */
@@ -116,7 +116,9 @@ class Cookie implements CookieInterface
             return isset($_COOKIE[$name]);
         } else {
             $parameterType = gettype($name);
-            throw new CookieException("001", "Parameter for Cookie::exists method must be 'string', '$parameterType' is given");
+            throw new CookieException(
+                500, "<strong>Internal server error:</strong> parameter for Cookie::exists method must be 'string', '$parameterType' is given"
+            );
         }
     }
 
@@ -137,11 +139,13 @@ class Cookie implements CookieInterface
                 if ($returnValue) {
                     $_COOKIE[$cookieName] = $cookieInfo['value'];
                 } else {
-                    throw new CookieException("003", "Cookie '$cookieName' has not be set successfully.");
+                    throw new CookieException(
+                        500, "<strong>Internal server error:</strong> cookie '$cookieName' has not be set successfully."
+                    );
                 }
             }
         } else {
-            throw new CookieException("001", "Headers has already been sent.");
+            throw new CookieException(500, "<strong>Internal server error:</strong> headers has already been sent.");
         }
         return true;
     }
@@ -159,9 +163,9 @@ class Cookie implements CookieInterface
             $expiry = strtotime($expiry);
         }
         $this->_cookies[$name] = array(
-            'value'  => $value,
+            'value' => $value,
             'expiry' => $expiry,
-            'path'   => $path,
+            'path' => $path,
             'domain' => $domain?$_SERVER['HTTP_HOST']:$domain
         );
     }
@@ -174,7 +178,7 @@ class Cookie implements CookieInterface
         if ($this->exists($name)) {
             return empty($this->_cookies[$name]);
         } else {
-            throw new CookieException("003", "cookie '$name' doesn't exists.");
+            throw new CookieException(500, "<strong>Internal server error:</strong> cookie '$name' doesn't exists.");
         }
     }
 
@@ -203,7 +207,7 @@ class Cookie implements CookieInterface
             }
             return $returnValue;
         } else {
-            throw new CookieException("003", "Headers has been sent already");
+            throw new CookieException(500, "<strong>Internal server error:</strong> headers has been sent already");
         }
     }
 }

@@ -76,7 +76,7 @@ class TemplateEngine implements TemplateEngineInterface
         } else {
             $parameterType = gettype($name);
             throw new TemplateEngineException(
-                "001", "First parameter for TemplateEngine::setData method must be 'string', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> first parameter for TemplateEngine::setData method must be 'string', '$parameterType' is given"
             );
         }
     }
@@ -110,6 +110,5 @@ class TemplateEngine implements TemplateEngineInterface
         require_once($view);
         $this->setData('view', ob_get_clean());
         require_once($layout);
-        //$session->remove('flashMsgs');
     }
 }

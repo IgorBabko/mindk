@@ -66,7 +66,10 @@ class FIP extends Filter
         if (in_array($type, $ipTypes, true)) {
             $this->_type = $type;
         } else {
-            throw new FilterException("001", "Value for FIP::setType method must be 'both' || 'ipv4' || 'ipv6'");
+            throw new FilterException(
+                500,
+                "<strong>Internal server error:</strong> value for FIP::setType method must be 'both' || 'ipv4' || 'ipv6'"
+            );
         }
     }
 
@@ -86,12 +89,12 @@ class FIP extends Filter
         if (!is_string($value)) {
             $parameterType = gettype($value);
             throw new FilterException(
-                "001", "First parameter for FIP::sanitize method must be 'string',
+                500, "<strong>Internal server error:</strong> first parameter for FIP::sanitize method must be 'string',
                         '$parameterType' is given"
             );
         } elseif (in_array($this->_type, $ipTypes, true) !== true) {
             throw new FilterException(
-                "002", "Second parameter for FIP::sanitize method must be equal to 'both' || 'ipv4' || 'ipv6',
+                500, "<strong>Internal server error:</strong> second parameter for FIP::sanitize method must be equal to 'both' || 'ipv4' || 'ipv6',
                         '$this->_type' is given"
             );
         } else {

@@ -71,7 +71,10 @@ class JsonResponse implements JsonResponseInterface
             $jsonString = JsonParser::encode($value);
             echo $jsonString;
         } else {
-            throw new JsonResponseException("", "HTTP headers has been sent already");
+            throw new JsonResponseException(
+                500,
+                "<strong>Internal server error:</strong> HTTP headers has been sent already"
+            );
         }
     }
 }

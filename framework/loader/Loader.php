@@ -110,16 +110,16 @@ class Loader implements LoaderInterface
     {
         $prefix = $class;
         while (false !== $pos = strrpos($prefix, '\\')) {
-            $prefix           = substr($class, 0, $pos + 1);
-            $relative_class   = substr($class, $pos + 1);
-            $mapped_file      = self::loadMappedFile($prefix, $relative_class);
+            $prefix         = substr($class, 0, $pos + 1);
+            $relative_class = substr($class, $pos + 1);
+            $mapped_file    = self::loadMappedFile($prefix, $relative_class);
             if ($mapped_file) {
                 return $mapped_file;
             }
             $prefix = rtrim($prefix, '\\');
         }
 
-        throw new LoaderException("001", "Class '$class' not found");
+        throw new LoaderException(500, "<strong>Internal server error:</strong> class '$class' not found");
     }
 
     /**
@@ -128,7 +128,9 @@ class Loader implements LoaderInterface
     public static function loadMappedFile($prefix, $relative_class)
     {
         if (isset(self::$_prefixes[$prefix]) === false) {
-            throw new LoaderException("001", "Namespace prefix '$prefix' does not exist");
+            throw new LoaderException(
+                500, "<strong>Internal server error:</strong> namespace prefix '$prefix' does not exist"
+            );
         }
         foreach (self::$_prefixes[$prefix] as $base_dir) {
             $file = $base_dir.str_replace('\\', DIRECTORY_SEPARATOR, $relative_class).'.php';
@@ -138,7 +140,7 @@ class Loader implements LoaderInterface
             }
         }
 
-        throw new LoaderException("002", "Can't load file");
+        throw new LoaderException(500, "<strong>Internal server error:</strong> can't load file");
     }
 
     /**
@@ -150,7 +152,7 @@ class Loader implements LoaderInterface
             require_once($file);
             return true;
         } else {
-            throw new LoaderException("003", "File '$file' does not exist");
+            throw new LoaderException(500, "<strong>Internal server error:</strong> file '$file' does not exist");
         }
     }
 }

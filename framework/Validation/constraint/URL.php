@@ -74,7 +74,7 @@ class URL extends Constraint
         } else {
             $parameterType = gettype($pathRequired);
             throw new ConstraintException(
-                "001", "Value for URL::pathRequired method must be 'bool', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> value for URL::pathRequired method must be 'bool', '$parameterType' is given"
             );
         }
     }
@@ -105,7 +105,7 @@ class URL extends Constraint
         } else {
             $parameterType = gettype($queryRequired);
             throw new ConstraintException(
-                "001", "Value for URL::queryRequired method must be 'bool', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> value for URL::queryRequired method must be 'bool', '$parameterType' is given"
             );
         }
     }
@@ -150,7 +150,7 @@ class URL extends Constraint
         } else {
             $parameterType = gettype($value);
             throw new ConstraintException(
-                "001", "Value for URL::validate method must be 'string', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> value for URL::validate method must be 'string', '$parameterType' is given"
             );
         }
     }

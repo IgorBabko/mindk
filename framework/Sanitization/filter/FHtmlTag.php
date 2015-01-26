@@ -72,7 +72,7 @@ class FHtmlTag extends Filter
         } else {
             $parameterType = gettype($allowedHtmlTags);
             throw new FilterException(
-                "001", "Parameter for FHtmlTag::setAllowedHtmlTags method must be 'array' || 'string', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for FHtmlTag::setAllowedHtmlTags method must be 'array' || 'string', '$parameterType' is given"
             );
         }
     }
@@ -93,7 +93,7 @@ class FHtmlTag extends Filter
         } else {
             $parameterType = gettype($value);
             throw new FilterException(
-                "003", "Parameter for FHtmlTag::sanitize method must be 'string', $parameterType is given"
+                500, "<strong>Internal server error:</strong> parameter for FHtmlTag::sanitize method must be 'string', $parameterType is given"
             );
         }
     }

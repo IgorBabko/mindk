@@ -74,8 +74,8 @@ class Between extends Constraint
         } else {
             $parameterType = gettype($min);
             throw new ConstraintException(
-                "002",
-                "Parameter for Between::setMin method must be 'int' || 'float', '$parameterType' is given"
+                500,
+                "<strong>Internal server error:</strong> parameter for Between::setMin method must be 'int' || 'float', '$parameterType' is given"
             );
         }
     }
@@ -106,8 +106,8 @@ class Between extends Constraint
         } else {
             $parameterType = gettype($max);
             throw new ConstraintException(
-                "002",
-                "Parameter for Between::setMax method must be 'int' || 'float', '$parameterType' is given"
+                500,
+                "<strong>Internal server error:</strong> parameter for Between::setMax method must be 'int' || 'float', '$parameterType' is given"
             );
         }
     }
@@ -133,11 +133,15 @@ class Between extends Constraint
             } else {
                 $parameterType = gettype($value);
                 throw new ConstraintException(
-                    "002",
-                    "Values for specifying range in Between::validate method must be whether 'int' or 'float', '$parameterType' is given");
+                    500,
+                    "<strong>Internal server error:</strong> values for specifying range in Between::validate method must be whether 'int' or 'float', '$parameterType' is given"
+                );
             }
         } else {
-            throw new ConstraintException("003", "Value for Between::validate method is NULL");
+            throw new ConstraintException(
+                500,
+                "<strong>Internal server error:</strong> value for Between::validate method is NULL"
+            );
         }
     }
 }

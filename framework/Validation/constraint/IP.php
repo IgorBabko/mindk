@@ -29,8 +29,8 @@ class IP extends Constraint
     /**
      * IP constructor takes type of IP and error message.
      *
-     * @param  string        $ipType  Type of IP.
-     * @param  null|string   $message Error message.
+     * @param  string      $ipType  Type of IP.
+     * @param  null|string $message Error message.
      *
      * @return IP IP object.
      */
@@ -67,7 +67,7 @@ class IP extends Constraint
             $this->_ipType = $ipType;
         } else {
             throw new ConstraintException(
-                "001", "Unknown type of ip '$ipType'"
+                500, "<strong>Internal server error:</strong> unknown type of ip '$ipType'"
             );
         }
     }
@@ -89,10 +89,13 @@ class IP extends Constraint
         if (!is_string($value)) {
             $parameterType = gettype($value);
             throw new ConstraintException(
-                "001", "Value for IP::validate method must be 'string', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> value for IP::validate method must be 'string', '$parameterType' is given"
             );
         } elseif (in_array($this->_ipType, $ipTypes, true) !== true) {
-            throw new ConstraintException("002", "Unknown type of IP '{$this->_ipType}'");
+            throw new ConstraintException(
+                500,
+                "<strong>Internal server error:</strong> unknown type of IP '{$this->_ipType}'"
+            );
         } else {
             if ($this->_ipType === 'ipv4') {
                 if (filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {

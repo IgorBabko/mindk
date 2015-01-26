@@ -46,13 +46,15 @@ class NotBlank extends Constraint
     public function validate($value)
     {
         if (!isset($value)) {
-            throw new ConstraintException("001", "Value for NotBlank::validate method is NULL");
+            throw new ConstraintException(
+                500,
+                "<strong>Internal server error:</strong> value for NotBlank::validate method is NULL"
+            );
         } elseif (empty($value) && $value != '0') {
             return false;
         } elseif (preg_match("/^\s*$/", $value)) {
             return false;
         } else {
-            info($value);
             return true;
         }
     }

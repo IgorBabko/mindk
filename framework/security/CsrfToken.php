@@ -48,7 +48,9 @@ class CsrfToken implements CsrfTokenInterface
             }
         } else {
             $parameterType = gettype($token);
-            throw new CsrfTokenException("001", "Parameter for CsrfToken::check method must be 'string', '$parameterType' is given");
+            throw new CsrfTokenException(
+                500, "<strong>Internal server error:</strong> parameter for CsrfToken::check method must be 'string', '$parameterType' is given"
+            );
         }
     }
 }

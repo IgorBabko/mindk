@@ -73,7 +73,7 @@ abstract class ActiveRecord implements ActiveRecordInterface
         } else {
             $parameterType = gettype($dbConnection);
             throw new ActiveRecordException(
-                "001", "Parameter for ActiveRecord::setDbConnection method must be 'object', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for ActiveRecord::setDbConnection method must be 'object', '$parameterType' is given"
             );
         }
     }
@@ -88,7 +88,7 @@ abstract class ActiveRecord implements ActiveRecordInterface
         } else {
             $parameterType = gettype($queryBuilder);
             throw new ActiveRecordException(
-                "001", "Parameter for ActiveRecord::setQueryBuilder method must be 'object', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for ActiveRecord::setQueryBuilder method must be 'object', '$parameterType' is given"
             );
         }
     }
@@ -102,8 +102,8 @@ abstract class ActiveRecord implements ActiveRecordInterface
             return self::$_dbConnection->safeQuery($rawQuery, $params);
         } else {
             throw new ActiveRecordException(
-                "001",
-                "Wrong parameters for ActiveRecord::query method, must be string and array."
+                500,
+                "<strong>Internal server error:</strong> wrong parameters for ActiveRecord::query method, must be string and array."
             );
         }
     }
@@ -150,7 +150,7 @@ abstract class ActiveRecord implements ActiveRecordInterface
         if (!is_array($columns)) {
             $parameterType = gettype($columns);
             throw new ActiveRecordException(
-                "001", "Parameter for ActiveRecord::load method must be 'array', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for ActiveRecord::load method must be 'array', '$parameterType' is given"
             );
         } elseif (count($columns) > 1) {
             $columnNames = array_keys($columns);
@@ -176,6 +176,11 @@ abstract class ActiveRecord implements ActiveRecordInterface
             if (isset($resultRow)) {
                 $columnNames = static::getColumns();
                 foreach ($resultRow as $columnName => $value) {
+                    //@TODO
+                    if ($value === null) {
+                        continue;
+                    }
+                    //
                     $fieldName        = array_search($columnName, $columnNames);
                     $this->$fieldName = $value;
                 }
@@ -191,21 +196,23 @@ abstract class ActiveRecord implements ActiveRecordInterface
     {
         $model = get_class($this);
         if (!is_array($columns)) {
-            throw new ActiveRecordException("001", "Wrong parameter for ActiveRecord::save method, must be an array.");
+            throw new ActiveRecordException(
+                500,
+                "<strong>Internal server error:</strong> wrong parameter for ActiveRecord::save method, must be an array."
+            );
         } else {
             $classInfo     = new \ReflectionClass($model);
             $newRecordData = array();
             $columnNames   = static::getColumns();
             if (empty($columns)) {
                 foreach ($this as $fieldName => $value) {
-                    echo $fieldName.'<br />';
                     if ($classInfo->getProperty($fieldName)->getDeclaringClass()->getName() !== "ActiveRecord") {
                         $columnName                 = $columnNames[$fieldName];
                         $newRecordData[$columnName] = $value;
                     }
                 }
                 self::$_queryBuilder->createRawQuery('insert');
-                self::$_queryBuilder->insert(static::getTable()/*$this->_tableName*/, $newRecordData);
+                self::$_queryBuilder->insert(static::getTable(), $newRecordData);
                 self::$_dbConnection->safeQuery(
                     self::$_queryBuilder->getRawQuery(),
                     self::$_queryBuilder->getBindParameters()

@@ -62,7 +62,9 @@ class FSlash extends Filter
             $this->_action = $action;
         } else {
             throw new FilterException(
-                "001", "Parameter value for PSlash::setAction method must be 'add' || 'strip'");
+                500,
+                "<strong>Internal server error:</strong> parameter value for PSlash::setAction method must be 'add' || 'strip'"
+            );
         }
     }
 
@@ -86,7 +88,7 @@ class FSlash extends Filter
         } else {
             $parameterType = gettype($value);
             throw new FilterException(
-                "001", "Parameter for FSlash::sanitize method must be 'string',
+                500, "<strong>Internal server error:</strong> parameter for FSlash::sanitize method must be 'string',
                         '$parameterType' is given"
             );
         }

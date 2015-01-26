@@ -64,7 +64,7 @@ class FPhone extends Filter
         } else {
             $parameterType = gettype($allowedSymbols);
             throw new FilterException(
-                "001", "Parameter for FPhone::setAllowedSymbols method must be 'array', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for FPhone::setAllowedSymbols method must be 'array', '$parameterType' is given"
             );
         }
     }
@@ -92,7 +92,7 @@ class FPhone extends Filter
         } else {
             $parameterType = gettype($value);
             throw new FilterException(
-                "001", "Parameter for FPhone::sanitize method must be 'string',
+                500, "<strong>Internal server error:</strong> parameter for FPhone::sanitize method must be 'string',
                         '$parameterType' is given"
             );
         }

@@ -30,6 +30,7 @@ class FDate extends Filter
      * FDate constructor takes array of allowed characters.
      *
      * @param  array $allowedSymbols Array of allowed characters.
+     *
      * @return FDate FDate object.
      */
     public function __construct($allowedSymbols = array())
@@ -63,7 +64,7 @@ class FDate extends Filter
         } else {
             $parameterType = gettype($allowedSymbols);
             throw new FilterException(
-                "001", "Parameter for FDate::setAllowedSymbols method must be 'array', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for FDate::setAllowedSymbols method must be 'array', '$parameterType' is given"
             );
         }
     }
@@ -91,7 +92,7 @@ class FDate extends Filter
         } else {
             $parameterType = gettype($value);
             throw new FilterException(
-                "001", "Parameter for FDate::sanitize method must be 'string',
+                500, "<strong>Internal server error:</strong> parameter for FDate::sanitize method must be 'string',
                         '$parameterType' is given"
             );
         }

@@ -67,7 +67,7 @@ class MinLength extends Constraint
         } else {
             $parameterType = gettype($min);
             throw new ConstraintException(
-                "001", "Value for MaxLength::setMin method must be 'int', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> value for MaxLength::setMin method must be 'int', '$parameterType' is given"
             );
         }
     }
@@ -92,7 +92,7 @@ class MinLength extends Constraint
         } else {
             $parameterType = gettype($value);
             throw new ConstraintException(
-                "001", "Value for MinLength::validate method must be 'string', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> value for MinLength::validate method must be 'string', '$parameterType' is given"
             );
         }
     }

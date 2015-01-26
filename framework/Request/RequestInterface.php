@@ -24,6 +24,13 @@ use Framework\Session\Session;
 interface RequestInterface
 {
     /**
+     * Method to get all HTTP request headers.
+     *
+     * @return array HTTP request headers.
+     */
+    public function getRequestHeaders();
+
+    /**
      * Method which returns request uri.
      *
      * @return string Request uri.

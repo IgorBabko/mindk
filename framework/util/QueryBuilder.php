@@ -67,7 +67,6 @@ use Framework\Validation\Validator;
  */
 class QueryBuilder
 {
-    /////////////////////////////////////////////////////////////////////////
     /**
      * @static
      * @var array $_allowedOperations Available operations in sql request
@@ -112,7 +111,7 @@ class QueryBuilder
     public function createRawQuery($name)
     {
         if (!is_string($name)) {
-            throw new QueryBuilderException("001", "Query name must be string.");
+            throw new QueryBuilderException(500, "<strong>Internal server error:</strong> query name must be string.");
         } else {
             $this->_rawQueries[$name]['rawQuery']       = "";
             $this->_rawQueries[$name]['bindParameters'] = array();
@@ -133,7 +132,7 @@ class QueryBuilder
         if (isset($this->_currentRawQuery)) {
             return $this->_rawQueries[$this->_currentRawQuery]['bindParameters'];
         } else {
-            throw new QueryBuilderException("001", "Raw query is not specified.");
+            throw new QueryBuilderException(500, "<strong>Internal server error:</strong> raw query is not specified.");
         }
     }
 
@@ -159,7 +158,7 @@ class QueryBuilder
         if (isset($this->_currentRawQuery)) {
             return $this->_rawQueries[$this->_currentRawQuery]['rawQuery'];
         } else {
-            throw new QueryBuilderException("001", "Raw query is not specified.");
+            throw new QueryBuilderException(500, "<strong>Internal server error:</strong> raw query is not specified.");
         }
     }
 
@@ -173,9 +172,14 @@ class QueryBuilder
     public function chooseRawQuery($name)
     {
         if (!is_string($name)) {
-            throw new QueryBuilderException("003", "Wrong parameter type, must by string.");
+            throw new QueryBuilderException(
+                500,
+                "<strong>Internal server error:</strong> wrong parameter type, must by string."
+            );
         } elseif (!Validator::validateValue($name, new InList(array_keys($this->_rawQueries)))) {
-            throw new QueryBuilderException("004", "There's no query with name '$name'.");
+            throw new QueryBuilderException(
+                500, "<strong>Internal server error:</strong> there's no query with name '$name'."
+            );
         } else {
             $this->_currentRawQuery = $name;
             return $this;
@@ -194,7 +198,7 @@ class QueryBuilder
             $this->_currentRawQuery                     = null;
             return $this;
         } else {
-            throw new QueryBuilderException("005", "Raw query is not chosen.");
+            throw new QueryBuilderException(500, "<strong>Internal server error:</strong> raw query is not chosen.");
         }
     }
 
@@ -211,7 +215,7 @@ class QueryBuilder
     public function select($columns = '*', $tableName)
     {
         if (!isset($this->_currentRawQuery)) {
-            throw new QueryBuilderException("005", "Raw query is not chosen.");
+            throw new QueryBuilderException(500, "<strong>Internal server error:</strong> raw query is not chosen.");
         } elseif (is_array($columns) && empty($columns) || $columns === '*') {
             $this->_rawQueries[$this->_currentRawQuery]['rawQuery']       = "SELECT * FROM ?i";
             $this->_rawQueries[$this->_currentRawQuery]['bindParameters'] = array($tableName);
@@ -245,7 +249,7 @@ class QueryBuilder
     public function insert($tableName, $pairs)
     {
         if (!isset($this->_currentRawQuery)) {
-            throw new QueryBuilderException("005", "Raw query is not chosen.");
+            throw new QueryBuilderException(500, "<strong>Internal server error:</strong> raw query is not chosen.");
         } else {
             $this->_rawQueries[$this->_currentRawQuery]['bindParameters'] = array($tableName);
             $this->_rawQueries[$this->_currentRawQuery]['rawQuery']       = "INSERT INTO ?i ";
@@ -285,7 +289,7 @@ class QueryBuilder
     public function update($tableName, $pairs)
     {
         if (!isset($this->_currentRawQuery)) {
-            throw new QueryBuilderException("005", "Raw query is not chosen.");
+            throw new QueryBuilderException(500, "<strong>Internal server error:</strong> raw query is not chosen.");
         } else {
             $this->_rawQueries[$this->_currentRawQuery]['bindParameters'] = array($tableName);
             $this->_rawQueries[$this->_currentRawQuery]['rawQuery']       = "UPDATE ?i SET ";
@@ -318,7 +322,7 @@ class QueryBuilder
     public function delete($tableName)
     {
         if (!isset($this->_currentRawQuery)) {
-            throw new QueryBuilderException("005", "Raw query is not chosen.");
+            throw new QueryBuilderException(500, "<strong>Internal server error:</strong> raw query is not chosen.");
         } else {
             $this->_rawQueries[$this->_currentRawQuery]['bindParameters'] = array($tableName);
             $this->_rawQueries[$this->_currentRawQuery]['rawQuery']       = "DELETE FROM ?i";
@@ -340,7 +344,7 @@ class QueryBuilder
     public function where($columnName = null, $operator = null, $columnValue = null)
     {
         if (!isset($this->_currentRawQuery)) {
-            throw new QueryBuilderException("005", "Raw query is not chosen.");
+            throw new QueryBuilderException(500, "<strong>Internal server error:</strong> raw query is not chosen.");
         } else {
             if (!isset($columnName)) {
                 $this->_rawQueries[$this->_currentRawQuery]['rawQuery'] .= " WHERE ";
@@ -357,7 +361,9 @@ class QueryBuilder
                 }
                 return $this;
             } else {
-                throw new QueryBuilderException('001', "wrong operator '$operator' was used in sql request");
+                throw new QueryBuilderException(
+                    500, "<strong>Internal server error:</strong> wrong operator '$operator' was used in sql request"
+                );
             }
         }
     }
@@ -376,7 +382,7 @@ class QueryBuilder
     public function addOR($columnName = null, $operator = null, $columnValue = null)
     {
         if (!isset($this->_currentRawQuery)) {
-            throw new QueryBuilderException("005", "Raw query is not chosen.");
+            throw new QueryBuilderException(500, "<strong>Internal server error:</strong> raw query is not chosen.");
         } else {
             if (!isset($columnName)) {
                 $this->_rawQueries[$this->_currentRawQuery]['rawQuery'] .= " OR ";
@@ -393,7 +399,9 @@ class QueryBuilder
                 }
                 return $this;
             } else {
-                throw new QueryBuilderException('001', "wrong operator '$operator' was used in sql request");
+                throw new QueryBuilderException(
+                    500, "<strong>Internal server error:</strong> wrong operator '$operator' was used in sql request"
+                );
             }
         }
     }
@@ -412,7 +420,7 @@ class QueryBuilder
     public function addAND($columnName = null, $operator = null, $columnValue = null)
     {
         if (!isset($this->_currentRawQuery)) {
-            throw new QueryBuilderException("005", "Raw query is not chosen.");
+            throw new QueryBuilderException(500, "<strong>Internal server error:</strong> raw query is not chosen.");
         } else {
             if (!isset($columnName)) {
                 $this->_rawQueries[$this->_currentRawQuery]['rawQuery'] .= " AND ";
@@ -429,7 +437,9 @@ class QueryBuilder
                 }
                 return $this;
             } else {
-                throw new QueryBuilderException('001', "wrong operator '$operator' was used in sql request");
+                throw new QueryBuilderException(
+                    500, "<strong>Internal server error:</strong> wrong operator '$operator' was used in sql request"
+                );
             }
         }
     }
@@ -447,7 +457,7 @@ class QueryBuilder
     public function isNULL($columnName, $not = false)
     {
         if (!isset($this->_currentRawQuery)) {
-            throw new QueryBuilderException("005", "Raw query is not chosen.");
+            throw new QueryBuilderException(500, "<strong>Internal server error:</strong> raw query is not chosen.");
         } elseif (isset($columnName)) {
             $this->_rawQueries[$this->_currentRawQuery]['bindParameters'][] = $columnName;
             if ($not === true) {
@@ -457,7 +467,10 @@ class QueryBuilder
             }
             return $this;
         } else {
-            throw new QueryBuilderException('002', "column has not been specified for 'IS NULL' operator");
+            throw new QueryBuilderException(
+                500,
+                "<strong>Internal server error:</strong> column has not been specified for 'IS NULL' operator"
+            );
         }
     }
 
@@ -476,7 +489,7 @@ class QueryBuilder
     public function between($columnName, $begin, $end, $not = false)
     {
         if (!isset($this->_currentRawQuery)) {
-            throw new QueryBuilderException("005", "Raw query is not chosen.");
+            throw new QueryBuilderException(500, "<strong>Internal server error:</strong> raw query is not chosen.");
         } elseif (isset($columnName) && isset($begin) && isset($end)) {
             $not = ($not === true)?"NOT":"";
             if (is_string($begin)) {
@@ -490,8 +503,8 @@ class QueryBuilder
             return $this;
         } else {
             throw new QueryBuilderException(
-                '003',
-                "Column name or correct range values has not been specified for 'BETWEEN' operator"
+                500,
+                "<strong>Internal server error:</strong> column name or correct range values has not been specified for 'BETWEEN' operator"
             );
         }
     }
@@ -508,7 +521,7 @@ class QueryBuilder
     public function groupBy($groupBy)
     {
         if (!isset($this->_currentRawQuery)) {
-            throw new QueryBuilderException("005", "Raw query is not chosen.");
+            throw new QueryBuilderException(500, "<strong>Internal server error:</strong> raw query is not chosen.");
         } else {
             $this->_rawQueries[$this->_currentRawQuery]['bindParameters'][] = $groupBy;
             $this->_rawQueries[$this->_currentRawQuery]['rawQuery'] .= " GROUP BY ?i ";
@@ -530,7 +543,7 @@ class QueryBuilder
     public function like($columnName, $columnValue, $not = false)
     {
         if (!isset($this->_currentRawQuery)) {
-            throw new QueryBuilderException("005", "Raw query is not chosen.");
+            throw new QueryBuilderException(500, "<strong>Internal server error:</strong> raw query is not chosen.");
         } else {
             $this->_rawQueries[$this->_currentRawQuery]['bindParameters'][] = $columnName;
             $this->_rawQueries[$this->_currentRawQuery]['bindParameters'][] = $columnValue;
@@ -557,7 +570,7 @@ class QueryBuilder
     public function in($columnName, $in, $not = false)
     {
         if (!isset($this->_currentRawQuery)) {
-            throw new QueryBuilderException("005", "Raw query is not chosen.");
+            throw new QueryBuilderException(500, "<strong>Internal server error:</strong> raw query is not chosen.");
         } else {
             $this->_rawQueries[$this->_currentRawQuery]['bindParameters'][] = $columnName;
             $this->_rawQueries[$this->_currentRawQuery]['bindParameters']
@@ -597,7 +610,7 @@ class QueryBuilder
     public function orderBy($orderBy)
     {
         if (!isset($this->_currentRawQuery)) {
-            throw new QueryBuilderException("005", "Raw query is not chosen.");
+            throw new QueryBuilderException(500, "<strong>Internal server error:</strong> raw query is not chosen.");
         } else {
             $this->_rawQueries[$this->_currentRawQuery]['bindParameters'][] = $orderBy;
             $this->_rawQueries[$this->_currentRawQuery]['rawQuery'] .= " ORDER BY ?i";
@@ -617,7 +630,7 @@ class QueryBuilder
     public function order($order = "DESC")
     {
         if (!isset($this->_currentRawQuery)) {
-            throw new QueryBuilderException("005", "Raw query is not chosen.");
+            throw new QueryBuilderException(500, "<strong>Internal server error:</strong> raw query is not chosen.");
         } elseif ($order !== "DESC" && $order !== "ASC") {
             $this->_rawQueries[$this->_currentRawQuery]['rawQuery'] .= " DESC";
             return $this;
@@ -640,9 +653,9 @@ class QueryBuilder
     public function limit($limit)
     {
         if (!isset($this->_currentRawQuery)) {
-            throw new QueryBuilderException("005", "Raw query is not chosen.");
+            throw new QueryBuilderException(500, "<strong>Internal server error:</strong> raw query is not chosen.");
         } elseif (!isset($limit)) {
-            throw new QueryBuilderException("006", "Limit is not specified.");
+            throw new QueryBuilderException(500, "<strong>Internal server error:</strong> limit is not specified.");
         } else {
             $this->_rawQueries[$this->_currentRawQuery]['bindParameters'][] = $limit;
             $this->_rawQueries[$this->_currentRawQuery]['rawQuery'] .= " LIMIT ?n";

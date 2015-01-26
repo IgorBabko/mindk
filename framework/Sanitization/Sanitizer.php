@@ -36,7 +36,9 @@ class Sanitizer implements SanitizerInterface
                         $object->$field = $filter->sanitize($object->$field);
                     } else {
                         $className = get_class($filter);
-                        throw new SanitizerException("001", "'$className' is not an instance of Filter class");
+                        throw new SanitizerException(
+                            500, "<strong>Internal server error:</strong> '$className' is not an instance of Filter class"
+                        );
                     }
                 }
             }
@@ -44,7 +46,7 @@ class Sanitizer implements SanitizerInterface
         } else {
             $parameterType = gettype($object);
             throw new SanitizerException(
-                "002", "Parameter for Sanitizer::sanitize method must be object, '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for Sanitizer::sanitize method must be object, '$parameterType' is given"
             );
         }
     }
@@ -55,11 +57,14 @@ class Sanitizer implements SanitizerInterface
     public static function sanitizeValue($value, $filters)
     {
         if (!isset($value)) {
-            throw new SanitizerException("003", "First parameter for Sanitizer::sanitizeValue method is NULL");
+            throw new SanitizerException(
+                500,
+                "<strong>Internal server error:</strong> first parameter for Sanitizer::sanitizeValue method is NULL"
+            );
         } elseif (!is_array($filters) && !is_object($filters)) {
             $parameterType = gettype($filters);
             throw new SanitizerException(
-                "004", "Second parameter for Sanitizer::sanitizeValue method is '$parameterType',
+                500, "<strong>Internal server error:</strong> second parameter for Sanitizer::sanitizeValue method is '$parameterType',
                         must be Filter object or array of Filter objects"
             );
         } else {
@@ -69,7 +74,9 @@ class Sanitizer implements SanitizerInterface
                     $value = $filter->sanitize($value);
                 } else {
                     $className = get_class($filter);
-                    throw new SanitizerException("001", "'$className' is not an instance of Filter class");
+                    throw new SanitizerException(
+                        500, "<strong>Internal server error:</strong> '$className' is not an instance of Filter class"
+                    );
                 }
             }
             return $value;

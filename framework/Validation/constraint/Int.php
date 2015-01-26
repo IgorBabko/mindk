@@ -52,7 +52,10 @@ class Int extends Constraint
                 return false;
             }
         } else {
-            throw new ConstraintException("001", "Value for Int::validate method is NULL");
+            throw new ConstraintException(
+                500,
+                "<strong>Internal server error:</strong> value for Int::validate method is NULL"
+            );
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Framework\Application;
 
 use Framework\Config\Config;
 use Framework\Cookie\Cookie;
-use Framework\Database\SafeSQL;
+use Framework\Database\SafeSql;
 use Framework\DI\Service;
 use Framework\Exception\AppException;
 use Framework\Exception\ConfigException;
@@ -52,7 +52,7 @@ class App implements AppInterface
     /**
      * Method to get database connection.
      *
-     * @return SafeSQL Database connection.
+     * @return SafeSql Database connection.
      */
     public static function getDbConnection()
     {
@@ -75,7 +75,7 @@ class App implements AppInterface
         } else {
             $parameterType = gettype($dbConnection);
             throw new AppException(
-                "001", "Parameter for App::setDbConnection method must be 'object', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for App::setDbConnection method must be 'object', '$parameterType' is given"
             );
         }
     }
@@ -98,28 +98,30 @@ class App implements AppInterface
     public static function init()
     {
         if (!file_exists(CONF)) {
-            throw new AppException("001", "Config file '" . CONF . "' does not exist'");
+            throw new AppException(
+                500, "<strong>Internal server error:</strong> config file '".CONF."' does not exist'"
+            );
         }
 
-        Loader::addNamespacePath('Framework\\Application\\'           , __DIR__ . '/../application/'          );
-        Loader::addNamespacePath('Framework\\Config\\'                , __DIR__ . '/../config/'               );
-        Loader::addNamespacePath('Framework\\Database\\'              , __DIR__ . '/../database/'             );
-        Loader::addNamespacePath('Framework\\Exception\\'             , __DIR__ . '/../exception/'            );
-        Loader::addNamespacePath('Framework\\Routing\\'               , __DIR__ . '/../routing/'              );
-        Loader::addNamespacePath('Framework\\Request\\'               , __DIR__ . '/../request/'              );
-        Loader::addNamespacePath('Framework\\Response\\'              , __DIR__ . '/../response/'             );
-        Loader::addNamespacePath('Framework\\Session\\'               , __DIR__ . '/../session/'              );
-        Loader::addNamespacePath('Framework\\Cookie\\'                , __DIR__ . '/../cookie/'               );
-        Loader::addNamespacePath('Framework\\DI\\'                    , __DIR__ . '/../DI/'                   );
-        Loader::addNamespacePath('Framework\\Controller\\'            , __DIR__ . '/../controller/'           );
-        Loader::addNamespacePath('Framework\\Model\\'                 , __DIR__ . '/../model/'                );
-        Loader::addNamespacePath('Framework\\Validation\\'            , __DIR__ . '/../validation/'           );
-        Loader::addNamespacePath('Framework\\Template\\'              , __DIR__ . '/../template/'             );
-        Loader::addNamespacePath('Framework\\Sanitization\\'          , __DIR__ . '/../sanitization/'         );
-        Loader::addNamespacePath('Framework\\Security\\'              , __DIR__ . '/../security/'             );
-        Loader::addNamespacePath('Framework\\Util\\'                  , __DIR__ . '/../util/'                 );
-        Loader::addNamespacePath('Framework\\Validation\\Constraint\\', __DIR__ . '/../validation/constraint/');
-        Loader::addNamespacePath('Framework\\Sanitization\\Filter\\'  , __DIR__ . '/../sanitization/filter/'  );
+        Loader::addNamespacePath('Framework\\Application\\', __DIR__.'/../application/');
+        Loader::addNamespacePath('Framework\\Config\\', __DIR__.'/../config/');
+        Loader::addNamespacePath('Framework\\Database\\', __DIR__.'/../database/');
+        Loader::addNamespacePath('Framework\\Exception\\', __DIR__.'/../exception/');
+        Loader::addNamespacePath('Framework\\Routing\\', __DIR__.'/../routing/');
+        Loader::addNamespacePath('Framework\\Request\\', __DIR__.'/../request/');
+        Loader::addNamespacePath('Framework\\Response\\', __DIR__.'/../response/');
+        Loader::addNamespacePath('Framework\\Session\\', __DIR__.'/../session/');
+        Loader::addNamespacePath('Framework\\Cookie\\', __DIR__.'/../cookie/');
+        Loader::addNamespacePath('Framework\\DI\\', __DIR__.'/../DI/');
+        Loader::addNamespacePath('Framework\\Controller\\', __DIR__.'/../controller/');
+        Loader::addNamespacePath('Framework\\Model\\', __DIR__.'/../model/');
+        Loader::addNamespacePath('Framework\\Validation\\', __DIR__.'/../validation/');
+        Loader::addNamespacePath('Framework\\Template\\', __DIR__.'/../template/');
+        Loader::addNamespacePath('Framework\\Sanitization\\', __DIR__.'/../sanitization/');
+        Loader::addNamespacePath('Framework\\Security\\', __DIR__.'/../security/');
+        Loader::addNamespacePath('Framework\\Util\\', __DIR__.'/../util/');
+        Loader::addNamespacePath('Framework\\Validation\\Constraint\\', __DIR__.'/../validation/constraint/');
+        Loader::addNamespacePath('Framework\\Sanitization\\Filter\\', __DIR__.'/../sanitization/filter/');
 
         Loader::register();
         Config::setConfig(CONF);
@@ -224,7 +226,7 @@ class App implements AppInterface
 
         Service::setService(
             'dbConnection',
-            'dbConnection',
+            'SafeSql',
             function ($params = array()) {
                 return new SafeSql(
                     $params['user'],
@@ -262,7 +264,6 @@ class App implements AppInterface
         );
 
         self::$_dbConnection = Service::resolve('dbConnection');
-
         ActiveRecord::setDbConnection(self::$_dbConnection);
         ActiveRecord::setQueryBuilder(Service::resolve('queryBuilder'));
     }
@@ -281,10 +282,11 @@ class App implements AppInterface
         $router         = Service::resolve('router');
         $matchedRoute   = $router->matchCurrentRequest();
         $controllerName = $matchedRoute->getControllerName();
-        $controller     = new $controllerName();
 
-        $action         = $matchedRoute->getActionName() . "Action";
-        $parameters     = $matchedRoute->getParameters();
+        $controller = new $controllerName();
+
+        $action     = $matchedRoute->getActionName()."Action";
+        $parameters = $matchedRoute->getParameters();
 
         $controller->$action($parameters);
     }

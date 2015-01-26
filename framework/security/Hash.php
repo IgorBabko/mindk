@@ -36,7 +36,10 @@ class Hash implements HashInterface
         if (is_string($value) && is_string($salt)) {
             return hash('sha256', $value.$salt);
         } else {
-            throw new HashException("001", "Both parameters for Hash::generatePass method must be 'string'");
+            throw new HashException(
+                500,
+                "<strong>Internal server error:</strong> both parameters for Hash::generatePass method must be 'string'"
+            );
         }
     }
 
@@ -55,13 +58,15 @@ class Hash implements HashInterface
             $chars = 'abdefhiknrstyzABDEFGHKNQRSTYZ23456789';
             $numChars = strlen($chars);
             $string = '';
-            for ($i = 0; $i < $length; $i++) {
+            for ($i = 0;$i < $length;$i++) {
                 $string .= substr($chars, rand(1, $numChars) - 1, 1);
             }
             return $string;
         } else {
             $parameterType = gettype($length);
-            throw new HashException("002", "Parameter for Hash::generateSalt method must be 'int', '$parameterType' is given");
+            throw new HashException(
+                500, "<strong>Internal server error:</strong> parameter for Hash::generateSalt method must be 'int', '$parameterType' is given"
+            );
         }
     }
 }

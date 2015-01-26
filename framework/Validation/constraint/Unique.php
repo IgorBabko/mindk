@@ -82,7 +82,7 @@ class Unique extends Constraint
         } else {
             $parameterType = gettype($tableName);
             throw new ConstraintException(
-                "001", "Value for Unique::setTableName method must be 'string', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> value for Unique::setTableName method must be 'string', '$parameterType' is given"
             );
         }
     }
@@ -113,7 +113,7 @@ class Unique extends Constraint
         } else {
             $parameterType = gettype($fieldName);
             throw new ConstraintException(
-                "001", "Value for Unique::setFieldName method must be 'string', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> value for Unique::setFieldName method must be 'string', '$parameterType' is given"
             );
         }
     }
@@ -144,7 +144,7 @@ class Unique extends Constraint
         } else {
             $parameterType = gettype($allowedValues);
             throw new ConstraintException(
-                "001", "Value for Unique::setAllowedValues method must be 'array', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> value for Unique::setAllowedValues method must be 'array', '$parameterType' is given"
             );
         }
     }
@@ -163,26 +163,31 @@ class Unique extends Constraint
     {
         if (isset($value)) {
             if (is_int($value) || is_float($value) || is_string($value)) {
-                $rawQuery = is_string($value) ? $rawQuery = "SELECT * FROM ?i WHERE ?i = ?s" : "SELECT ?i FROM ?i WHERE ?i = ?n";
+                $rawQuery       = is_string(
+                    $value
+                )?$rawQuery = "SELECT * FROM ?i WHERE ?i = ?s":"SELECT ?i FROM ?i WHERE ?i = ?n";
                 $bindParameters = array($this->_tableName, $this->_fieldName, $value);
-                $resultSet = App::getDbConnection()->safeQuery($rawQuery, $bindParameters);
+                $resultSet      = App::getDbConnection()->safeQuery($rawQuery, $bindParameters);
                 if (empty($resultSet)) {
                     return true;
                 } else {
                     if (isset($this->_allowedValues)) {
                         $value = $resultSet[0][$this->_fieldName];
-                        return in_array($value, $this->_allowedValues) ? true : false;
+                        return in_array($value, $this->_allowedValues)?true:false;
                     }
                     return false;
                 }
             } else {
                 $parameterType = gettype($value);
                 throw new ConstraintException(
-                    "001", "Value for Unique::validate method must be 'string' || 'int' || 'float', '$parameterType' is given"
+                    500, "<strong>Internal server error:</strong> value for Unique::validate method must be 'string' || 'int' || 'float', '$parameterType' is given"
                 );
             }
         } else {
-            throw new ConstraintException("001", "Value for Unique::validate method is NULL");
+            throw new ConstraintException(
+                500,
+                "<strong>Internal server error:</strong> value for Unique::validate method is NULL"
+            );
         }
     }
 }

@@ -52,7 +52,10 @@ class Float extends Constraint
                 return false;
             }
         } else {
-            throw new ConstraintException("001", "Value for Float::validate method is NULL");
+            throw new ConstraintException(
+                500,
+                "<strong>Internal server error:</strong> value for Float::validate method is NULL"
+            );
         }
     }
 }

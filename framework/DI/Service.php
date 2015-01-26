@@ -31,7 +31,8 @@ class Service implements ServiceInterface
     /**
      * {@inheritdoc}
      */
-    public static function getServices() {
+    public static function getServices()
+    {
         return self::$_services;
     }
 
@@ -66,7 +67,10 @@ class Service implements ServiceInterface
                 }
             }
         } else {
-            throw new ServiceException("001", "Wrong parameter types for Service::setParams method");
+            throw new ServiceException(
+                500,
+                "<strong>Internal server error:</strong> wrong parameter types for Service::setParams method"
+            );
         }
     }
 
@@ -78,7 +82,10 @@ class Service implements ServiceInterface
         if (is_string($name) && is_array($dependencies)) {
             self::$_services[$name]['dependencies'] = $dependencies;
         } else {
-            throw new ServiceException("002", "Wrong parameter types for Service::setDependencies method");
+            throw new ServiceException(
+                500,
+                "<strong>Internal server error:</strong> wrong parameter types for Service::setDependencies method"
+            );
         }
     }
 
@@ -90,7 +97,10 @@ class Service implements ServiceInterface
         if (is_string($name) && is_callable($resolve)) {
             self::$_services[$name]['resolver'] = $resolve;
         } else {
-            throw new ServiceException("003", "Wrong parameter types for Service::setResolver method");
+            throw new ServiceException(
+                500,
+                "<strong>Internal server error:</strong> wrong parameter types for Service::setResolver method"
+            );
         }
     }
 
@@ -103,7 +113,9 @@ class Service implements ServiceInterface
             return isset(self::$_services[$name]['resolver']);
         } else {
             $parameterType = gettype($name);
-            throw new ServiceException("004", "Parameter for Service::hasResolver method must be 'string', '$parameterType' is given'");
+            throw new ServiceException(
+                500, "<strong>Internal server error:</strong> parameter for Service::hasResolver method must be 'string', '$parameterType' is given'"
+            );
         }
     }
 
@@ -123,11 +135,13 @@ class Service implements ServiceInterface
             }
 
             $resolver = self::$_services[$name]['resolver'];
-            $service = $resolver($params);
+            $service  = $resolver($params);
 
             return $service;
         }
 
-        throw new ServiceException("001", "'$name' service has not been registered.");
+        throw new ServiceException(
+            500, "<strong>Internal server error:</strong> '$name' service has not been registered."
+        );
     }
 }

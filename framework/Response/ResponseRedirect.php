@@ -102,7 +102,7 @@ class ResponseRedirect implements ResponseRedirectInterface
         } else {
             $parameterType = gettype($routeName);
             throw new ResponseRedirectException(
-                "001", "Route name for ResponseRedirect::route method must be 'string', '$parameterType' is given'"
+                500, "<strong>Internal server error:</strong> route name for ResponseRedirect::route method must be 'string', '$parameterType' is given'"
             );
         }
     }
@@ -121,7 +121,7 @@ class ResponseRedirect implements ResponseRedirectInterface
         } else {
             $parameterType = gettype($url);
             throw new ResponseRedirectException(
-                "001", "URL for ResponseRedirect::to method must be 'string', '$parameterType' is given'"
+                500, "<strong>Internal server error:</strong> URL for ResponseRedirect::to method must be 'string', '$parameterType' is given'"
             );
         }
     }

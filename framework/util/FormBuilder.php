@@ -111,7 +111,7 @@ class FormBuilder
         } else {
             $parameterType = gettype($formData);
             throw new FormBuilderException(
-                "001", "Parameter for FormBuilder::setFormData method must be 'array', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for FormBuilder::setFormData method must be 'array', '$parameterType' is given"
             );
         }
     }
@@ -129,8 +129,8 @@ class FormBuilder
     /**
      * Method to start building form. It takes form name and array of attributes for 'form' tag.
      *
-     * @param  string $name Form name.
-     * @param  array $attrs Attributes for 'form' tag.
+     * @param  string $name  Form name.
+     * @param  array  $attrs Attributes for 'form' tag.
      *
      * @throws FormBuilderException FormBuilderException instance.
      * @throws ValidatorException   ValidatorException   instance.
@@ -142,10 +142,12 @@ class FormBuilder
         if (!is_string($name)) {
             $parameterType = gettype($name);
             throw new FormBuilderException(
-                "001", "First parameter for FormBuilder::createForm method must be 'string', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> first parameter for FormBuilder::createForm method must be 'string', '$parameterType' is given"
             );
         } elseif (Validator::validateValue($name, new InList(array_keys($this->_forms)))) {
-            throw new FormBuilderException("001", "Form with name '$name' already exists");
+            throw new FormBuilderException(
+                500, "<strong>Internal server error:</strong> form with name '$name' already exists"
+            );
         } else {
             if (is_array($attrs)) {
                 $this->_currentForm  = $name;
@@ -159,7 +161,7 @@ class FormBuilder
             } else {
                 $parameterType = gettype($attrs);
                 throw new FormBuilderException(
-                    "001", "Second parameter for FormBuilder::createForm method must be 'array', '$parameterType' is given"
+                    500, "<strong>Internal server error:</strong> second parameter for FormBuilder::createForm method must be 'array', '$parameterType' is given"
                 );
             }
         }
@@ -179,8 +181,8 @@ class FormBuilder
             return $this;
         } else {
             throw new FormBuilderException(
-                "001",
-                "Form has not been specified (FormBuilder::_currentForm === NULL), use FormBuilder::chooseForm method to specify form"
+                500,
+                "<strong>Internal server error:</strong> form has not been specified (FormBuilder::_currentForm === NULL), use FormBuilder::chooseForm method to specify form"
             );
         }
     }
@@ -200,10 +202,12 @@ class FormBuilder
         if (!is_string($name)) {
             $parameterType = gettype($name);
             throw new FormBuilderException(
-                "001", "Parameter for FormBuilder::chooseForm method must be 'string', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for FormBuilder::chooseForm method must be 'string', '$parameterType' is given"
             );
         } elseif (!Validator::validateValue($name, new InList(array_keys($this->_forms)))) {
-            throw new FormBuilderException("002", "Form with name '$name' does not exist");
+            throw new FormBuilderException(
+                500, "<strong>Internal server error:</strong> form with name '$name' does not exist"
+            );
         } else {
             $this->_currentForm = $name;
             return $this;
@@ -225,8 +229,8 @@ class FormBuilder
             return $this;
         } else {
             throw new FormBuilderException(
-                "001",
-                "Form has not been specified (FormBuilder::_currentForm === NULL), use FormBuilder::chooseForm method to specify form"
+                500,
+                "<strong>Internal server error:</strong> form has not been specified (FormBuilder::_currentForm === NULL), use FormBuilder::chooseForm method to specify form"
             );
         }
     }
@@ -255,8 +259,8 @@ class FormBuilder
     {
         if (!isset($this->_currentForm)) {
             throw new FormBuilderException(
-                "001",
-                "Form has not been specified (FormBuilder::_currentForm === NULL), use FormBuilder::chooseForm method to specify form"
+                500,
+                "<strong>Internal server error:</strong> form has not been specified (FormBuilder::_currentForm === NULL), use FormBuilder::chooseForm method to specify form"
             );
         } elseif (Validator::validateValue($echo, new True())) {
             echo $this->_forms[$this->_currentForm];
@@ -265,7 +269,7 @@ class FormBuilder
         } else {
             $parameterType = gettype($echo);
             throw new FormBuilderException(
-                "001", "Parameter for FormBuilder::getForm method must be 'bool', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for FormBuilder::getForm method must be 'bool', '$parameterType' is given"
             );
         }
     }
@@ -290,7 +294,7 @@ class FormBuilder
                         $cleanAttrs[$attrName] = $attrValue;
                     } else {
                         throw new FormBuilderException(
-                            "003", "Invalid URL '$attrValue' is given for '$attrName' attribute"
+                            500, "<strong>Internal server error:</strong> invalid URL '$attrValue' is given for '$attrName' attribute"
                         );
                     }
                     break;
@@ -303,7 +307,7 @@ class FormBuilder
                         $cleanAttrs[$attrName] = $attrValue;
                     } else {
                         throw new FormBuilderException(
-                            "003", "Invalid value '$attrValue' is given for '$attrName' attribute"
+                            500, "<strong>Internal server error:</strong> invalid value '$attrValue' is given for '$attrName' attribute"
                         );
                     }
                     break;
@@ -314,7 +318,7 @@ class FormBuilder
                         $cleanAttrs[$attrName] = $attrValue;
                     } else {
                         throw new FormBuilderException(
-                            "003", "Invalid value '$attrValue' is given for '$attrName' attribute"
+                            500, "<strong>Internal server error:</strong> invalid value '$attrValue' is given for '$attrName' attribute"
                         );
                     }
                     break;
@@ -328,7 +332,7 @@ class FormBuilder
                                 $space = " ";
                             } else {
                                 throw new FormBuilderException(
-                                    "003", "Invalid value '$className' is given for '$attrName' attribute"
+                                    500, "<strong>Internal server error:</strong> invalid value '$className' is given for '$attrName' attribute"
                                 );
                             }
                         }
@@ -338,7 +342,7 @@ class FormBuilder
                         $cleanAttrs[$attrName] = $attrValue;
                     } else {
                         throw new FormBuilderException(
-                            "003", "Invalid value '$attrValue' is given for '$attrName' attribute"
+                            500, "<strong>Internal server error:</strong> invalid value '$attrValue' is given for '$attrName' attribute"
                         );
                     }
                     break;
@@ -350,7 +354,9 @@ class FormBuilder
                     if (isset($attrValue)) {
                         $cleanAttrs[$attrName] = $attrValue;
                     } else {
-                        throw new FormBuilderException("003", "Value for '$attrName' attribute has not been specified");
+                        throw new FormBuilderException(
+                            500, "<strong>Internal server error:</strong> value for '$attrName' attribute has not been specified"
+                        );
                     }
                     break;
                 case "checked":
@@ -366,12 +372,14 @@ class FormBuilder
                     } elseif (!is_bool($attrValue)) {
                         $valueType = gettype($attrValue);
                         throw new FormBuilderException(
-                            "004", "Value for '$attrName' must be 'bool', '$valueType' is given"
+                            500, "<strong>Internal server error:</strong> value for '$attrName' must be 'bool', '$valueType' is given"
                         );
                     }
                     break;
                 default:
-                    throw new FormBuilderException("005", "Unknown attribute '$attrName'");
+                    throw new FormBuilderException(
+                        500, "<strong>Internal server error:</strong> unknown attribute '$attrName'"
+                    );
             }
         }
         return $cleanAttrs;
@@ -380,8 +388,8 @@ class FormBuilder
     /**
      * Method to add 'input' field to current form.
      *
-     * @param  array        $attrs Attributes of 'input' tag: 'attrName' => attrValue.
-     * @param  string|null  $label Label for 'input' field.
+     * @param  array       $attrs Attributes of 'input' tag: 'attrName' => attrValue.
+     * @param  string|null $label Label for 'input' field.
      *
      * @throws FormBuilderException FormBuilderException instance.
      *
@@ -391,13 +399,13 @@ class FormBuilder
     {
         if (!isset($this->_currentForm)) {
             throw new FormBuilderException(
-                "001",
-                "Form has not been specified (FormBuilder::_currentForm === NULL), use FormBuilder::chooseForm method to specify form"
+                500,
+                "<strong>Internal server error:</strong> form has not been specified (FormBuilder::_currentForm === NULL), use FormBuilder::chooseForm method to specify form"
             );
         } elseif (!is_array($attrs)) {
             $parameterType = gettype($attrs);
             throw new FormBuilderException(
-                "001", "First parameter for FormBuilder::input method must be 'array', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> first parameter for FormBuilder::input method must be 'array', '$parameterType' is given"
             );
         } else {
             $cleanAttrs = FormBuilder::cleanAttributes($attrs);
@@ -427,15 +435,18 @@ class FormBuilder
     {
         if (!isset($this->_currentForm)) {
             throw new FormBuilderException(
-                "001",
-                "Form has not been specified (FormBuilder::_currentForm === NULL), use FormBuilder::chooseForm method to specify form"
+                500,
+                "<strong>Internal server error:</strong> form has not been specified (FormBuilder::_currentForm === NULL), use FormBuilder::chooseForm method to specify form"
             );
         } elseif (!isset($options) || empty($options)) {
-            throw new FormBuilderException("002", "Array of options for FormBuilder::select method must not be empty");
+            throw new FormBuilderException(
+                500,
+                "<strong>Internal server error:</strong> array of options for FormBuilder::select method must not be empty"
+            );
         } elseif (!is_array($attrs)) {
             $parameterType = gettype($attrs);
             throw new FormBuilderException(
-                "001", "Second parameter for FormBuilder::select method must be 'array', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> second parameter for FormBuilder::select method must be 'array', '$parameterType' is given"
             );
         } else {
             $cleanAttrs       = FormBuilder::cleanAttributes($attrs);
@@ -461,8 +472,8 @@ class FormBuilder
             $select .= "</select>\n";
             if (is_string($label) && !isset($cleanAttrs['id'])) {
                 throw new FormBuilderException(
-                    "006",
-                    "If label for tag 'select' is specified then 'id' attribute also must be specified"
+                    500,
+                    "<strong>Internal server error:</strong> if label for tag 'select' is specified then 'id' attribute also must be specified"
                 );
             } else {
                 $select = is_string(
@@ -488,13 +499,13 @@ class FormBuilder
     {
         if (!isset($this->_currentForm)) {
             throw new FormBuilderException(
-                "001",
-                "Form has not been specified (FormBuilder::_currentForm === NULL), use FormBuilder::chooseForm method to specify form"
+                500,
+                "<strong>Internal server error:</strong> form has not been specified (FormBuilder::_currentForm === NULL), use FormBuilder::chooseForm method to specify form"
             );
         } elseif (!is_array($attrs)) {
             $parameterType = gettype($attrs);
             throw new FormBuilderException(
-                "001", "First parameter for FormBuilder::textarea method must be 'array', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> first parameter for FormBuilder::textarea method must be 'array', '$parameterType' is given"
             );
         } else {
             $cleanAttrs = FormBuilder::cleanAttributes($attrs);
@@ -505,8 +516,8 @@ class FormBuilder
             $textarea .= "></textarea>";
             if (is_string($label) && !isset($cleanAttrs['id'])) {
                 throw new FormBuilderException(
-                    "006",
-                    "If label for tag 'textarea' is specified then 'id' attribute also must be specified"
+                    500,
+                    "<strong>Internal server error:</strong> if label for tag 'textarea' is specified then 'id' attribute also must be specified"
                 );
             } else {
                 $textarea = is_string(
@@ -531,8 +542,8 @@ class FormBuilder
     {
         if (!isset($this->_currentForm)) {
             throw new FormBuilderException(
-                "001",
-                "Form has not been specified (FormBuilder::_currentForm === NULL), use FormBuilder::chooseForm method to specify form"
+                500,
+                "<strong>Internal server error:</strong> form has not been specified (FormBuilder::_currentForm === NULL), use FormBuilder::chooseForm method to specify form"
             );
         } elseif (is_string($legend)) {
             $this->_forms[$this->_currentForm] .= "<fieldset>\n<legend>$legend</legend>\n";
@@ -543,7 +554,7 @@ class FormBuilder
         } else {
             $parameterType = gettype($legend);
             throw new FormBuilderException(
-                "007", "'Legend' parameter for FormBuilder::fieldset method must be 'string', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> 'Legend' parameter for FormBuilder::fieldset method must be 'string', '$parameterType' is given"
             );
         }
     }
@@ -562,8 +573,8 @@ class FormBuilder
             return $this;
         } else {
             throw new FormBuilderException(
-                "001",
-                "Form has not been specified (FormBuilder::_currentForm === NULL), use FormBuilder::chooseForm method to specify form"
+                500,
+                "<strong>Internal server error:</strong> form has not been specified (FormBuilder::_currentForm === NULL), use FormBuilder::chooseForm method to specify form"
             );
         }
     }

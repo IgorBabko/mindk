@@ -75,7 +75,7 @@ class Form implements FormInterface
         } else {
             $parameterType = gettype($model);
             throw new FormException(
-                "001", "Parameter for Form::setModel method must be 'object', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for Form::setModel method must be 'object', '$parameterType' is given"
             );
         }
     }
@@ -115,7 +115,7 @@ class Form implements FormInterface
         } else {
             $parameterType = gettype($constraints);
             throw new FormException(
-                "001", "Parameter for Form::setRules method must be 'array', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for Form::setRules method must be 'array', '$parameterType' is given"
             );
         }
     }
@@ -130,7 +130,7 @@ class Form implements FormInterface
             $this->_valid = Validator::validate($this);
             return ($this->_valid === true)?true:false;
         } else {
-            throw new FormException("002", "Model for the form has not been set");
+            throw new FormException(500, "<strong>Internal server error:</strong> model for the form has not been set");
         }
     }
 
@@ -140,9 +140,12 @@ class Form implements FormInterface
     public function bindDataToModel()
     {
         if (!isset($this->_model)) {
-            throw new FormException("002", "models for the form has not been set");
+            throw new FormException(500, "<strong>Internal server error:</strong> model for the form has not been set");
         } elseif ($this->_valid !== true) {
-            throw new FormException("003", "To bind form data to the model form must be valid");
+            throw new FormException(
+                500,
+                "<strong>Internal server error:</strong> to bind form data to the model form must be valid"
+            );
         } else {
             foreach ($this->_data as $field => $value) {
                 if (property_exists($this->_model, $field)) {
@@ -164,7 +167,7 @@ class Form implements FormInterface
         } else {
             $parameterType = gettype($view);
             throw new FormException(
-                "001", "Parameter for Form::setView method must be 'string', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for Form::setView method must be 'string', '$parameterType' is given"
             );
         }
     }

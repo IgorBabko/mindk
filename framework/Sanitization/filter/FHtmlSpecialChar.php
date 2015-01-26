@@ -37,7 +37,7 @@ class FHtmlSpecialChar extends Filter
         } else {
             $parameterType = gettype($value);
             throw new FilterException(
-                "001", "Parameter for FHtmlSpecialChar::sanitize method must be 'string',
+                500, "<strong>Internal server error:</strong> parameter for FHtmlSpecialChar::sanitize method must be 'string',
                         '$parameterType' is given"
             );
         }

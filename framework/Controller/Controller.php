@@ -107,7 +107,7 @@ abstract class Controller implements ControllerInterface
         } else {
             $parameterType = gettype($request);
             throw new ControllerException(
-                "001", "Parameter for Controller::setRequest method must be 'object', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for Controller::setRequest method must be 'object', '$parameterType' is given"
             );
         }
     }
@@ -139,7 +139,7 @@ abstract class Controller implements ControllerInterface
         } else {
             $parameterType = gettype($response);
             throw new ControllerException(
-                "001", "Parameter for Controller::setResponse method must be 'object', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for Controller::setResponse method must be 'object', '$parameterType' is given"
             );
         }
     }
@@ -171,7 +171,7 @@ abstract class Controller implements ControllerInterface
         } else {
             $parameterType = gettype($router);
             throw new ControllerException(
-                "001", "Parameter for Controller::setRouter method must be 'object', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for Controller::setRouter method must be 'object', '$parameterType' is given"
             );
         }
     }
@@ -203,7 +203,7 @@ abstract class Controller implements ControllerInterface
         } else {
             $parameterType = gettype($templateEngine);
             throw new ControllerException(
-                "001", "Parameter for Controller::setTemplateEngine method must be 'object', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for Controller::setTemplateEngine method must be 'object', '$parameterType' is given"
             );
         }
     }
@@ -235,7 +235,7 @@ abstract class Controller implements ControllerInterface
         } else {
             $parameterType = gettype($jsonResponse);
             throw new ControllerException(
-                "001", "Parameter for Controller::setJsonResponse method must be 'object', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for Controller::setJsonResponse method must be 'object', '$parameterType' is given"
             );
         }
     }
@@ -267,7 +267,7 @@ abstract class Controller implements ControllerInterface
         } else {
             $parameterType = gettype($responseRedirect);
             throw new ControllerException(
-                "001", "Parameter for Controller::setResponseRedirect method must be 'object', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for Controller::setResponseRedirect method must be 'object', '$parameterType' is given"
             );
         }
     }

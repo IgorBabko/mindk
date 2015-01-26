@@ -38,7 +38,7 @@ class FWhitespace extends Filter
         } else {
             $parameterType = gettype($value);
             throw new FilterException(
-                "001", "Parameter for FWhitespace::sanitize method must be 'string',
+                500, "<strong>Internal server error:</strong> parameter for FWhitespace::sanitize method must be 'string',
                         '$parameterType' is given"
             );
         }

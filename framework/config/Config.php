@@ -46,9 +46,13 @@ class Config implements ConfigInterface
     {
         if (!is_string($configPath)) {
             $parameterType = gettype($configPath);
-            throw new ConfigException("001", "Path to config file must be 'string', '$parameterType' is given'");
+            throw new ConfigException(
+                500, "<strong>Internal server error:</strong> path to config file must be 'string', '$parameterType' is given'"
+            );
         } elseif (!file_exists($configPath)) {
-            throw new ConfigException("002", "Config file '$configPath' doesn't exist");
+            throw new ConfigException(
+                500, "<strong>Internal server error:</strong> config file '$configPath' doesn't exist"
+            );
         } else {
             self::$_config = require_once($configPath);
         }
@@ -62,7 +66,7 @@ class Config implements ConfigInterface
         if (isset(self::$_config)) {
             return self::$_config;
         } else {
-            throw new ConfigException("003", "Config is not set");
+            throw new ConfigException(500, "<strong>Internal server error:</strong> config is not set");
         }
     }
 
@@ -73,14 +77,16 @@ class Config implements ConfigInterface
     {
         if (!is_string($path)) {
             $parameterType = gettype($path);
-            throw new ConfigException("001", "Config name must be 'string', '$parameterType' is given'");
+            throw new ConfigException(
+                500, "<strong>Internal server error:</strong> config name must be 'string', '$parameterType' is given'"
+            );
         }
 
         $path    = explode('/', $path);
         $setting = &self::$_config;
         foreach ($path as $bit) {
             if (!isset($setting[$bit])) {
-                throw new ConfigException("004", "Setting '$bit' doesn't exist");
+                throw new ConfigException(500, "<strong>Internal server error:</strong> setting '$bit' doesn't exist");
             } else {
                 $setting = &$setting[$bit];
             }

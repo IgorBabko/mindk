@@ -67,7 +67,7 @@ class MaxLength extends Constraint
         } else {
             $parameterType = gettype($max);
             throw new ConstraintException(
-                "001", "Value for MaxLength::setMax method must be 'int', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> value for MaxLength::setMax method must be 'int', '$parameterType' is given"
             );
         }
     }
@@ -92,7 +92,7 @@ class MaxLength extends Constraint
         } else {
             $parameterType = gettype($value);
             throw new ConstraintException(
-                "001", "Value for MaxLength::validate method must be 'string', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> value for MaxLength::validate method must be 'string', '$parameterType' is given"
             );
         }
     }

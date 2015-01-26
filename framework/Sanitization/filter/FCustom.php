@@ -64,7 +64,7 @@ class FCustom extends Filter
         } else {
             $parameterType = gettype($callback);
             throw new FilterException(
-                "001", "Parameter for FCustom::setCallback method must be 'string', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for FCustom::setCallback method must be 'string', '$parameterType' is given"
             );
         }
     }
@@ -84,12 +84,21 @@ class FCustom extends Filter
             if (function_exists($this->_callback)) {
                 return filter_var($value, FILTER_CALLBACK, array('options' => $this->_callback));
             } else {
-                throw new FilterException("005", "Callback function '{$this->_callback}' does not exist");
+                throw new FilterException(
+                    500,
+                    "<strong>Internal server error:</strong> callback function '{$this->_callback}' does not exist"
+                );
             }
         } elseif (!isset($value)) {
-            throw new FilterException("006", "Parameter for FCustom::sanitize is NULL");
+            throw new FilterException(
+                500,
+                "<strong>Internal server error:</strong> parameter for FCustom::sanitize is NULL"
+            );
         } else {
-            throw new FilterException("007", "Callback function has not been specified");
+            throw new FilterException(
+                500,
+                "<strong>Internal server error:</strong> callback function has not been specified"
+            );
         }
     }
 }

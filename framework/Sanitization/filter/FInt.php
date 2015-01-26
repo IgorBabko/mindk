@@ -36,7 +36,7 @@ class FInt extends Filter
         } else {
             $parameterType = gettype($value);
             throw new FilterException(
-                "001", "Parameter for FInt::sanitize method must be 'string' || 'int',
+                500, "<strong>Internal server error:</strong> parameter for FInt::sanitize method must be 'string' || 'int',
                         '$parameterType' is given"
             );
         }

@@ -51,7 +51,7 @@ class XssDefender implements XssDefenderInterface
      *                               depending on context
      */
     private static $_specialCharacters = array(
-        'html' => array(
+        'html'      => array(
             '<' => '&lt;',
             '>' => '&gt;'
         ),
@@ -60,7 +60,7 @@ class XssDefender implements XssDefenderInterface
             "'" => '&apos;',
             '`' => '&grave;'
         ),
-        'style' => array(
+        'style'     => array(
             '"'  => '&quot;',
             "'"  => '&apos;',
             '`'  => '&grave;',
@@ -98,7 +98,7 @@ class XssDefender implements XssDefenderInterface
         } else {
             $parameterType = gettype($specialCharacters);
             throw new XssDefenderException(
-                "001", "Parameter for XssDefender::setSpecialCharacters method must be 'array', '$parameterType' is given'"
+                500, "<strong>Internal server error:</strong> parameter for XssDefender::setSpecialCharacters method must be 'array', '$parameterType' is given'"
             );
         }
     }

@@ -80,7 +80,10 @@ class Database extends \PDO implements DatabaseInterface
             $this->exec("SET CHARACTER SET $charset");
             $this->setAttribute(self::ATTR_ERRMODE, self::ERRMODE_EXCEPTION);
         } else {
-            throw new DatabaseException("", "'user', 'pass' and 'db' must be specified for Database::__construct method");
+            throw new DatabaseException(
+                500,
+                "<strong>Internal server error:</strong> 'user', 'pass' and 'db' must be specified for Database::__construct method"
+            );
         }
     }
 }

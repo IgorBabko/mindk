@@ -240,7 +240,10 @@ class Response implements ResponseInterface
         if (is_int($this->_statusCode)) {
             return self::$_statuses[$this->_statusCode];
         } else {
-            throw new ResponseException("001", "Status code for Response::getStatusMessage is not specified");
+            throw new ResponseException(
+                500,
+                "<strong>Internal server error:</strong> status code for Response::getStatusMessage is not specified"
+            );
         }
     }
 
@@ -293,7 +296,9 @@ class Response implements ResponseInterface
             http_response_code($statusCode);
         } else {
             $parameterType = gettype($statusCode);
-            throw new ResponseException("001", "Status code for Response::setStatusCode method must be 'int', '$parameterType is given");
+            throw new ResponseException(
+                500, "<strong>Internal server error:</strong> status code for Response::setStatusCode method must be 'int', '$parameterType is given"
+            );
         }
     }
 
@@ -302,8 +307,8 @@ class Response implements ResponseInterface
      */
     public function setContentType($contentType, $charset)
     {
-        $this->_contentType = $contentType;
-        $this->_charset     = $charset;
+        $this->_contentType             = $contentType;
+        $this->_charset                 = $charset;
         $this->_headers['Content-Type'] = $contentType.';charset='.$charset;
     }
 

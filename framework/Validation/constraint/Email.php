@@ -30,7 +30,7 @@ class Email extends Constraint
      */
     public function __construct($message = null)
     {
-        $message = isset($message) ? $message : "must be email address";
+        $message = isset($message)?$message:"must be email address";
         parent::__construct($message);
     }
 
@@ -45,7 +45,6 @@ class Email extends Constraint
      */
     public function validate($value)
     {
-        info($value);
         if (is_string($value)) {
             if (filter_var($value, FILTER_VALIDATE_EMAIL)) {
                 return true;
@@ -55,7 +54,7 @@ class Email extends Constraint
         } else {
             $parameterType = gettype($value);
             throw new ConstraintException(
-                "001", "Value for Email::validate method must be 'string', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> value for Email::validate method must be 'string', '$parameterType' is given"
             );
         }
     }

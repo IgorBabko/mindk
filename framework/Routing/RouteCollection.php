@@ -74,7 +74,9 @@ class RouteCollection implements RouteCollectionInterface
             $this->_routes[$routeName] = $routeInfo;
         } else {
             $parameterType = gettype($routeName);
-            throw new RouteCollectionException("001", "First parameter for RouteCollection::setRoute method must be 'string', '$parameterType' is given'");
+            throw new RouteCollectionException(
+                500, "<strong>Internal server error:</strong> first parameter for RouteCollection::setRoute method must be 'string', '$parameterType' is given'"
+            );
         }
     }
 
@@ -89,11 +91,14 @@ class RouteCollection implements RouteCollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function getRoute($routeName) {
+    public function getRoute($routeName)
+    {
         if (isset($this->_routes[$routeName])) {
             return $this->_routes[$routeName];
         } else {
-            throw new RouteCollectionException("001", "'$routeName' doesn't exist");
+            throw new RouteCollectionException(
+                500, "<strong>Internal server error:</strong> route '$routeName' doesn't exist"
+            );
         }
     }
 

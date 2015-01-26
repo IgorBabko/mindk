@@ -147,7 +147,7 @@ class Session implements SessionInterface
         if ($this->_started === true) {
             return isset($_SESSION[$name]);
         } else {
-            throw new SessionException("001", "Session isn't started.");
+            throw new SessionException(500, "<strong>Internal server error:</strong> session isn't started.");
         }
     }
 
@@ -159,7 +159,7 @@ class Session implements SessionInterface
         if ($this->_started === true) {
             return isset($_SESSION[$name])?$_SESSION[$name]:null;
         } else {
-            throw new SessionException("001", "Session isn't started.");
+            throw new SessionException(500, "<strong>Internal server error:</strong> session isn't started.");
         }
     }
 
@@ -172,7 +172,7 @@ class Session implements SessionInterface
             $_SESSION[$name] = $value;
             return $value;
         } else {
-            throw new SessionException("001", "Session isn't started.");
+            throw new SessionException(500, "<strong>Internal server error:</strong> session isn't started.");
         }
     }
 
@@ -182,7 +182,7 @@ class Session implements SessionInterface
     public function remove($name)
     {
         if ($this->_started !== true) {
-            throw new SessionException("002", "Session isn't started.");
+            throw new SessionException(500, "<strong>Internal server error:</strong> session isn't started.");
         } else {
             unset($_SESSION[$name]);
         }
@@ -196,10 +196,10 @@ class Session implements SessionInterface
         if (!is_string($value)) {
             $parameterType = gettype($value);
             throw new SessionException(
-                "004", "Second parameter for Session::flash method must be 'string', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> second parameter for Session::flash method must be 'string', '$parameterType' is given"
             );
         } else {
-            $flashMsgs = $this->exists('flashMsgs') ? $this->get('flashMsgs') : array();
+            $flashMsgs        = $this->exists('flashMsgs')?$this->get('flashMsgs'):array();
             $flashMsgs[$name] = $value;
             $this->add('flashMsgs', $flashMsgs);
         }

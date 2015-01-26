@@ -53,7 +53,7 @@ class Alpha extends Constraint
         } else {
             $parameterType = gettype($value);
             throw new ConstraintException(
-                "001", "Value for Alpha::validate method must be 'string', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> value for Alpha::validate method must be 'string', '$parameterType' is given"
             );
         }
     }

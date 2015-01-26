@@ -37,7 +37,7 @@ class AlphaNumeric extends Constraint
     public function __construct($message = null, $allowedSymbols = array())
     {
         $this->_allowedSymbols = $allowedSymbols;
-        $message = isset($message) ? $message : "must be alpha-numeric";
+        $message               = isset($message)?$message:"must be alpha-numeric";
         parent::__construct($message);
     }
 
@@ -67,7 +67,7 @@ class AlphaNumeric extends Constraint
         } else {
             $parameterType = gettype($allowedSymbols);
             throw new ConstraintException(
-                "001", "Parameter for AlphaNumeric::setAllowedSymbols method must be 'array', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for AlphaNumeric::setAllowedSymbols method must be 'array', '$parameterType' is given"
             );
         }
     }
@@ -101,7 +101,7 @@ class AlphaNumeric extends Constraint
         } else {
             $parameterType = gettype($value);
             throw new ConstraintException(
-                "001", "Value for AlphaNumeric::validate method must be 'string' || 'int' || 'float', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> value for AlphaNumeric::validate method must be 'string' || 'int' || 'float', '$parameterType' is given"
             );
         }
     }

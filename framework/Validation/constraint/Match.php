@@ -29,8 +29,8 @@ class Match extends Constraint
     /**
      * Match constructor takes value to compare with and error message.
      *
-     * @param  string  $equalValue Value to compare with.
-     * @param  null    $message    Error message.
+     * @param  string $equalValue Value to compare with.
+     * @param  null   $message    Error message.
      *
      * @return Match  Match object.
      */
@@ -54,7 +54,7 @@ class Match extends Constraint
     /**
      * Method to set value to compare with.
      *
-     * @param  string $equalValue  Value to compare with.
+     * @param  string $equalValue Value to compare with.
      *
      * @throws ConstraintException ConstraintException instance.
      *
@@ -67,7 +67,7 @@ class Match extends Constraint
         } else {
             $parameterType = gettype($equalValue);
             throw new ConstraintException(
-                "001", "Parameter for Match::setEqualValue method must be 'string', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for Match::setEqualValue method must be 'string', '$parameterType' is given"
             );
         }
     }
@@ -90,7 +90,10 @@ class Match extends Constraint
                 return false;
             }
         } else {
-            throw new ConstraintException("001", "Parameter for Match::validate method is NULL");
+            throw new ConstraintException(
+                500,
+                "<strong>Internal server error:</strong> parameter for Match::validate method is NULL"
+            );
         }
     }
 }

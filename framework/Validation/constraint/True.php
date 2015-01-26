@@ -67,7 +67,7 @@ class True extends Constraint
         } else {
             $parameterType = gettype($booleanList);
             throw new ConstraintException(
-                "001", "Value for True::setBooleanList method must be 'array', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> value for True::setBooleanList method must be 'array', '$parameterType' is given"
             );
         }
     }
@@ -92,7 +92,7 @@ class True extends Constraint
         } else {
             $parameterType = gettype($value);
             throw new ConstraintException(
-                "001", "Value for True::validate method must be 'string' || 'int' || 'float' || 'bool', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> value for True::validate method must be 'string' || 'int' || 'float' || 'bool', '$parameterType' is given"
             );
         }
     }

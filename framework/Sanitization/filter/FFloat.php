@@ -70,7 +70,7 @@ class FFloat extends Filter
         } else {
             $parameterType = gettype($allow);
             throw new FilterException(
-                "001", "Parameter for FFloat::allowFraction method must be 'bool', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for FFloat::allowFraction method must be 'bool', '$parameterType' is given"
             );
         }
     }
@@ -101,7 +101,7 @@ class FFloat extends Filter
         } else {
             $parameterType = gettype($allow);
             throw new FilterException(
-                "001", "Parameter for FFloat::allowScientific method must be 'bool', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for FFloat::allowScientific method must be 'bool', '$parameterType' is given"
             );
         }
     }
@@ -135,7 +135,7 @@ class FFloat extends Filter
         } else {
             $parameterType = gettype($value);
             throw new FilterException(
-                "001", "Value for FFloat::sanitize method must be 'string' || 'int' || 'float',
+                500, "<strong>Internal server error:</strong> value for FFloat::sanitize method must be 'string' || 'int' || 'float',
                         '$parameterType' is given"
             );
         }

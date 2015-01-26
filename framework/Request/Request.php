@@ -16,7 +16,7 @@ namespace Framework\Request;
  * Default implementation of {@link RequestInterface}.
  *
  * Class contains all needed information of http request such as cookie, session variables
- * http method, request headers, http url, GET data, POST data, SERVER data etc.
+ * http method, request headers, http uri, GET data, POST data, SERVER data etc.
  *
  * @package Framework\Request
  * @author  Igor Babko <i.i.babko@gmail.com>
@@ -55,6 +55,23 @@ class Request implements RequestInterface
     private $_headers = array();
 
     /**
+     * {@inheritdoc}
+     */
+    public function getRequestHeaders()
+    {
+        $out = array();
+        foreach ($_SERVER as $key => $value) {
+            if (substr($key, 0, 5) == "HTTP_") {
+                $key       = str_replace(" ", "-", ucwords(strtolower(str_replace("_", " ", substr($key, 5)))));
+                $out[$key] = $value;
+            } else {
+                $out[$key] = $value;
+            }
+        }
+        return $out;
+    }
+
+    /**
      * Request constructor.
      *
      * Request constructor:
@@ -68,11 +85,11 @@ class Request implements RequestInterface
      */
     private function __construct($session = null, $cookie = null)
     {
-        $this->_headers  = apache_request_headers();
-        $this->_method   = $_SERVER['REQUEST_METHOD'];
-        $this->_url      = $_SERVER['REQUEST_URI'];
-        $this->_session  = $session;
-        $this->_cookie   = $cookie;
+        $this->_headers = $this->getRequestHeaders();
+        $this->_method  = $_SERVER['REQUEST_METHOD'];
+        $this->_uri     = $_SERVER['REQUEST_URI'];
+        $this->_session = $session;
+        $this->_cookie  = $cookie;
     }
 
     /**

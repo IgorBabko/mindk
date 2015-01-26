@@ -67,7 +67,7 @@ class Phone extends Constraint
         } else {
             $parameterType = gettype($pattern);
             throw new ConstraintException(
-                "001", "Value for PHone::setPattern method must be 'string', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> value for PHone::setPattern method must be 'string', '$parameterType' is given"
             );
         }
     }
@@ -92,7 +92,7 @@ class Phone extends Constraint
         } else {
             $parameterType = gettype($value);
             throw new ConstraintException(
-                "001", "Value for Phone::validate method must be 'string', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> value for Phone::validate method must be 'string', '$parameterType' is given"
             );
         }
     }

@@ -38,7 +38,7 @@ class Date extends Constraint
     public function __construct($pattern = null, $message = null)
     {
         $this->_pattern = empty($pattern)?"/^([012]\d|3[01])\.(0\d|1[012])\.20\d\d$/":$pattern;
-        $message = isset($message) ? $message : "must be date in a right format";
+        $message        = isset($message)?$message:"must be date in a right format";
         parent::__construct($message);
     }
 
@@ -68,7 +68,7 @@ class Date extends Constraint
         } else {
             $parameterType = gettype($pattern);
             throw new ConstraintException(
-                "001", "Value for Date::setPattern method must be 'string', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> value for Date::setPattern method must be 'string', '$parameterType' is given"
             );
         }
     }
@@ -93,7 +93,7 @@ class Date extends Constraint
         } else {
             $parameterType = gettype($value);
             throw new ConstraintException(
-                "001", "Value for Date::validate method must be 'string', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> value for Date::validate method must be 'string', '$parameterType' is given"
             );
         }
     }

@@ -29,8 +29,8 @@ class InList extends Constraint
     /**
      * InList constructor takes list of allowed values and error message.
      *
-     * @param  array        $list    List of allowed values.
-     * @param  null|string  $message Error message.
+     * @param  array       $list    List of allowed values.
+     * @param  null|string $message Error message.
      *
      * @return InList InList object.
      */
@@ -67,7 +67,7 @@ class InList extends Constraint
         } else {
             $parameterType = gettype($list);
             throw new ConstraintException(
-                "001", "Parameter for InList::setList method must be 'array', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for InList::setList method must be 'array', '$parameterType' is given"
             );
         }
     }
@@ -90,7 +90,10 @@ class InList extends Constraint
                 return false;
             }
         } else {
-            throw new ConstraintException("001", "Value for InList::validate method is NULL");
+            throw new ConstraintException(
+                500,
+                "<strong>Internal server error:</strong> value for InList::validate method is NULL"
+            );
         }
     }
 }

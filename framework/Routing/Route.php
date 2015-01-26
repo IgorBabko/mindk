@@ -62,9 +62,9 @@ class Route implements RouteInterface
      */
     public function __construct($routeInfo)
     {
-        $this->_pattern      = $routeInfo['pattern'];
-        $this->_controller   = $routeInfo['controller'];
-        $this->_action       = $routeInfo['action'];
+        $this->_pattern    = $routeInfo['pattern'];
+        $this->_controller = $routeInfo['controller'];
+        $this->_action     = $routeInfo['action'];
 
         $this->_security     = isset($routeInfo['security'])?$routeInfo['security']:null;
         $this->_requirements = isset($routeInfo['_requirements'])?$routeInfo['_requirements']:null;
@@ -88,7 +88,7 @@ class Route implements RouteInterface
         } else {
             $parameterType = gettype($parameters);
             throw new RouteException(
-                "001", "Parameter for Route::setParameters method must be 'array', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for Route::setParameters method must be 'array', '$parameterType' is given"
             );
         }
     }
@@ -143,7 +143,7 @@ class Route implements RouteInterface
         } else {
             $parameterType = gettype($action);
             throw new RouteException(
-                "001", "Parameter for Route::setAction method must be 'string', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for Route::setAction method must be 'string', '$parameterType' is given"
             );
         }
     }
@@ -158,7 +158,7 @@ class Route implements RouteInterface
         } else {
             $parameterType = gettype($controller);
             throw new RouteException(
-                "002", "Parameter for Route::setController method must be 'string', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for Route::setController method must be 'string', '$parameterType' is given"
             );
         }
     }
@@ -173,7 +173,7 @@ class Route implements RouteInterface
         } else {
             $parameterType = gettype($pattern);
             throw new RouteException(
-                "003", "Parameter for Route::setPattern method must be 'string', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for Route::setPattern method must be 'string', '$parameterType' is given"
             );
         }
     }
@@ -188,7 +188,7 @@ class Route implements RouteInterface
         } else {
             $parameterType = gettype($requirements);
             throw new RouteException(
-                "004", "Parameter for Route::setRequirements method must be 'array', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for Route::setRequirements method must be 'array', '$parameterType' is given"
             );
         }
     }
@@ -203,7 +203,7 @@ class Route implements RouteInterface
         } else {
             $parameterType = gettype($security);
             throw new RouteException(
-                "005", "Parameter for Route::setSecurity method must be 'array', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for Route::setSecurity method must be 'array', '$parameterType' is given"
             );
         }
     }

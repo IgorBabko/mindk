@@ -1,6 +1,6 @@
 <?php
 /**
- * File /framework/database/SafeSql.php contains the SafeSQL class
+ * File /framework/database/SafeSql.php contains the SafeSql class
  * which provides secure interaction with database.
  *
  * PHP version 5
@@ -13,10 +13,10 @@ namespace Framework\Database;
 
 use \PDO;
 use \PDOStatement;
-use Framework\Exception\SafeSQLException;
+use Framework\Exception\SafeSqlException;
 
 /**
- * Class SafeSQL is used to make safe sql request to database.
+ * Class SafeSql is used to make safe sql request to database.
  * It extends Database class.
  * Default implementation of {@link SafeSqlInterface}.
  *
@@ -25,14 +25,14 @@ use Framework\Exception\SafeSQLException;
  * filtering them in appropriate way before binding.
  *
  * Placeholder types and filter methods associated with them:
- *     - ?i => SafeSQL::escapeIdentifier;
- *     - ?n => SafeSQL::escapeNumber;
- *     - ?s => SafeSQL::escapeString.
+ *     - ?i => SafeSql::escapeIdentifier;
+ *     - ?n => SafeSql::escapeNumber;
+ *     - ?s => SafeSql::escapeString.
  *
  * @package Framework\Database
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
-class SafeSQL extends Database implements SafeSqlInterface
+class SafeSql extends Database implements SafeSqlInterface
 {
     /**
      * @var null|PDOStatement $_sqlResultSet PDOStatement object which holds data obtained from database
@@ -61,13 +61,13 @@ class SafeSQL extends Database implements SafeSqlInterface
     private $_numOfAffectedRows = null;
 
     /**
-     * SafeSQL constructor establishes connection with database.
+     * SafeSql constructor establishes connection with database.
      *
-     * @param  string $engine  Type of database server (e.g. mysql).
-     * @param  string $host    Hostname.
-     * @param  string $db      Database name.
-     * @param  string $user    Username.
-     * @param  string $pass    User password.
+     * @param  string $engine Type of database server (e.g. mysql).
+     * @param  string $host Hostname.
+     * @param  string $db Database name.
+     * @param  string $user Username.
+     * @param  string $pass User password.
      * @param  string $charset Charset.
      *
      * @return SafeSql SafeSql instance.
@@ -118,7 +118,10 @@ class SafeSQL extends Database implements SafeSqlInterface
         if ($this->_resultSet !== null) {
             return count($this->_resultSet);
         } else {
-            throw new SafeSQLException('001', "Can not get number of rows if SafeSQL::_resultSet is undefined");
+            throw new SafeSqlException(
+                500,
+                "<strong>Internal server error:</strong> can not get number of rows if SafeSql::_resultSet is undefined"
+            );
         }
     }
 
@@ -130,7 +133,10 @@ class SafeSQL extends Database implements SafeSqlInterface
         if (isset($this->_resultSet)) {
             return reset($this->_resultSet[0]);
         } else {
-            throw new SafeSQLException('002', "Can not get fetched data if SafeSQL::_resultSet is undefined");
+            throw new SafeSqlException(
+                500,
+                "<strong>Internal server error:</strong> can not get fetched data if SafeSql::_resultSet is undefined"
+            );
         }
     }
 
@@ -143,10 +149,16 @@ class SafeSQL extends Database implements SafeSqlInterface
             if ($this->_numOfRows > $rowIndex && $rowIndex >= 1) {
                 return $this->_resultSet[--$rowIndex];
             } else {
-                throw new SafeSQLException('003', "specified row index doesn't belong to range [1; SafeSQL::numOfRows]");
+                throw new SafeSqlException(
+                    500,
+                    "<strong>Internal server error:</strong> specified row index doesn't belong to range [1; SafeSql::numOfRows]"
+                );
             }
         } else {
-            throw new SafeSQLException('002', "Can not get fetched data if SafeSQL::_resultSet is undefined");
+            throw new SafeSqlException(
+                500,
+                "<strong>Internal server error:</strong> can not get fetched data if SafeSql::_resultSet is undefined"
+            );
         }
     }
 
@@ -170,10 +182,16 @@ class SafeSQL extends Database implements SafeSqlInterface
                 }
                 return $column;
             } else {
-                throw new SafeSQLException('004', "specified column index doesn't belong to range [1; SafeSQL::numOfColumns]");
+                throw new SafeSqlException(
+                    500,
+                    "<strong>Internal server error:</strong> specified column index doesn't belong to range [1; SafeSql::numOfColumns]"
+                );
             }
         } else {
-            throw new SafeSQLException('002', "Can not get fetched data if SafeSQL::_resultSet is undefined");
+            throw new SafeSqlException(
+                500,
+                "<strong>Internal server error:</strong> can not get fetched data if SafeSql::_resultSet is undefined"
+            );
         }
     }
 
@@ -185,7 +203,10 @@ class SafeSQL extends Database implements SafeSqlInterface
         if (isset($this->_resultSet)) {
             return $this->_resultSet;
         } else {
-            throw new SafeSQLException('002', "Can not get fetched data if SafeSQL::_resultSet is undefined");
+            throw new SafeSqlException(
+                500,
+                "<strong>Internal server error:</strong> can not get fetched data if SafeSql::_resultSet is undefined"
+            );
         }
     }
 
@@ -213,18 +234,17 @@ class SafeSQL extends Database implements SafeSqlInterface
                 }
                 return $this->_resultSet;
             } else {
-                throw new SafeSQLException('005', "sql request is failed");
+                throw new SafeSqlException(500, "<strong>Internal server error:</strong> sql request is failed");
             }
         } else {
             $this->_sqlResultSet = null;
-            $this->_resultSet = null;
-            $this->_numOfRows = null;
+            $this->_resultSet    = null;
+            $this->_numOfRows    = null;
             $this->_numOfColumns = null;
-            info($queryString);
             $this->_numOfAffectedRows = $this->exec($queryString);
             if ($this->_numOfAffectedRows === false) {
                 $this->_numOfAffectedRows = null;
-                throw new SafeSQLException('005', "sql request is failed");
+                throw new SafeSqlException(500, "<strong>Internal server error:</strong> sql request is failed");
             } else {
                 return $this->_numOfAffectedRows;
             }
@@ -265,7 +285,10 @@ class SafeSQL extends Database implements SafeSqlInterface
     public function escapeNumber($value = null)
     {
         if (!isset($value)) {
-            throw new SafeSQLException('006', "Empty value for number (?n) placeholder");
+            throw new SafeSqlException(
+                500,
+                "<strong>Internal server error:</strong> empty value for number (?n) placeholder"
+            );
         } elseif (is_numeric($value)) {
             if (is_integer($value)) {
                 return $value;
@@ -273,7 +296,12 @@ class SafeSQL extends Database implements SafeSqlInterface
             $value = number_format($value, 0, '.', '');
             return $value;
         } else {
-            throw new SafeSQLException('009', "Number (?n) placeholder expects numeric value, " . gettype($value) . " given");
+            throw new SafeSqlException(
+                500,
+                "<strong>Internal server error:</strong> number (?n) placeholder expects numeric value, ".gettype(
+                    $value
+                )." given"
+            );
         }
     }
 
@@ -285,7 +313,10 @@ class SafeSQL extends Database implements SafeSqlInterface
         if (isset($value)) {
             return $this->quote($value);
         } else {
-            throw new SafeSQLException('007', "Empty value for string (?s) placeholder");
+            throw new SafeSqlException(
+                500,
+                "<strong>Internal server error:</strong> empty value for string (?s) placeholder"
+            );
         }
     }
 
@@ -297,7 +328,10 @@ class SafeSQL extends Database implements SafeSqlInterface
         if (isset($value)) {
             return "`".str_replace("`", "``", $value)."`";
         } else {
-            throw new SafeSQLException('008', "Empty value for identifier (?i) placeholder");
+            throw new SafeSqlException(
+                500,
+                "<strong>Internal server error:</strong> empty value for identifier (?i) placeholder"
+            );
         }
     }
 }

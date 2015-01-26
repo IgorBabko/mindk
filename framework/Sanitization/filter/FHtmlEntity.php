@@ -36,7 +36,7 @@ class FHtmlEntity extends Filter
         } else {
             $parameterType = gettype($value);
             throw new FilterException(
-                "001", "Parameter for FHtmlEntity::sanitize method must be 'string',
+                500, "<strong>Internal server error:</strong> parameter for FHtmlEntity::sanitize method must be 'string',
                         '$parameterType' is given"
             );
         }

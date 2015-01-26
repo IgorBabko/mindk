@@ -36,7 +36,7 @@ class FURL extends Filter
         } else {
             $parameterType = gettype($value);
             throw new FilterException(
-                "001", "Value for FURL::sanitize method must be 'string',
+                500, "<strong>Internal server error:</strong> value for FURL::sanitize method must be 'string',
                         '$parameterType' is given"
             );
         }

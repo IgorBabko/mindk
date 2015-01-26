@@ -36,7 +36,7 @@ class FAlpha extends Filter
         } else {
             $parameterType = gettype($value);
             throw new FilterException(
-                "001", "Parameter for FAlpha::sanitize method must be 'string',
+                500, "<strong>Internal server error:</strong> parameter for FAlpha::sanitize method must be 'string',
                         '$parameterType' is given"
             );
         }

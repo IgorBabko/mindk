@@ -67,7 +67,7 @@ class Time extends Constraint
         } else {
             $parameterType = gettype($pattern);
             throw new ConstraintException(
-                "001", "Value for Time::setPattern method must be 'string', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> value for Time::setPattern method must be 'string', '$parameterType' is given"
             );
         }
     }
@@ -92,7 +92,7 @@ class Time extends Constraint
         } else {
             $parameterType = gettype($value);
             throw new ConstraintException(
-                "001", "Value for Time::validate method must be 'string', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> value for Time::validate method must be 'string', '$parameterType' is given"
             );
         }
     }

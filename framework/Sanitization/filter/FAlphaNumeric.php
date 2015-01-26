@@ -64,7 +64,7 @@ class FAlphaNumeric extends Filter
         } else {
             $parameterType = gettype($allowedSymbols);
             throw new FilterException(
-                "001", "Parameter for FAlphaNumeric::setAllowedSymbols method must be 'array', '$parameterType' is given"
+                500, "<strong>Internal server error:</strong> parameter for FAlphaNumeric::setAllowedSymbols method must be 'array', '$parameterType' is given"
             );
         }
     }
@@ -94,7 +94,7 @@ class FAlphaNumeric extends Filter
         } else {
             $parameterType = gettype($value);
             throw new FilterException(
-                "001", "Parameter for FAlphaNumeric::sanitize method must be 'string' || 'int' || 'float',
+                500, "<strong>Internal server error:</strong> parameter for FAlphaNumeric::sanitize method must be 'string' || 'int' || 'float',
                         '$parameterType' is given"
             );
         }
