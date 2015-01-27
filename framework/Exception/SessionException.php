@@ -1,6 +1,6 @@
 <?php
 /**
- * File /Framework/Exception/SessionException.php contains SessionException class
+ * File /framework/exception/SessionException.php contains SessionException class
  * to represent exceptions related to session.
  *
  * PHP version 5
@@ -23,12 +23,13 @@ class SessionException extends FrameworkException
     /**
      * SessionException constructor.
      *
-     * @param string $message Exception message.
+     * @param  int    $code    Exception code.
+     * @param  string $message Exception message.
      *
      * @return \Framework\Exception\SessionException SessionException instance.
      */
-    function __construct($message)
+    function __construct($code, $message)
     {
-        $this->message = $message;
+        parent::__construct($code, $message);
     }
 }

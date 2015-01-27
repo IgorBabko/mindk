@@ -3,15 +3,18 @@
 return array(
     'mode'        => 'dev',
     'routes'      => include('routes.php'),
-    'main_layout' => __DIR__.'/../../src/Blog/Views/layout.html.php',
-    'error_500'   => __DIR__.'/../../src/Blog/Views/500.html.php',
+    'main_layout' => __DIR__.'/../../src/blog/views/layout.html.php',
+    'error_500'   => __DIR__.'/../../src/blog/views/500.html.php',
     'pdo'         => array(
-        'dns'      => 'mysql:dbname=education;host=localhost',
+        'host'     => 'localhost',
+        'engine'   => 'mysql',
+        'dbname'   => 'igor',
         'user'     => 'root',
-        'password' => ''
+        'password' => 'root',
+        'charset'  => 'utf8'
     ),
     'security'    => array(
-        'user_class'  => 'Blog\\Model\\User',
+        'user_class'  => 'Blog\\Models\\User',
         'login_route' => 'login'
     )
 );

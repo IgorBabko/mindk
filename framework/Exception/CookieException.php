@@ -1,7 +1,7 @@
 <?php
 /**
- * File /Framework/Exception/CookieException.php contains CookieException class
- * to represent exceptions related to Cookie.
+ * File /framework/exception/CookieException.php contains CookieException class
+ * to represent exceptions related to cookie.
  *
  * PHP version 5
  *
@@ -23,12 +23,13 @@ class CookieException extends FrameworkException
     /**
      * CookieException constructor.
      *
-     * @param string $message Exception message.
+     * @param  int    $code    Exception code.
+     * @param  string $message Exception message.
      *
      * @return \Framework\Exception\CookieException CookieException instance.
      */
-    function __construct($message)
+    function __construct($code, $message)
     {
-        $this->message = $message;
+        parent::__construct($code, $message);
     }
 }

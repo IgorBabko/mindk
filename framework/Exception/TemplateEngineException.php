@@ -1,6 +1,6 @@
 <?php
 /**
- * File /Framework/Exception/TemplateEngineException.php contains TemplateEngineException class
+ * File /framework/exception/TemplateEngineException.php contains TemplateEngineException class
  * to represent exceptions related to rendering views.
  *
  * PHP version 5
@@ -23,12 +23,13 @@ class TemplateEngineException extends FrameworkException
     /**
      * TemplateEngineException constructor.
      *
-     * @param string $message Exception message.
+     * @param  int    $code    Exception code.
+     * @param  string $message Exception message.
      *
      * @return \Framework\Exception\TemplateEngineException TemplateEngineException instance.
      */
-    function __construct($message)
+    function __construct($code, $message)
     {
-        $this->message = $message;
+        parent::__construct($code, $message);
     }
 }

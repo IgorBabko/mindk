@@ -1,0 +1,13 @@
+<?xml version="1.0"  encoding="UTF-8"?>
+<build>
+    <project>
+        <public>
+            <state>on</state>
+            <preremove>on</preremove>
+            <path>app</path>
+            <path>src</path>
+            <path>framework</path>
+            <path>web</path>
+        </public>
+    </project>
+</build>

@@ -1,6 +1,6 @@
 <?php
 /**
- * File /Framework/Exception/ValidatorException.php contains ValidatorException class
+ * File /framework/exception/ValidatorException.php contains ValidatorException class
  * to represent exceptions related to validation.
  *
  * PHP version 5
@@ -13,7 +13,7 @@ namespace Framework\Exception;
 
 /**
  * Class ValidatorException is used to represent exceptions
- * that might happen while making validation.
+ * that might happen during validation.
  *
  * @package Framework\Exception
  * @author  Igor Babko <i.i.babko@gmail.com>
@@ -23,12 +23,13 @@ class ValidatorException extends FrameworkException
     /**
      * ValidatorException constructor.
      *
-     * @param string $message Exception message.
+     * @param  int    $code    Exception code.
+     * @param  string $message Exception message.
      *
      * @return \Framework\Exception\ValidatorException ValidatorException instance.
      */
-    function __construct($message)
+    function __construct($code, $message)
     {
-        $this->message = $message;
+        parent::__construct($code, $message);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * File /Framework/Exception/ServiceException.php contains ServiceException class
+ * File /framework/exception/ServiceException.php contains ServiceException class
  * to represent exceptions related to DI.
  *
  * PHP version 5
@@ -23,12 +23,13 @@ class ServiceException extends FrameworkException
     /**
      * ServiceException constructor.
      *
-     * @param string $message Exception message.
+     * @param  int    $code    Exception code.
+     * @param  string $message Exception message.
      *
      * @return \Framework\Exception\ServiceException ServiceException instance.
      */
-    function __construct($message)
+    function __construct($code, $message)
     {
-        $this->message = $message;
+        parent::__construct($code, $message);
     }
 }

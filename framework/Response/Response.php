@@ -1,6 +1,6 @@
 <?php
 /**
- * File /Framework/Response/Response.php contains Response class to easily manipulate with http response.
+ * File /framework/response/Response.php contains Response class to easily manipulate with http response.
  *
  * PHP version 5
  *
@@ -10,8 +10,11 @@
 
 namespace Framework\Response;
 
+use Framework\Exception\ResponseException;
+
 /**
  * Class Response - representation of http response.
+ * Default implementation of {@link ResponseInterface}
  *
  * Class contains all needed information of http response such as cookie, session variables
  * response status, response headers, response body etc.
@@ -19,13 +22,19 @@ namespace Framework\Response;
  * @package Framework\Response
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
-class Response
+class Response implements ResponseInterface
 {
+    /**
+     * @static
+     * @var \Framework\Response\Response|null Response instance
+     */
+    private static $_instance = null;
 
     /**
-     * @var array $_statusCodes Response status codes with its descriptions
+     * @static
+     * @var array $_statuses Response status codes with its descriptions
      */
-    protected $_statusCodes = array(
+    private static $_statuses = array(
         100 => 'Continue',
         101 => 'Switching Protocols',
         200 => 'OK',
@@ -42,7 +51,7 @@ class Response
         304 => 'Not Modified',
         305 => 'Use Proxy',
         307 => 'Temporary Redirect',
-        400 => 'Bad Request',
+        400 => 'Bad request',
         401 => 'Unauthorized',
         402 => 'Payment Required',
         403 => 'Forbidden',
@@ -50,13 +59,13 @@ class Response
         405 => 'Method Not Allowed',
         406 => 'Not Acceptable',
         407 => 'Proxy Authentication Required',
-        408 => 'Request Time-out',
+        408 => 'request Time-out',
         409 => 'Conflict',
         410 => 'Gone',
         411 => 'Length Required',
         412 => 'Precondition Failed',
-        413 => 'Request Entity Too Large',
-        414 => 'Request-URI Too Large',
+        413 => 'request Entity Too Large',
+        414 => 'request-URI Too Large',
         415 => 'Unsupported Media Type',
         416 => 'Requested range not satisfiable',
         417 => 'Expectation Failed',
@@ -68,67 +77,194 @@ class Response
     );
 
     /**
-     * @var int $_status Response status code
+     * @var int $_statusCode Response status code
      */
-    public $_status = 200;
+    private $_statusCode = 200;
+
     /**
      * @var string $_contentType Response content type
      */
-    public $_contentType = 'text/html';
+    private $_contentType = 'text/html';
+
     /**
      * @var array $_headers Response headers
      */
-    public $_headers = array();
+    private $_headers = array();
+
     /**
      * @var array $_cacheDirectives Cache directives
      */
-    public $_cacheDirectives = array();
+    private $_cacheDirectives = array();
+
     /**
-     * @var string $_body Response body
+     * @var string $_responseBody Response body
      */
-    public $_body = '';
+    private $_responseBody = '';
+
     /**
      * @var string $_charset Response charset
      */
-    public $_charset = 'UTF-8';
+    private $_charset = 'UTF-8';
 
     /**
-     * @var \Framework\Cookie $_cookie Cookie object
+     * @var \Framework\Cookie\Cookie $_cookie Cookie object
      */
-    public $cookie;
+    private $_cookie;
+
     /**
-     * @var \Framework\Session $_session Session object
+     * @var \Framework\Session\Session $_session Session object
      */
-    public $session;
+    private $_session;
 
     /**
      * Response constructor.
      *
      * Response constructor sets dependencies such as:
-     *  - session object;
-     *  - cookie  object.
-     * Also it sets default body, status code and status descriptions to the response object.
+     *  - Session object;
+     *  - Cookie  object.
      *
-     * @param \Framework\Session $session Session object.
-     * @param \Framework\Cookie  $cookie  Cookie  object.
-     * @param string             $content Content of response body.
-     * @param int                $code    Status code of response.
-     * @param string             $status  Description of response status code.
+     * @param  \Framework\Session\Session $session Session object.
+     * @param  \Framework\Cookie\Cookie   $cookie  Cookie  object.
      *
      * @return \Framework\Response\Response Response object.
      */
-    public function __construct($session = null, $cookie = null, $content = '', $code = 200, $status = 'OK')
+    private function __construct($session = null, $cookie = null)
     {
-        $this->session = $session;
-        $this->cookie  = $cookie;
+        $this->_session = $session;
+        $this->_cookie  = $cookie;
     }
 
     /**
-     * Method sets raw header e.g. "HTTP/1.1 200 OK".
+     * Method to clone objects of its class.
      *
-     * @param string $rawHeader Raw header to be set.
+     * @return \Framework\Response\Response Response instance.
+     */
+    private function __clone()
+    {
+    }
+
+    /**
+     * Method returns Response instance creating it if it's not been instantiated before
+     * otherwise existed Response object will be returned.
      *
-     * @return void
+     * @param  \Framework\Session\Session $session Session object.
+     * @param  \Framework\Cookie\Cookie   $cookie  Cookie  object.
+     *
+     * @return \Framework\Response\Response Response instance.
+     */
+    public static function getInstance($session = null, $cookie = null)
+    {
+        if (null === self::$_instance) {
+            self::$_instance = new self($session, $cookie);
+        }
+        return self::$_instance;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getResponseBody()
+    {
+        return $this->_responseBody;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setResponseBody($responseBody)
+    {
+        $this->_responseBody = $responseBody;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCacheDirectives()
+    {
+        return $this->_cacheDirectives;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCharset()
+    {
+        return $this->_charset;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getContentType()
+    {
+        return $this->_contentType;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCookieObject()
+    {
+        return $this->_cookie;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSessionObject()
+    {
+        return $this->_session;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSessionVar($name)
+    {
+        return $this->_session->get($name);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getStatusCode()
+    {
+        return $this->_statusCode;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getStatusMessage()
+    {
+        if (is_int($this->_statusCode)) {
+            return self::$_statuses[$this->_statusCode];
+        } else {
+            throw new ResponseException(
+                500,
+                "<strong>Internal server error:</strong> status code for Response::getStatusMessage is not specified"
+            );
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getHeader($name)
+    {
+        return isset($this->_headers[$name])?$this->_headers[$name]:null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getStatuses()
+    {
+        return self::$_statuses;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function rawHeader($rawHeader)
     {
@@ -136,25 +272,15 @@ class Response
     }
 
     /**
-     * Method sets Content-Disposition header asking http client to show upload dialog.
-     *
-     * @param string $filename Filename to download.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function download($filename)
     {
         $this->header('Content-Disposition', 'attachment; filename="'.$filename.'"');
     }
 
-
     /**
-     * Method sets response header with name $name and value $value.
-     *
-     * @param string $name  Name  of response header to set.
-     * @param string $value Value of response header $name.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function header($name, $value)
     {
@@ -162,35 +288,32 @@ class Response
     }
 
     /**
-     * Method sets response status code. "Http_response_code" function requires PHP 5 >= 5.4.0
-     *
-     * @param string $code Response status code to set.
-     *
-     * @return void
+     * {@inheritdoc}
      */
-    public function setStatusCode($code)
+    public function setStatusCode($statusCode)
     {
-        http_response_code($code);
+        if (is_int($statusCode)) {
+            http_response_code($statusCode);
+        } else {
+            $parameterType = gettype($statusCode);
+            throw new ResponseException(
+                500, "<strong>Internal server error:</strong> status code for Response::setStatusCode method must be 'int', '$parameterType is given"
+            );
+        }
     }
 
-
     /**
-     * Method sets content type of response.
-     *
-     * @param string $contentType Response content type.
-     * @param string $charset     Response charset.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function setContentType($contentType, $charset)
     {
+        $this->_contentType             = $contentType;
+        $this->_charset                 = $charset;
         $this->_headers['Content-Type'] = $contentType.';charset='.$charset;
     }
 
     /**
-     * Method sends all set headers.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function sendHeaders()
     {
@@ -200,9 +323,7 @@ class Response
     }
 
     /**
-     * Method reset all set response headers.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function resetHeaders()
     {
@@ -210,34 +331,23 @@ class Response
     }
 
     /**
-     * Method add cookie with name $name and $value value.
-     *
-     * @param string $name  Cookie name.
-     * @param string $value Cookie value.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function addCookie($name, $value)
     {
-        $this->cookie->add($name, $value);
+        $this->_cookie->add($name, $value);
     }
 
     /**
-     * Method returns value of specified cookie.
-     *
-     * @param string $name Cookie name value of to be returned.
-     *
-     * @return string Cookie value.
+     * {@inheritdoc}
      */
-    public function getCookies($name)
+    public function getCookie($name)
     {
-        return $this->cookie->get($name);
+        return $this->_cookie->get($name);
     }
 
     /**
-     * Method returns all response headers.
-     *
-     * @return array Response headers.
+     * {@inheritdoc}
      */
     public function getHeaders()
     {
@@ -245,89 +355,33 @@ class Response
     }
 
     /**
-     * Method sets content to response body.
-     *
-     * @param string $content Content to be set.
-     *
-     * @return void
-     */
-    public function setContent($content)
-    {
-        $this->_body = $content;
-    }
-
-    /**
-     * Method returns response body.
-     *
-     * @return string Response body.
-     */
-    public function getContent()
-    {
-        return $this->_body;
-    }
-
-    /**
-     * Method appends content to response body.
-     *
-     * @param string $content Content to be appended to response body.
+     * {@inheritdoc}
      */
     public function appendContent($content)
     {
-        $this->_body .= $content;
+        $this->_responseBody .= $content;
     }
 
     /**
-     * Method sends all set cookie.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function sendCookies()
     {
-        $this->cookie->send();
+        $this->_cookie->send();
     }
 
     /**
-     * Method sends response to http client.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function send()
     {
+        $this->sendCookies();
         $this->sendHeaders();
-        echo $this->_body;
+        echo $this->_responseBody;
     }
 
     /**
-     * Method redirects http client to given location $location.
-     *
-     * @param string $location Location to be redirected to.
-     *
-     * @return void
-     */
-    public function redirect($location = '/')
-    {
-        header('Location: '.$location);
-    }
-
-    /**
-     * Method returns value of specified response header.
-     *
-     * @param string $name Name of response header its value to be returned.
-     *
-     * @return string|null Value of specified header or null.
-     */
-    public function getHeader($name)
-    {
-        return isset($this->_headers[$name])?$this->_headers[$name]:null;
-    }
-
-    /**
-     * Method sets all needed headers and cache directives related to cache.
-     *
-     * @param int $since Last modification time of current file.
-     * @param int $time  Time when response is sent.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function cache($since, $time = 0)
     {
@@ -341,12 +395,7 @@ class Response
     }
 
     /**
-     * Method sets last modification time to current file or returns value
-     * of existed Last-Modified header when $time parameter is null.
-     *
-     * @param DateTime|int|string|null $time Last modification time of current file.
-     *
-     * @return string|null Last modification time of current file or null.
+     * {@inheritdoc}
      */
     public function modified($time = null)
     {
@@ -361,13 +410,7 @@ class Response
     }
 
     /**
-     * Method sets max-age cache directive if $seconds parameters isn't null.
-     * It returns value of max-age cache-directive unless $seconds is null
-     * and max-age cache directive was not defined before then it returns null.
-     *
-     * @param string $seconds Amount of seconds to cache file for.
-     *
-     * @return string|null Value of max-age cache-directive or null.
+     * {@inheritdoc}
      */
     public function maxAge($seconds = null)
     {
@@ -382,13 +425,7 @@ class Response
     }
 
     /**
-     * Method sets Expires header if $time parameter is not null.
-     * It returns value of Expire header unless $time is null
-     * and Expire header was not defined before then it returns null.
-     *
-     * @param DateTime|int|string|null $time Expiration time for current file.
-     *
-     * @return string|null Value of Expire header or null.
+     * {@inheritdoc}
      */
     public function expires($time = null)
     {
@@ -402,33 +439,24 @@ class Response
         return null;
     }
 
-
     /**
-     * Method takes $time parameter and convert it to DateTime object.
-     * If $time is already DateTime object method just clones it and returns DateTime clone.
-     *
-     * @param DateTime|string|int|null $time Time to convert to DateTime object.
-     *
-     * @return DateTime DateTime object.
+     * {@inheritdoc}
      */
-    protected function _getUTCDate($time = null)
+    public function _getUTCDate($time = null)
     {
-        if ($time instanceof DateTime) {
+        if ($time instanceof \DateTime) {
             $result = clone $time;
         } elseif (is_integer($time)) {
-            $result = new DateTime(date('Y-m-d H:i:s', $time));
+            $result = new \DateTime(date('Y-m-d H:i:s', $time));
         } else {
-            $result = new DateTime($time);
+            $result = new \DateTime($time);
         }
-        $result->setTimeZone(new DateTimeZone('UTC'));
+        $result->setTimeZone(new \DateTimeZone('UTC'));
         return $result;
     }
 
-
     /**
-     * Method sets Cache-Control header.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function _setCacheControl()
     {

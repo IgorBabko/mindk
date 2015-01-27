@@ -1,6 +1,6 @@
 <?php
 /**
- * File /Framework/Exception/RouterException.php contains RouterException class
+ * File /framework/exception/RouterException.php contains RouterException class
  * to represent exceptions related to router.
  *
  * PHP version 5
@@ -9,7 +9,7 @@
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
 
-namespace Framework\Exceptions;
+namespace Framework\Exception;
 
 /**
  * Class RouterException is used to represent exceptions
@@ -23,12 +23,13 @@ class RouterException extends FrameworkException
     /**
      * RouterException constructor.
      *
-     * @param string $message Exception message.
+     * @param  int    $code    Exception code.
+     * @param  string $message Exception message.
      *
-     * @return \Framework\Exceptions\RouterException RouterException instance.
+     * @return \Framework\Exception\RouterException RouterException instance.
      */
-    function __construct($message)
+    function __construct($code, $message)
     {
-        $this->message = $message;
+        parent::__construct($code, $message);
     }
 }

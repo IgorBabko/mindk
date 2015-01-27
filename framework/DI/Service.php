@@ -1,6 +1,6 @@
 <?php
 /**
- * File /Framework/DI/Service.php contains Service class which allows simply resolve all dependencies
+ * File /framework/DI/Service.php contains Service class which allows simply resolve all dependencies
  * instantiating particular object.
  *
  * PHP version 5
@@ -15,29 +15,29 @@ use Framework\Exception\ServiceException;
 
 /**
  * Class Service for representing and storing class dependencies.
+ * Default implementation of {@link ServiceInterface}.
  *
  * @package Framework\DI
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
-class Service
+class Service implements ServiceInterface
 {
-
     /**
      * @static
-     * @var array $services Holds all needed services (objects) for application
+     * @var array $_services Holds all needed information of services used in application
      */
-    public static $services = array();
+    private static $_services = array();
 
     /**
-     * Method for setting new service based on passing parameters.
-     *
-     * @param string $name         Service name.
-     * @param string $className    Service classname.
-     * @param null   $resolver     Function to create an instance of service with all needed dependencies.
-     * @param array  $params       Parameters for resolver.
-     * @param array  $dependencies List of classes service depends on.
-     *
-     * @return void
+     * {@inheritdoc}
+     */
+    public static function getServices()
+    {
+        return self::$_services;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public static function setService(
         $name,
@@ -46,110 +46,102 @@ class Service
         $params = array(),
         $dependencies = array()
     ) {
-        self::$services[$name]              = array();
-        self::$services[$name]['className'] = $className;
+        self::$_services[$name]              = array();
+        self::$_services[$name]['className'] = $className;
         self::setParams($name, $params);
         self::setDependencies($name, $dependencies);
         self::setResolver($name, $resolver);
     }
 
     /**
-     * Method for setting parameters to particular resolver.
-     *
-     * Method sets parameters to particular resolver and if no parameters
-     * set to resolver yet then all array of parameters will be assigned to resolver parameters
-     * otherwise each parameter sets to its particular place of resolver parameters array
-     * For a case service parameters have to be set to is singleton setting parameters step will be ignored
-     * 'cause for resolvers of singleton services (objects) parameters is set only once in /web/index.php .
-     *
-     * @param string $name   Service name.
-     * @param array  $params Parameters array of particular service resolver.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public static function setParams($name, $params)
     {
-        if (!isset(self::$services[$name]['parameters'])) {
-            self::$services[$name]['parameters'] = $params;
-        } else {
-            foreach ($params as $paramName => $value) {
-                self::$services[$name]['parameters'][$paramName] = $value;
+        if (is_string($name) && is_array($params)) {
+            if (!isset(self::$_services[$name]['parameters'])) {
+                self::$_services[$name]['parameters'] = $params;
+            } else {
+                foreach ($params as $paramName => $value) {
+                    self::$_services[$name]['parameters'][$paramName] = $value;
+                }
             }
+        } else {
+            throw new ServiceException(
+                500,
+                "<strong>Internal server error:</strong> wrong parameter types for Service::setParams method"
+            );
         }
     }
 
     /**
-     * Method for setting dependencies to the service.
-     *
-     * @param string $name         Service name to set dependencies to.
-     * @param array  $dependencies List of classes current service depends on.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public static function setDependencies($name, $dependencies)
     {
-        self::$services[$name]['dependencies'] = $dependencies;
+        if (is_string($name) && is_array($dependencies)) {
+            self::$_services[$name]['dependencies'] = $dependencies;
+        } else {
+            throw new ServiceException(
+                500,
+                "<strong>Internal server error:</strong> wrong parameter types for Service::setDependencies method"
+            );
+        }
     }
 
     /**
-     * Method to set resolvers for specified service.
-     *
-     * @param string $name    Service name.
-     * @param object $resolve Resolver function.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public static function setResolver($name, $resolve)
     {
-        self::$services[$name]['resolver'] = $resolve;
+        if (is_string($name) && is_callable($resolve)) {
+            self::$_services[$name]['resolver'] = $resolve;
+        } else {
+            throw new ServiceException(
+                500,
+                "<strong>Internal server error:</strong> wrong parameter types for Service::setResolver method"
+            );
+        }
     }
 
     /**
-     * Method to check whether specified in parameters service has any resolvers.
-     *
-     * @param string $name Service name.
-     *
-     * @return bool Service has resolver(s) or doesn't have.
+     * {@inheritdoc}
      */
     public static function hasResolver($name)
     {
-        return isset(self::$services[$name]['resolver']);
+        if (is_string($name)) {
+            return isset(self::$_services[$name]['resolver']);
+        } else {
+            $parameterType = gettype($name);
+            throw new ServiceException(
+                500, "<strong>Internal server error:</strong> parameter for Service::hasResolver method must be 'string', '$parameterType' is given'"
+            );
+        }
     }
 
     /**
-     * Method which resolves all dependencies for particular service (object) and create its instance.
-     *
-     * Method whether request service has resolver and if method can't find one then Exception is thrown.
-     * When service has resolver then parameters for the resolver is taken from service information
-     * array and there calls resolver with these parameters to instantiate service object.
-     * Service that must be instantiated may have some dependencies then names
-     * of each dependency will be taken from service information array and current method calls for each
-     * dependency to instantiate all dependencies respectively.
-     *
-     * @param  string $name Service name to be instantiated.
-     *
-     * @throws ServiceException ServiceException instance.
-     *
-     * @return mixed Needed instance of requested service.
+     * {@inheritdoc}
      */
     public static function resolve($name)
     {
         if (self::hasResolver($name)) {
-            $params = self::$services[$name]['parameters'];
+            $params = self::$_services[$name]['parameters'];
 
-            if (!empty(self::$services[$name]['dependencies'])) {
-                $dependencies = self::$services[$name]['dependencies'];
+            if (!empty(self::$_services[$name]['dependencies'])) {
+                $dependencies = self::$_services[$name]['dependencies'];
                 foreach ($dependencies as $n => $className) {
                     $params[$n] = self::resolve($n);
                 }
             }
 
-            $resolver = self::$services[$name]['resolver'];
-            $service = $resolver($params);
+            $resolver = self::$_services[$name]['resolver'];
+            $service  = $resolver($params);
 
             return $service;
         }
 
-        throw new ServiceException("$name service has not been registered.");
+        throw new ServiceException(
+            500, "<strong>Internal server error:</strong> '$name' service has not been registered."
+        );
     }
 }

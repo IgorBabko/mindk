@@ -1,7 +1,7 @@
 <?php
 /**
- * File /Framework/Exception/LoaderException.php contains LoaderException class
- * to represent exceptions related to class loader.
+ * File /framework/exception/LoaderException.php contains LoaderException class
+ * to represent exceptions related to Loader class.
  *
  * PHP version 5
  *
@@ -10,8 +10,6 @@
  */
 
 namespace Framework\Exception;
-
-require_once('FrameworkException.php');
 
 /**
  * Class LoaderException is used to represent exceptions
@@ -25,12 +23,13 @@ class LoaderException extends FrameworkException
     /**
      * LoaderException constructor.
      *
-     * @param string $message Exception message.
+     * @param  int    $code    Exception code.
+     * @param  string $message Exception message.
      *
      * @return \Framework\Exception\LoaderException LoaderException instance.
      */
-    function __construct($message)
+    function __construct($code, $message)
     {
-        $this->message = $message;
+        parent::__construct($code, $message);
     }
 }
