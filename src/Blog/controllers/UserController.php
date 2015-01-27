@@ -33,8 +33,35 @@ class UserController extends Controller
                 $user = new User();
                 $form = new Form($user, 'signup');
 
-                if ($form->isValid()) {
+                $wrongFile   = false;
+                $picturePath = null;
+                $pictureName = null;
+                if (empty($_FILES['profile_image']['name'])) {
+                    $wrongFile = false;
+                } else {
+                    $allowed = array('jpg', 'jpeg', 'gif', 'png');
+
+                    $fileName     = $_FILES['profile_image']['name'];
+                    $fileInfo     = explode('.', $fileName);
+                    $fileExtn     = strtolower(end($fileInfo));
+                    $fileTempPath = $_FILES['profile_image']['tmp_name'];
+
+                    if (in_array($fileExtn, $allowed) === true) {
+                        $pictureName = substr(md5(time()), 0, 10).'.'.$fileExtn;
+                        $picturePath = 'uploads/'.$pictureName;
+                        move_uploaded_file($fileTempPath, $picturePath);
+                    } else {
+                        $wrongFile = true;
+                        $templateEngine->setData('wrongFile', 'File type must be "jpg", "jpeg", "gif" or "png"');
+                    }
+                }
+
+                if ($form->isValid() && $wrongFile == false) {
+
                     $form->bindDataToModel();
+                    $user->setPicturePath(
+                        ($pictureName != null)?'/web/uploads/'.$pictureName:'/web/uploads/profile_icon_trim.png'
+                    );
                     $user->setSalt(Hash::generateSalt(32));
                     $user->setPassword(Hash::generatePass($user->getPassword(), $user->getSalt()));
                     $user->setRole('USER');
@@ -96,13 +123,18 @@ class UserController extends Controller
                         $session->add(
                             'user',
                             array(
-                                'name'  => $user->getUsername(),
-                                'email' => $user->getEmail(),
-                                'role'  => $user->getRole()
+                                'name'    => $user->getUsername(),
+                                'email'   => $user->getEmail(),
+                                'picture' => $user->getPicturePath(),
+                                'role'    => $user->getRole()
                             )
                         );
                         $redirect = $this->getResponseRedirect();
-                        $redirect->to('/');
+                        $session->flash(
+                            'authenticated',
+                            "<div class='flash-success well well-sm'>You have been logged in successfully!</div>"
+                        );
+                        $redirect->route('home');
                         exit();
                     }
                 }
@@ -116,7 +148,6 @@ class UserController extends Controller
 
     public function updateAction()
     {
-
         $request = $this->getRequest();
         $session = $request->getSession();
         $session->start();
@@ -130,18 +161,48 @@ class UserController extends Controller
                 $redirect = $this->getResponseRedirect();
                 $form     = new Form($user, 'update');
 
-                if ($form->isValid()) {
+                $wrongFile   = false;
+                $picturePath = null;
+                $pictureName = null;
+                if (empty($_FILES['profile_image']['name'])) {
+                    $wrongFile = false;
+                } else {
+                    $allowed = array('jpg', 'jpeg', 'gif', 'png');
+
+                    $fileName     = $_FILES['profile_image']['name'];
+                    $fileInfo     = explode('.', $fileName);
+                    $fileExtn     = strtolower(end($fileInfo));
+                    $fileTempPath = $_FILES['profile_image']['tmp_name'];
+
+                    if (in_array($fileExtn, $allowed) === true) {
+                        $pictureName = substr(md5(time()), 0, 10).'.'.$fileExtn;
+                        $picturePath = 'uploads/'.$pictureName;
+                        move_uploaded_file($fileTempPath, $picturePath);
+                    } else {
+                        $wrongFile = true;
+                        $templateEngine->setData('wrongFile', 'File type must be "jpg", "jpeg", "gif" or "png"');
+                    }
+                }
+
+                if ($form->isValid() && $wrongFile == false) {
                     $form->bindDataToModel();
+                    $user->setPicturePath(
+                        ($pictureName != null)?'/web/uploads/'.$pictureName:'/web/uploads/profile_icon_trim.png'
+                    );
                     $user->save(array('username' => $session->get('user')['name']));
                     $session->add(
                         'user',
                         array(
-                            'name'  => $user->getUsername(),
-                            'email' => $user->getEmail(),
-                            'role'  => $user->getRole()
+                            'name'    => $user->getUsername(),
+                            'email'   => $user->getEmail(),
+                            'picture' => $user->getPicturePath(),
+                            'role'    => $user->getRole()
                         )
                     );
-                    $session->flash('updated', "<div class='flash-success well well-sm'>Your data has been updated successfully!</div>");
+                    $session->flash(
+                        'updated',
+                        "<div class='flash-success well well-sm'>Your data has been updated successfully!</div>"
+                    );
                     $redirect->route('update');
                     exit();
                 } else {
@@ -180,7 +241,10 @@ class UserController extends Controller
 
                 $redirect = $this->getResponseRedirect();
                 if (Hash::generatePass($_POST['current_password'], $salt) !== $currentPassword) {
-                    $session->flash('wrong_password', "<div class='flash-error well well-sm-error'>Current password is wrong!</div>");
+                    $session->flash(
+                        'wrong_password',
+                        "<div class='flash-error well well-sm-error'>Current password is wrong!</div>"
+                    );
                     $redirect->route('change_password');
                     exit();
                 }

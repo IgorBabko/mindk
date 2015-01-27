@@ -4,6 +4,7 @@ namespace Blog\Controllers;
 
 use Blog\Models\Comment;
 use Blog\Models\Post;
+use Blog\Models\User;
 use Blog\Util;
 use CMS\Models\Category;
 use Framework\Config\Config;
@@ -111,6 +112,15 @@ class PostController extends Controller
             'SELECT * FROM ?i WHERE ?i = ?s ORDER BY ?i DESC',
             array(Comment::getTable(), 'post_title', $post->getTitle(), 'created_date')
         );
+        $usersInfo = User::query('SELECT ?i, ?i FROM ?i', array('username', 'picture_path', User::getTable()));
+        $userPictures = array();
+        foreach ($usersInfo as $userInfo) {
+            $userPictures[$userInfo['username']] = $userInfo['picture_path'];
+        }
+        foreach ($comments as &$comment) {
+            $comment['picture'] = $userPictures[$comment['author']];
+        }
+
         $templateEngine = $this->getTemplateEngine();
         $templateEngine->setData('router', $this->getRouter());
         $templateEngine->setData('post', $post);

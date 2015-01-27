@@ -25,10 +25,10 @@ $isRouteActive = function ($currentRoute) {
 
     <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,600,700'
           rel='stylesheet' type='text/css'/>
-    <link href="/web/css/theme2.css" rel="stylesheet"/>
+    <link href="/web/css/theme.css" rel="stylesheet"/>
 </head>
 
-<body role="document">
+<body role="document" id="blog">
 
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
@@ -43,15 +43,13 @@ $isRouteActive = function ($currentRoute) {
                                                                  src="/web/images/img-logo-mindk-white.png"
                                                                  alt="Education"></a>
         </div>
-        <div class="navbar-collapse collapse" style="font-size: 18px;">
+        <div class="navbar-collapse collapse" id="main-menu">
             <ul class="nav navbar-nav">
                 <li <?= $isRouteActive('home'); ?> ><a
                         href="<?= $this->router->generateRoute('home'); ?>">Home</a>
                 </li>
                 <li <?= $isRouteActive('about'); ?> ><a href="<?= $this->router->generateRoute('about'); ?>">About</a>
                 </li>
-                <li <?= $isRouteActive('feedback'); ?> ><a
-                        href="<?= $this->router->generateRoute('feedback'); ?>">Feedback</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <?php if (!isset($_SESSION['user'])) { ?>
@@ -75,8 +73,8 @@ $isRouteActive = function ($currentRoute) {
 </nav>
 
 <div id="under_navbar"></div>
-<div id="header" style="position: relative;">
-    <img style="width: 100%" src="/web/images/web_header5_quote.png">
+<div id="header">
+    <img src="/web/images/web_header5_quote.png">
 </div>
 
 <div id="main_container">
@@ -89,12 +87,12 @@ $isRouteActive = function ($currentRoute) {
             unset($_SESSION['flashMsgs']);
         }
         ?>
-        <form style="display: none;" id="reset_form"
+        <form id="reset_form"
               action="<?= $this->router->generateRoute('posts', array('categoryId' => 0, 'pageId' => 1)); ?>"
               method="post">
             <input id="search_reset" type="hidden" name="search_reset">
         </form>
-        <form style="width: 300px;" role="search"
+        <form id="search" role="search"
               action="<?= $this->router->generateRoute(
                   'posts',
                   array('categoryId' => ($this->categoryId != null)?$this->categoryId:0, 'pageId' => 1)
@@ -116,10 +114,20 @@ $isRouteActive = function ($currentRoute) {
             </div>
         </form>
         <hr/>
+        <ul id="nav-categories" class="nav nav-justified hidden-lg">
+            <?php
+            if ($this->activeRoute != 'home' && $this->activeRoute != 'posts') {
+                $categoryId = null;
+            } else {
+                $categoryId = (int)$_SESSION['categoryId'];
+            }
+            foreach ($this->categories as $category) {
+            ?><li role="presentation" <?= ($categoryId === (int)$category['id'])?'id="active_category"':''; ?> ><a href="<?= $this->router->generateRoute('posts', array('categoryId' => $category['id'], 'pageId' => 1)); ?>"><?= $category['name']; ?></a></li><?php } ?>
+        </ul>
         <?= $this->view; ?>
     </div>
-    <div id="sidebar">
-        <div style="color: black; background-color: rgb(245,245,245);" class="panel panel-black">
+    <div id="sidebar" class="hidden-xs hidden-sm hidden-md">
+        <div class="panel panel-black">
             <div class="panel-heading panel-title">
                 Categories
             </div>
@@ -133,7 +141,7 @@ $isRouteActive = function ($currentRoute) {
                         $categoryId = (int)$_SESSION['categoryId'];
                     }
                     foreach ($this->categories as $category) {
-                        ?>
+                    ?>
                         <a href="<?= $this->router->generateRoute(
                             'posts',
                             array('categoryId' => $category['id'], 'pageId' => 1)
@@ -146,7 +154,7 @@ $isRouteActive = function ($currentRoute) {
                 </ul>
             </div>
         </div>
-        <img style="width: 100%" src="/web/images/pencils.png">
+        <img src="/web/images/pencils.png">
     </div>
     <div class="clear"></div>
 </div>
@@ -155,32 +163,32 @@ $isRouteActive = function ($currentRoute) {
     <img id="arrow_up" src="/web/images/arrow_up.png">
 </div>
 
-<div id="footer" style="color: white; !important">
+<div id="footer">
     <div class="footer-top">
-        <div style="position: relative; border-bottom: 1px solid white; height: 100px; background-color: #292929;">
+        <div id="footer-icons">
             <a class="footer_img" id="html_img" href="<?= $this->router->generateRoute('posts', array('categoryId' => 1, 'pageId' => 1)); ?>"></a>
             <a class="footer_img" id="css_img" href="<?=  $this->router->generateRoute('posts', array('categoryId' => 2, 'pageId' => 1)); ?>"></a>
             <a class="footer_img" id="js_img" href="<?=   $this->router->generateRoute('posts', array('categoryId' => 3, 'pageId' => 1)); ?>"></a>
             <a class="footer_img" id="php_img" href="<?=  $this->router->generateRoute('posts', array('categoryId' => 4, 'pageId' => 1)); ?>"></a>
         </div>
-        <div style="clear: both;"></div>
+        <div class="clear"></div>
     </div>
-    <div class="footer-middle" style="position: relative; height: 300px;">
-        <img src="/web/images/web-footer.png" style="margin: 35px 20px 0 0; float: right; width: 500px;">
+    <div class="footer-middle">
+        <img id="footer-img" class="hidden-xs hidden-sm hidden-md" src="/web/images/web-footer.png" />
 
-        <div style="position: absolute; top: 20px; left: 10px;">
+        <div id="footer-first-block">
             <h2>Contact us</h2>
 
             <div>
-                <img style="width: 30px; margin: 0 5px 0 0;" src="/web/images/phone_white.png"/>(096) 374-9502
+                <img id="phone-img" src="/web/images/phone_white.png" />(096) 374-9502
             </div>
             <br/>
 
             <div>
-                <img style="width: 30px; margin: 0 5px 0 0;" src="/web/images/envelope.png"/>i.i.babko@gmail.com
+                <img id="envelope-img" src="/web/images/envelope.png"/>i.i.babko@gmail.com
             </div>
         </div>
-        <div style="position: absolute; top: 20px; left: 200px;">
+        <div id="footer-second-block">
             <h2>Websites</h2>
 
             <div class="list-group site_links">
@@ -191,7 +199,7 @@ $isRouteActive = function ($currentRoute) {
                 <a class="list-group-item" target="_blank" href="http://www.codecademy.com">CodeAcademy</a>
             </div>
         </div>
-        <div style="display: inline-block; position: absolute; top: 20px; left: 370px;">
+        <div id="footer-third-block">
             <h2>YouTube channels</h2>
 
             <div class="list-group channel_links">
@@ -205,9 +213,8 @@ $isRouteActive = function ($currentRoute) {
             </div>
         </div>
     </div>
-    <div class="footer-bottom" style="border-top: 1px solid white; background-color: #292929;">
-        <img style="width: 30px; margin: 0 5px 0 0" src="/web/images/copyright.png" alt="copyright">2015. All rights
-        reserved.
+    <div class="footer-bottom">
+        <img src="/web/images/copyright.png" alt="copyright">2015. All rights reserved.
     </div>
 </div>
 

@@ -3,7 +3,7 @@
 namespace Blog\Controllers;
 
 use Blog\Util;
-use CMS\Models\Category;
+use Blog\Models\Category;
 use Framework\Config\Config;
 use Framework\Controller\Controller;
 

@@ -1,23 +1,23 @@
 <?php $post = $this->post; ?>
     <div class="panel panel-black post-block">
         <div class="panel-heading panel-title">
-            <?= $post->getTitle(); ?><p class="text-right" style="font-size: 12px; padding: 0; margin: 0;">
+            <?= $post->getTitle(); ?><p class="text-right post-date">
                 <i><?= 'Date: '.$post->getPostedDate(); ?></i></p>
         </div>
         <div class="panel-body post-body">
             <?= html_entity_decode($post->getText()); ?>
         </div>
-        <div class="panel-footer" style="text-align: right;">
-            <a class='btn btn-default' style="color: black;" role='button'
+        <div class="panel-footer post-back">
+            <a class='btn btn-default' role='button'
                href='<?= isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:"/posts/0/1"; ?>'>Back</a>
         </div>
     </div>
     <h2>Comments(<?= $post->getAmountOfComments(); ?>):</h2>
 <?php if (isset($_SESSION['user'])) { ?>
 
-    <div id="comment_container">
+    <div>
         <input type="hidden" id="commentPost" value="<?= $post->getTitle(); ?>"/>
-        <textarea style="display: none;" id="hiddenEditor"></textarea>
+        <textarea id="hiddenEditor"></textarea>
 
         <div>
             <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor">
@@ -80,35 +80,39 @@
             <div id="editor">
             </div>
         </div>
-        <div style="text-align: right; margin: 5px 0;">
+        <div class="comment-button-div">
             <button id="commentButton" type="button" class="btn btn-success" disabled>Comment</button>
         </div>
     </div>
-<hr />
+    <hr/>
 <?php } else { ?>
     <div class='well well-sm' id="registerToLeaveComment">Only registered users can add comments!</div>
 <?php } ?>
 <?php
-foreach ($this->comments as $comment) { ?>
-    <div class="panel panel-default">
-        <div class="panel-heading panel-title" style="font-size: 18px; padding: 10px 5px 0 5px;">
-            <p style="float: left;"><?= $comment['author']; ?></p>
-            <sub style='float: right; font-size: 12px; font-style: italic;'><?= $comment['created_date']; ?></sub>
+foreach ($this->comments as $comment) {
+    ?>
+
+    <img class="user-picture img-rounded" src="<?= $comment['picture']; ?>" alt="user picture"/>
+    <div class="panel panel-default comment-block">
+        <div class="panel-heading panel-title comment-title">
+            <p><?= $comment['author']; ?> says:</p>
+            <sub><?= $comment['created_date']; ?></sub>
+
             <div class="clear"></div>
         </div>
-        <div class="panel-body" style="padding: 20px;">
+        <div class="panel-body comment-body">
             <?= $comment['text']; ?>
         </div>
 
         <?php
-            if (isset($_SESSION['user']) && $_SESSION['user']['name'] == $comment['author']) {
+        if (isset($_SESSION['user']) && $_SESSION['user']['name'] == $comment['author']) {
 
-                echo <<<HERE
-                    <div class="panel-footer" style="text-align: right; padding: 0;;">
-                        <button style="width: 70px; margin: 4px 2px" type="button" class="btn btn-danger delete_comment_button">Delete</button>
+            echo <<<HERE
+                    <div class="panel-footer comment-footer">
+                        <button type="button" class="btn btn-danger delete_comment_button">Delete</button>
                     </div>
 HERE;
-            }
+        }
         ?>
     </div>
 <?php } ?>

@@ -26,17 +26,18 @@ class CommentController extends Controller
         $post->save(array('title' => $postTitle));
 
         echo <<<HERE
-            <div class="panel panel-default">
-                <div class="panel-heading panel-title" style="font-size: 18px; padding: 10px 5px 0 5px;">
-                    <p style="float: left;">{$comment->getAuthor()}</p>
-                    <sub style='float: right; font-size: 12px; font-style: italic;'>{$comment->getCreatedDate()}</sub>
-                    <div class="clear">
+            <img class="user-picture img-rounded" src="{$_SESSION['user']['picture']}" alt="user picture" />
+            <div class="panel panel-default comment-block">
+                <div class="panel-heading panel-title comment-title">
+                    <p>{$comment->getAuthor()}</p>
+                    <sub>{$comment->getCreatedDate()}</sub>
+                    <div class="clear"></div>
                 </div>
-                </div><div class="panel-body" style="text-align: left; padding: 20px;">
+                <div class="panel-body comment-body">
                     {$comment->getText()}
                 </div>
-                <div class="panel-footer" style="text-align: right; padding: 0;">
-                    <button style="width: 70px; margin: 4px 2px" type="button" class="btn btn-danger delete_comment_button">Delete</button>
+                <div class="panel-footer comment-footer">
+                    <button type="button" class="btn btn-danger delete_comment_button">Delete</button>
                 </div>
             </div>
 HERE;

@@ -6,7 +6,7 @@
  * Time: 12:09 PM
  */
 
-namespace Blog\Models;
+namespace CMS\Models;
 
 use Exception;
 use Framework\Model\ActiveRecord;
@@ -27,6 +27,13 @@ class User extends ActiveRecord
     protected $_salt;
     protected $_role;
     protected $_joinedDate;
+
+    public function __construct($condition = null)
+    {
+        if (isset($condition)) {
+            $this->load($condition);
+        }
+    }
 
     public static function getTable()
     {

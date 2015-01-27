@@ -27,7 +27,7 @@ $(document).ready(function () {
             data: 'postTitle=' + postTitle + '&text=' + text,
             success: function (html) {
                 editor.val('');
-                commentButton.after(html);
+                commentButton.parent().parent().next().after(html);
             }
         });
     });
@@ -67,8 +67,8 @@ $(document).ready(function () {
             mode: "application/x-httpd-php",
             indentUnit: 4,
             indentWithTabs: true,
-            theme: 'twilight'
-            //readOnly: true
+            theme: 'twilight',
+            readOnly: true
         });
     }
 
