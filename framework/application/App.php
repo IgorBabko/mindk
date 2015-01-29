@@ -88,7 +88,8 @@ class App implements AppInterface
      *     - establishes app configurations;
      *     - sets exception handler for uncaught exceptions;
      *     - collects information about all needed services to successfully resolve all class dependencies;
-     *     - establishes database connection.
+     *     - establishes database connection
+     *     - starts session.
      *
      * @throws AppException    AppException    instance.
      * @throws ConfigException ConfigException instance.
@@ -266,6 +267,8 @@ class App implements AppInterface
         self::$_dbConnection = Service::resolve('dbConnection');
         ActiveRecord::setDbConnection(self::$_dbConnection);
         ActiveRecord::setQueryBuilder(Service::resolve('queryBuilder'));
+
+        Service::resolve('session')->start();
     }
 
     /**

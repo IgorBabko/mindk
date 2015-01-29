@@ -1,5 +1,5 @@
 <h2><?= $this->exception->getMessage() ?></h2>
-<table>
+<table class="exception_table">
     <tr>
         <td><strong>Code:</strong></td>
         <td><?= $this->exception->getCode() ?></td>

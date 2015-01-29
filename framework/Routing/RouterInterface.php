@@ -10,6 +10,7 @@
 
 namespace Framework\Routing;
 
+use Framework\Exception\ForbiddenException;
 use Framework\Exception\HttpNotFoundException;
 
 /**
@@ -69,6 +70,7 @@ interface RouterInterface
      * If method could not detect any valid route from routeCollection for specified url it throws an HttpNotFountException instance.
      *
      * @throws HttpNotFoundException HttpNotFoundException instance.
+     * @throws ForbiddenException    ForbiddenException    instance.
      *
      * @return \Framework\Routing\Route Route which will handle http request.
      */

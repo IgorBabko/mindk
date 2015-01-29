@@ -94,6 +94,15 @@ thead td {
     padding: 5px !important;
 }
 
+.exception_table {
+    font-size: 18px;
+}
+
+.exception_table strong {
+    text-decoration: none;
+    margin: 20px;
+}
+
 #main-menu {
     font-size: 18px;
 }
@@ -625,6 +634,10 @@ a {
 }
 
 /* Dashboard */
+
+#dashboardWelcome {
+    text-align: center;
+}
 
 .search-id {
     width: 80px !important;

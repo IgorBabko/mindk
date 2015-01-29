@@ -115,45 +115,49 @@ $isRouteActive = function ($currentRoute) {
         </form>
         <hr/>
         <ul id="nav-categories" class="nav nav-justified hidden-lg">
-            <?php
-            if ($this->activeRoute != 'home' && $this->activeRoute != 'posts') {
-                $categoryId = null;
-            } else {
-                $categoryId = (int)$_SESSION['categoryId'];
-            }
-            foreach ($this->categories as $category) {
-            ?><li role="presentation" <?= ($categoryId === (int)$category['id'])?'id="active_category"':''; ?> ><a href="<?= $this->router->generateRoute('posts', array('categoryId' => $category['id'], 'pageId' => 1)); ?>"><?= $category['name']; ?></a></li><?php } ?>
+            <?php if ($this->catigories != null) {
+                if ($this->activeRoute != 'home' && $this->activeRoute != 'posts') {
+                    $categoryId = null;
+                } else {
+                    $categoryId = (int)$_SESSION['categoryId'];
+                }
+                foreach ($this->categories as $category) { ?>
+                    <li role="presentation" <?= ($categoryId === (int)$category['id'])?'id="active_category"':''; ?> >
+                        <a href="<?= $this->router->generateRoute('posts', array('categoryId' => $category['id'], 'pageId' => 1)); ?>"><?= $category['name']; ?></a>
+                    </li>
+                <?php } ?>
+            <?php } ?>
         </ul>
         <?= $this->view; ?>
     </div>
     <div id="sidebar" class="hidden-xs hidden-sm hidden-md">
-        <div class="panel panel-black">
-            <div class="panel-heading panel-title">
-                Categories
-            </div>
+        <?php if ($this->categories != null) { ?>
+            <div class="panel panel-black">
+                <div class="panel-heading panel-title">
+                    Categories
+                </div>
 
-            <div class="panel-body">
-                <ul class="list-group" id="categories">
-                    <?php
-                    if ($this->activeRoute != 'home' && $this->activeRoute != 'posts') {
-                        $categoryId = null;
-                    } else {
-                        $categoryId = (int)$_SESSION['categoryId'];
-                    }
-                    foreach ($this->categories as $category) {
-                    ?>
-                        <a href="<?= $this->router->generateRoute(
-                            'posts',
-                            array('categoryId' => $category['id'], 'pageId' => 1)
-                        ); ?>">
-                            <li <?= ($categoryId === (int)$category['id'])?'id="active_category"':''; ?>
-                                class="list-group-item"><span
-                                    class="badge"><?= $category['count']; ?></span><?= $category['name']; ?></li>
-                        </a>
-                    <?php } ?>
-                </ul>
+                <div class="panel-body">
+                    <ul class="list-group" id="categories">
+                        <?php if ($this->activeRoute != 'home' && $this->activeRoute != 'posts') {
+                                $categoryId = null;
+                            } else {
+                                $categoryId = (int)$_SESSION['categoryId'];
+                            }
+                            foreach ($this->categories as $category) { ?>
+                                <a href="<?= $this->router->generateRoute(
+                                    'posts',
+                                    array('categoryId' => $category['id'], 'pageId' => 1)
+                                ); ?>">
+                                    <li <?= ($categoryId === (int)$category['id'])?'id="active_category"':''; ?>
+                                        class="list-group-item"><span class="badge"><?= $category['count']; ?></span><?= $category['name']; ?>
+                                    </li>
+                                </a>
+                        <?php } ?>
+                    </ul>
+                </div>
             </div>
-        </div>
+        <?php } ?>
         <img src="/web/images/pencils.png">
     </div>
     <div class="clear"></div>

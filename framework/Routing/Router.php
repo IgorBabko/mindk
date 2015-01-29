@@ -12,6 +12,7 @@
 namespace Framework\Routing;
 
 use Framework\DI\Service;
+use Framework\Exception\ForbiddenException;
 use Framework\Exception\RouterException;
 use Framework\Exception\HttpNotFoundException;
 use Framework\Template\TemplateEngine;
@@ -124,6 +125,8 @@ class Router implements RouterInterface
         $request = Service::resolve('request');
         $url     = '/'.trim($request->getURI(), '/');
 
+        $role = isset($_SESSION['user'])?strtoupper($_SESSION['user']['role']):'GUEST';
+
         $templateEngine = TemplateEngine::getInstance();
         $templateEngine->setData('router', $this);
         foreach ($this->_routeCollection->getRoutes() as $routeName => $routeInfo) {
@@ -161,6 +164,11 @@ class Router implements RouterInterface
                 $pattern = '/'.$pattern.'/';
 
                 if (preg_match($pattern, $url, $params) != 0) {
+
+                    if ($routeInfo->getSecurity() != null && !in_array($role, $routeInfo->getSecurity())) {
+                        throw new ForbiddenException(403, "Access denied");
+                    }
+
                     array_shift($params);
                     $routeInfo->setParameters($params);
                     $templateEngine->setData('activeRoute', $routeName);
@@ -170,6 +178,11 @@ class Router implements RouterInterface
             }
 
             if ($routeInfo->getPattern() === $url) {
+
+                if ($routeInfo->getSecurity() != null && !in_array($role, $routeInfo->getSecurity())) {
+                    throw new ForbiddenException(403, "Access denied");
+                }
+
                 $templateEngine->setData('activeRoute', $routeName);
                 return $routeInfo;
             }

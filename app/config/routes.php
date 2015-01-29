@@ -51,15 +51,11 @@ return array(
         'controller' => 'Blog\\Controllers\\PageController',
         'action'     => 'about'
     ),
-    'feedback'        => array(
-        'pattern'    => '/feedback',
-        'controller' => 'Blog\\Controllers\\PageController',
-        'action'     => 'feedback'
-    ),
     'dashboard'       => array(
         'pattern'    => '/dashboard',
         'controller' => 'CMS\\Controllers\\PageController',
-        'action'     => 'dashboard'
+        'action'     => 'dashboard',
+        'security'   => array('ADMIN')
     ),
     /* end pages */
 
@@ -205,7 +201,7 @@ return array(
         'action'        => 'delete',
         'security'      => array('ADMIN'),
         '_requirements' => array(
-            'id'      => '\d+'
+            'id' => '\d+'
         )
     ),
     /* end comments */
