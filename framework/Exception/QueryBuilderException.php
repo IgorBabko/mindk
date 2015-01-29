@@ -26,7 +26,7 @@ class QueryBuilderException extends FrameworkException
      * @param  int    $code    Exception code.
      * @param  string $message Exception message.
      *
-     * @return \Framework\Exception\QueryBuilderException QueryBuilderException instance.
+     * @return object QueryBuilderException.
      */
     function __construct($code, $message)
     {

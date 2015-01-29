@@ -26,7 +26,7 @@ class CsrfTokenException extends FrameworkException
      * @param  int    $code    Exception code.
      * @param  string $message Exception message.
      *
-     * @return \Framework\Exception\CsrfTokenException CsrfTokenException instance.
+     * @return object CsrfTokenException.
      */
     function __construct($code, $message)
     {

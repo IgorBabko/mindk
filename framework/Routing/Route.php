@@ -58,7 +58,7 @@ class Route implements RouteInterface
      *
      * @param  array $routeInfo Information of particular route.
      *
-     * @return \Framework\Routing\Route Route object.
+     * @return object Route.
      */
     public function __construct($routeInfo)
     {

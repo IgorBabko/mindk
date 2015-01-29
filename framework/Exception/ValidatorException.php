@@ -26,7 +26,7 @@ class ValidatorException extends FrameworkException
      * @param  int    $code    Exception code.
      * @param  string $message Exception message.
      *
-     * @return \Framework\Exception\ValidatorException ValidatorException instance.
+     * @return object ValidatorException.
      */
     function __construct($code, $message)
     {

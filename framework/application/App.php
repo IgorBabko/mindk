@@ -52,7 +52,7 @@ class App implements AppInterface
     /**
      * Method to get database connection.
      *
-     * @return SafeSql Database connection.
+     * @return object|null SafeSql object that represents database connection.
      */
     public static function getDbConnection()
     {

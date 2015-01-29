@@ -52,7 +52,7 @@ class Router implements RouterInterface
      *
      * @param  \Framework\Routing\RouteCollection|null $routeCollection Collection of all defined routes.
      *
-     * @return \Framework\Routing\Router Router object.
+     * @return object Router.
      */
     private function __construct($routeCollection = null)
     {
@@ -63,7 +63,7 @@ class Router implements RouterInterface
     /**
      * Method to clone objects of its class.
      *
-     * @return \Framework\Routing\Router Router instance.
+     * @return object Router.
      */
     private function __clone()
     {
@@ -75,7 +75,7 @@ class Router implements RouterInterface
      *
      * @param  \Framework\Routing\RouteCollection|null $routeCollection Collection of all defined routes.
      *
-     * @return \Framework\Routing\Router Router instance.
+     * @return object Router.
      */
     public static function getInstance($routeCollection = null)
     {

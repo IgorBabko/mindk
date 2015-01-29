@@ -55,7 +55,7 @@ class Form implements FormInterface
      * @param  ActiveRecord|null $model   Model that current Form object will represent.
      * @param  string|null       $context Context for form validation.
      *
-     * @return Form Form object.
+     * @return object Form.
      */
     public function __construct(ActiveRecord $model = null, $context = null)
     {

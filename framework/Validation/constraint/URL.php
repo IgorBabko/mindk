@@ -38,7 +38,7 @@ class URL extends Constraint
      * @param bool        $queryRequired Is query required for URL validation?
      * @param null|string $message       Error message.
      *
-     * @return URL URL object.
+     * @return object URL.
      */
     public function __construct($pathRequired = false, $queryRequired = false, $message = null)
     {

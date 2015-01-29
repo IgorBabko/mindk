@@ -26,7 +26,7 @@ class SessionException extends FrameworkException
      * @param  int    $code    Exception code.
      * @param  string $message Exception message.
      *
-     * @return \Framework\Exception\SessionException SessionException instance.
+     * @return object SessionException.
      */
     function __construct($code, $message)
     {

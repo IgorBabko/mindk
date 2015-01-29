@@ -64,7 +64,7 @@ class Database extends \PDO implements DatabaseInterface
      *
      * @throws DatabaseException DatabaseException instance.
      *
-     * @return Database Database object.
+     * @return object Database.
      */
     public function __construct($user, $pass, $db, $engine = "mysql", $host = "localhost", $charset = "utf8")
     {

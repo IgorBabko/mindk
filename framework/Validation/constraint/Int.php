@@ -26,7 +26,7 @@ class Int extends Constraint
      *
      * @param  null|string $message Error message.
      *
-     * @return \Framework\Validation\Constraint\Int Int object.
+     * @return object Int.
      */
     public function __construct($message = null)
     {

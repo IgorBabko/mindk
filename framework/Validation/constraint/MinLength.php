@@ -32,7 +32,7 @@ class MinLength extends Constraint
      * @param int         $min     Min allowed length.
      * @param null|string $message Error message.
      *
-     * @return MinLength MinLength object.
+     * @return object MinLength.
      */
     public function __construct($min, $message = null)
     {

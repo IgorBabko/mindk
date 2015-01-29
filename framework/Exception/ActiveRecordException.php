@@ -26,7 +26,7 @@ class ActiveRecordException extends FrameworkException
      * @param  int    $code    Exception code.
      * @param  string $message Exception message.
      *
-     * @return \Framework\Exception\ActiveRecordException ActiveRecordException instance.
+     * @return object ActiveRecordException.
      */
     function __construct($code, $message)
     {

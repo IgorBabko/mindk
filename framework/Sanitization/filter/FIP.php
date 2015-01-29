@@ -32,7 +32,7 @@ class FIP extends Filter
      *
      * @param  string $type Type of ip.
      *
-     * @return FIP FIP object.
+     * @return object FIP.
      */
     public function __construct($type = 'ipv4')
     {

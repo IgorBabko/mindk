@@ -25,7 +25,7 @@ class ConstraintException extends FrameworkException
      * @param  int    $code    Exception code
      * @param  string $message Exception message.
      *
-     * @return \Framework\Exception\ConstraintException ConstraintException instance.
+     * @return object ConstraintException.
      */
     function __construct($code, $message)
     {

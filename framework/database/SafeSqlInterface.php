@@ -30,7 +30,7 @@ interface SafeSqlInterface
     /**
      * Method to get sql data represented by PDOStatement taken by last 'SELECT' request.
      *
-     * @return \PDOStatement|null PDOStatement data taken by last 'SELECT' request.
+     * @return object|null PDOStatement data taken by last 'SELECT' request.
      */
     public function getSqlResultSet();
 

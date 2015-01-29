@@ -26,7 +26,7 @@ class ControllerException extends FrameworkException
      * @param  int    $code    Exception code.
      * @param  string $message Exception message.
      *
-     * @return \Framework\Exception\ControllerException ControllerException instance.
+     * @return object ControllerException.
      */
     function __construct($code, $message)
     {

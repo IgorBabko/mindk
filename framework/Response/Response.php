@@ -126,7 +126,7 @@ class Response implements ResponseInterface
      * @param  \Framework\Session\Session $session Session object.
      * @param  \Framework\Cookie\Cookie   $cookie  Cookie  object.
      *
-     * @return \Framework\Response\Response Response object.
+     * @return object Response.
      */
     private function __construct($session = null, $cookie = null)
     {
@@ -137,7 +137,7 @@ class Response implements ResponseInterface
     /**
      * Method to clone objects of its class.
      *
-     * @return \Framework\Response\Response Response instance.
+     * @return object Response.
      */
     private function __clone()
     {
@@ -150,7 +150,7 @@ class Response implements ResponseInterface
      * @param  \Framework\Session\Session $session Session object.
      * @param  \Framework\Cookie\Cookie   $cookie  Cookie  object.
      *
-     * @return \Framework\Response\Response Response instance.
+     * @return object Response.
      */
     public static function getInstance($session = null, $cookie = null)
     {

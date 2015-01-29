@@ -26,7 +26,7 @@ class Float extends Constraint
      *
      * @param  null|string $message Error message.
      *
-     * @return \Framework\Validation\Constraint\Float Float object.
+     * @return object Float.
      */
     public function __construct($message = null)
     {

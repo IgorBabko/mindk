@@ -23,7 +23,7 @@ return array(
         'login_route' => 'login'
     ),
     'pagination'              => array(
-        'items_per_page' => 4,
-        'visible_pages'  => 3
+        'items_per_page' => 3,
+        'visible_pages'  => 4
     )
 );

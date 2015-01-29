@@ -26,7 +26,7 @@ class FormException extends FrameworkException
      * @param  int    $code    Exception code.
      * @param  string $message Exception message.
      *
-     * @return \Framework\Exception\FormException FormException instance.
+     * @return object FormException.
      */
     function __construct($code, $message)
     {

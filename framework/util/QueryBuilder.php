@@ -106,7 +106,7 @@ class QueryBuilder
      *
      * @throws QueryBuilderException QueryBuilderException instance.
      *
-     * @return QueryBuilder          QueryBuilder object.
+     * @return object QueryBuilder.
      */
     public function createRawQuery($name)
     {
@@ -167,7 +167,7 @@ class QueryBuilder
      *
      * @throws QueryBuilderException QueryBuilderException instance.
      *
-     * @return QueryBuilder          QueryBuilder object.
+     * @return object QueryBuilder.
      */
     public function chooseRawQuery($name)
     {
@@ -189,7 +189,7 @@ class QueryBuilder
     /**
      * @throws QueryBuilderException QueryBuilderException instance.
      *
-     * @return QueryBuilder          QueryBuilder object.
+     * @return object QueryBuilder.
      */
     public function removeRawQuery()
     {
@@ -210,7 +210,7 @@ class QueryBuilder
      *
      * @throws QueryBuilderException QueryBuilderException instance.
      *
-     * @return QueryBuilder          QueryBuilder object.
+     * @return object QueryBuilder.
      */
     public function select($columns = '*', $tableName)
     {
@@ -244,7 +244,7 @@ class QueryBuilder
      *
      * @throws QueryBuilderException QueryBuilderException instance.
      *
-     * @return QueryBuilder          QueryBuilder object.
+     * @return object QueryBuilder.
      */
     public function insert($tableName, $pairs)
     {
@@ -284,7 +284,7 @@ class QueryBuilder
      *
      * @throws QueryBuilderException QueryBuilderException instance.
      *
-     * @return QueryBuilder          QueryBuilder object.
+     * @return object QueryBuilder.
      */
     public function update($tableName, $pairs)
     {
@@ -317,7 +317,7 @@ class QueryBuilder
      *
      * @throws QueryBuilderException QueryBuilderException instance.
      *
-     * @return QueryBuilder          QueryBuilder object.
+     * @return object QueryBuilder.
      */
     public function delete($tableName)
     {
@@ -339,7 +339,7 @@ class QueryBuilder
      *
      * @throws QueryBuilderException QueryBuilderException instance.
      *
-     * @return QueryBuilder          QueryBuilder object.
+     * @return object QueryBuilder.
      */
     public function where($columnName = null, $operator = null, $columnValue = null)
     {
@@ -377,7 +377,7 @@ class QueryBuilder
      *
      * @throws QueryBuilderException QueryBuilderException instance.
      *
-     * @return QueryBuilder          QueryBuilder object.
+     * @return object QueryBuilder.
      */
     public function addOR($columnName = null, $operator = null, $columnValue = null)
     {
@@ -415,7 +415,7 @@ class QueryBuilder
      *
      * @throws QueryBuilderException QueryBuilderException instance.
      *
-     * @return QueryBuilder          QueryBuilder object.
+     * @return object QueryBuilder.
      */
     public function addAND($columnName = null, $operator = null, $columnValue = null)
     {
@@ -452,7 +452,7 @@ class QueryBuilder
      *
      * @throws QueryBuilderException QueryBuilderException instance.
      *
-     * @return QueryBuilder          QueryBuilder object.
+     * @return object QueryBuilder.
      */
     public function isNULL($columnName, $not = false)
     {
@@ -484,7 +484,7 @@ class QueryBuilder
      *
      * @throws QueryBuilderException QueryBuilderException instance.
      *
-     * @return QueryBuilder          QueryBuilder object.
+     * @return object QueryBuilder.
      */
     public function between($columnName, $begin, $end, $not = false)
     {
@@ -516,7 +516,7 @@ class QueryBuilder
      *
      * @throws QueryBuilderException QueryBuilderException instance.
      *
-     * @return QueryBuilder          QueryBuilder object.
+     * @return object QueryBuilder.
      */
     public function groupBy($groupBy)
     {
@@ -538,7 +538,7 @@ class QueryBuilder
      *
      * @throws QueryBuilderException QueryBuilderException instance.
      *
-     * @return QueryBuilder          QueryBuilder object.
+     * @return object QueryBuilder.
      */
     public function like($columnName, $columnValue, $not = false)
     {
@@ -565,7 +565,7 @@ class QueryBuilder
      *
      * @throws QueryBuilderException QueryBuilderException instance.
      *
-     * @return QueryBuilder          QueryBuilder object.
+     * @return object QueryBuilder.
      */
     public function in($columnName, $in, $not = false)
     {
@@ -605,7 +605,7 @@ class QueryBuilder
      *
      * @throws QueryBuilderException QueryBuilderException instance.
      *
-     * @return QueryBuilder          QueryBuilder object.
+     * @return object QueryBuilder.
      */
     public function orderBy($orderBy)
     {
@@ -625,7 +625,7 @@ class QueryBuilder
      *
      * @throws QueryBuilderException QueryBuilderException instance.
      *
-     * @return QueryBuilder          QueryBuilder object.
+     * @return object QueryBuilder.
      */
     public function order($order = "DESC")
     {
@@ -648,7 +648,7 @@ class QueryBuilder
      *
      * @throws QueryBuilderException QueryBuilderException instance.
      *
-     * @return QueryBuilder          QueryBuilder object.
+     * @return object QueryBuilder.
      */
     public function limit($limit)
     {

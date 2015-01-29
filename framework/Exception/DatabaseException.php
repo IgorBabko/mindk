@@ -26,7 +26,7 @@ class DatabaseException extends FrameworkException
      * @param  int    $code    Exception code.
      * @param  string $message Exception message.
      *
-     * @return \Framework\Exception\DatabaseException DatabaseException instance.
+     * @return object DatabaseException.
      */
     function __construct($code, $message)
     {

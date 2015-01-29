@@ -70,7 +70,7 @@ class Cookie implements CookieInterface
     /**
      * Cookie constructor.
      *
-     * @return \Framework\Cookie\Cookie Cookie object.
+     * @return object Cookie.
      */
     private function __construct()
     {
@@ -79,7 +79,7 @@ class Cookie implements CookieInterface
     /**
      * Method to clone objects of its class.
      *
-     * @return \Framework\Cookie\Cookie Cookie instance.
+     * @return object Cookie.
      */
     private function __clone()
     {
@@ -89,7 +89,7 @@ class Cookie implements CookieInterface
      * Method returns Cookie instance creating it if it's not been instantiated before
      * otherwise existed Cookie object will be returned.
      *
-     * @return \Framework\Cookie\Cookie Cookie instance.
+     * @return object Cookie.
      */
     public static function getInstance()
     {

@@ -50,7 +50,7 @@ interface ExceptionHandlerInterface
     /**
      * Method to get occurred exception.
      *
-     * @return \Framework\Exception\FrameworkException|null Occurred exception.
+     * @return object|null Framework exception.
      */
     public static function getException();
 }

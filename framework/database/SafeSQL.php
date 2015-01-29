@@ -70,7 +70,7 @@ class SafeSql extends Database implements SafeSqlInterface
      * @param  string $pass User password.
      * @param  string $charset Charset.
      *
-     * @return SafeSql SafeSql instance.
+     * @return object SafeSql.
      */
     public function __construct($user, $pass, $db, $engine = "mysql", $host = "localhost", $charset = "utf8")
     {

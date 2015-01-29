@@ -36,7 +36,7 @@ class FFloat extends Filter
      * @param bool $allowedFraction   Defines whether allow fraction or not.
      * @param bool $allowedScientific Defines whether allow scientific (E) notation or not.
      *
-     * @return FFloat FFloat object.
+     * @return object FFloat.
      */
     public function __construct($allowedFraction = true, $allowedScientific = true)
     {

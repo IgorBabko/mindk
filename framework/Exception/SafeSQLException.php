@@ -26,7 +26,7 @@ class SafeSqlException extends FrameworkException
      * @param  int    $code    Exception code.
      * @param  string $message Exception message.
      *
-     * @return \Framework\Exception\SafeSqlException SafeSqlException instance.
+     * @return object SafeSqlException.
      */
     function __construct($code, $message)
     {

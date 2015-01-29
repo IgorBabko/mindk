@@ -32,7 +32,7 @@ class Phone extends Constraint
      * @param  null|string $pattern Pattern for phone validation.
      * @param  null|string $message Error message.
      *
-     * @return Phone Phone object.
+     * @return object Phone.
      */
     public function __construct($pattern = null, $message = null)
     {

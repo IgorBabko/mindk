@@ -26,7 +26,7 @@ class NotBlank extends Constraint
      *
      * @param  null|string $message Error message.
      *
-     * @return NotBlank NotBlank object.
+     * @return object NotBlank.
      */
     public function __construct($message = null)
     {

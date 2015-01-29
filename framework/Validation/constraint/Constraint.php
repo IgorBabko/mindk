@@ -30,7 +30,7 @@ abstract class Constraint implements ConstraintInterface
      *
      * @param  string $message Error message.
      *
-     * @return Constraint Constraint object.
+     * @return object Constraint.
      */
     public function __construct($message = '')
     {

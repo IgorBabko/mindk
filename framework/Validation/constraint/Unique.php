@@ -45,7 +45,7 @@ class Unique extends Constraint
      * @param  null|array  $allowedValues Values that are allowed to be repeated.
      * @param  null|string $message       Error message.
      *
-     * @return Unique Unique object.
+     * @return object Unique.
      */
     public function __construct($tableName, $fieldName, $allowedValues = null, $message = null)
     {

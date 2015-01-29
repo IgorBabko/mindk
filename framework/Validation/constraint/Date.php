@@ -33,7 +33,7 @@ class Date extends Constraint
      * @param  null|string $pattern Pattern for validation.
      * @param  string      $message Error message.
      *
-     * @return Date Date object.
+     * @return object Date.
      */
     public function __construct($pattern = null, $message = null)
     {

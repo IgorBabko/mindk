@@ -26,7 +26,7 @@ class Alpha extends Constraint
      *
      * @param  string $message Error message.
      *
-     * @return Alpha Alpha object.
+     * @return object Alpha.
      */
     public function __construct($message = " must be alphabetic")
     {

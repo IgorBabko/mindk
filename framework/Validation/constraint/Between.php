@@ -38,7 +38,7 @@ class Between extends Constraint
      * @param float|int   $max     End point of range.
      * @param null|string $message Error message.
      *
-     * @return Between Between object.
+     * @return object Between.
      */
     public function __construct($min, $max, $message = null)
     {

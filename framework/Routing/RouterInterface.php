@@ -26,7 +26,7 @@ interface RouterInterface
     /**
      * Method to get route collection.
      *
-     * @return RouteCollection|null Route collection.
+     * @return object|null Route collection.
      */
     public function getRouteCollection();
 
@@ -72,7 +72,7 @@ interface RouterInterface
      * @throws HttpNotFoundException HttpNotFoundException instance.
      * @throws ForbiddenException    ForbiddenException    instance.
      *
-     * @return \Framework\Routing\Route Route which will handle http request.
+     * @return object Route which will handle http request.
      */
     public function matchCurrentRequest();
 

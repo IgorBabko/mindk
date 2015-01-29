@@ -32,7 +32,7 @@ class ResponseRedirect implements ResponseRedirectInterface
     /**
      * ResponseRedirect constructor.
      *
-     * @return \Framework\Response\ResponseRedirect ResponseRedirect object.
+     * @return object ResponseRedirect.
      */
     private function __construct()
     {
@@ -41,7 +41,7 @@ class ResponseRedirect implements ResponseRedirectInterface
     /**
      * Method to clone objects of its class.
      *
-     * @return \Framework\Response\ResponseRedirect ResponseRedirect instance.
+     * @return object ResponseRedirect.
      */
     private function __clone()
     {
@@ -51,7 +51,7 @@ class ResponseRedirect implements ResponseRedirectInterface
      * Method returns ResponseRedirect instance creating it if it's not been instantiated before
      * otherwise existed ResponseRedirect object will be returned.
      *
-     * @return \Framework\Response\ResponseRedirect ResponseRedirect instance.
+     * @return object ResponseRedirect.
      */
     public static function getInstance()
     {

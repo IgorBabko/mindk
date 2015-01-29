@@ -51,7 +51,6 @@ abstract class Controller implements ControllerInterface
      */
     protected $_router;
 
-    //@TODO
     /**
      * Controller constructor injects all needed dependencies.
      *
@@ -62,7 +61,9 @@ abstract class Controller implements ControllerInterface
      * @param  JsonResponse     $jsonResponse     JsonResponse     object.
      * @param  ResponseRedirect $responseRedirect ResponseRedirect object.
      *
-     * @return Controller Controller object.
+     * @throws \Framework\Exception\ServiceException ServiceException instance.
+     *
+     * @return object Controller instance.
      */
     public function __construct(
         Router $router = null,
@@ -83,7 +84,7 @@ abstract class Controller implements ControllerInterface
     /**
      * Method to get Request object.
      *
-     * @return Request|null Request object.
+     * @return object|null Request.
      */
     public function getRequest()
     {
@@ -97,7 +98,7 @@ abstract class Controller implements ControllerInterface
      *
      * @throws ControllerException ControllerException instance.
      *
-     * @return Controller Controller object.
+     * @return object Controller instance.
      */
     public function setRequest($request)
     {
@@ -115,7 +116,7 @@ abstract class Controller implements ControllerInterface
     /**
      * Method to get Response object.
      *
-     * @return Response|null Response object.
+     * @return object|null Response.
      */
     public function getResponse()
     {
@@ -129,7 +130,7 @@ abstract class Controller implements ControllerInterface
      *
      * @throws ControllerException ControllerException instance.
      *
-     * @return Controller Controller object.
+     * @return object Controller instance.
      */
     public function setResponse($response)
     {
@@ -147,7 +148,7 @@ abstract class Controller implements ControllerInterface
     /**
      * Method to get Router object.
      *
-     * @return Router|null Router object.
+     * @return object|null Router.
      */
     public function getRouter()
     {
@@ -161,7 +162,7 @@ abstract class Controller implements ControllerInterface
      *
      * @throws ControllerException ControllerException instance.
      *
-     * @return Controller Controller object.
+     * @return object Controller instance.
      */
     public function setRouter($router)
     {
@@ -179,7 +180,7 @@ abstract class Controller implements ControllerInterface
     /**
      * Method to get TemplateEngine object.
      *
-     * @return TemplateEngine|null TemplateEngine object.
+     * @return object|null TemplateEngine.
      */
     public function getTemplateEngine()
     {
@@ -193,7 +194,7 @@ abstract class Controller implements ControllerInterface
      *
      * @throws ControllerException ControllerException instance.
      *
-     * @return Controller Controller object.
+     * @return object Controller instance.
      */
     public function setTemplateEngine($templateEngine)
     {
@@ -211,7 +212,7 @@ abstract class Controller implements ControllerInterface
     /**
      * Method to get JsonResponse object.
      *
-     * @return JsonResponse|null JsonResponse object.
+     * @return object|null JsonResponse.
      */
     public function getJsonResponse()
     {
@@ -225,7 +226,7 @@ abstract class Controller implements ControllerInterface
      *
      * @throws ControllerException ControllerException instance.
      *
-     * @return Controller Controller object.
+     * @return object Controller instance.
      */
     public function setJsonResponse($jsonResponse)
     {
@@ -243,7 +244,7 @@ abstract class Controller implements ControllerInterface
     /**
      * Method to get ResponseRedirect object.
      *
-     * @return ResponseRedirect|null ResponseRedirect object.
+     * @return object|null ResponseRedirect.
      */
     public function getResponseRedirect()
     {
@@ -257,7 +258,7 @@ abstract class Controller implements ControllerInterface
      *
      * @throws ControllerException ControllerException instance.
      *
-     * @return Controller Controller object.
+     * @return object Controller instance.
      */
     public function setResponseRedirect($responseRedirect)
     {

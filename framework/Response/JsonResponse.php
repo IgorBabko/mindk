@@ -32,7 +32,7 @@ class JsonResponse implements JsonResponseInterface
     /**
      * JsonResponse constructor.
      *
-     * @return \Framework\Response\JsonResponse JsonResponse object.
+     * @return object JsonResponse.
      */
     private function __construct()
     {
@@ -41,7 +41,7 @@ class JsonResponse implements JsonResponseInterface
     /**
      * Method to clone objects of its class.
      *
-     * @return \Framework\Response\JsonResponse JsonResponse instance.
+     * @return object JsonResponse.
      */
     private function __clone()
     {
@@ -51,7 +51,7 @@ class JsonResponse implements JsonResponseInterface
      * Method returns JsonResponse instance creating it if it's not been instantiated before
      * otherwise existed JsonResponse object will be returned.
      *
-     * @return \Framework\Response\JsonResponse JsonResponse instance.
+     * @return object JsonResponse.
      */
     public static function getInstance()
     {

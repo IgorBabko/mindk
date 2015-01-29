@@ -26,7 +26,7 @@ class XssDefenderException extends FrameworkException
      * @param  int    $code    Exception code.
      * @param  string $message Exception message.
      *
-     * @return \Framework\Exception\XssDefenderException XssDefenderException instance.
+     * @return object XssDefenderException.
      */
     function __construct($code, $message)
     {

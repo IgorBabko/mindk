@@ -31,7 +31,7 @@ class FPhone extends Filter
      *
      * @param  array $allowedSymbols Allowed characters.
      *
-     * @return FPhone FPhone instance.
+     * @return object FPhone.
      */
     public function __construct($allowedSymbols = array())
     {

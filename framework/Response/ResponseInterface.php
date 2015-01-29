@@ -60,14 +60,14 @@ interface ResponseInterface
     /**
      * Method to get cookie object.
      *
-     * @return \Framework\Cookie\Cookie Cookie object.
+     * @return object Cookie.
      */
     public function getCookieObject();
 
     /**
      * Method to get session object.
      *
-     * @return \Framework\Session\Session Session object.
+     * @return object Session.
      */
     public function getSessionObject();
 
@@ -272,7 +272,7 @@ interface ResponseInterface
      *
      * @param  \DateTime|string|int|null $time Time to convert to DateTime object.
      *
-     * @return \DateTime DateTime object.
+     * @return object DateTime.
      */
     public function _getUTCDate($time);
 

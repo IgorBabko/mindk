@@ -31,7 +31,7 @@ class FHtmlTag extends Filter
      *
      * @param  array $allowedHtmlTags Allowed html tags.
      *
-     * @return FHtmlTag FHtmlTag object.
+     * @return object FHtmlTag.
      */
     public function __construct($allowedHtmlTags = array())
     {

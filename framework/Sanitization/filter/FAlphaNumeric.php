@@ -31,7 +31,7 @@ class FAlphaNumeric extends Filter
      *
      * @param  array $allowedSymbols Allowed characters.
      *
-     * @return FAlphaNumeric object.
+     * @return object FAlphaNumeric.
      */
     public function __construct($allowedSymbols = array())
     {

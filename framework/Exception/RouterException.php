@@ -26,7 +26,7 @@ class RouterException extends FrameworkException
      * @param  int    $code    Exception code.
      * @param  string $message Exception message.
      *
-     * @return \Framework\Exception\RouterException RouterException instance.
+     * @return object RouterException.
      */
     function __construct($code, $message)
     {

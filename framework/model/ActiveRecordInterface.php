@@ -27,14 +27,14 @@ interface ActiveRecordInterface
     /**
      * Method to get database connection.
      *
-     * @return SafeSQL Database connection.
+     * @return object SafeSql database connection.
      */
     public static function getDbConnection();
 
     /**
      * Method to get query builder.
      *
-     * @return QueryBuilder QueryBuilder object.
+     * @return object QueryBuilder.
      */
     public static function getQueryBuilder();
 
@@ -107,7 +107,7 @@ interface ActiveRecordInterface
      *
      * @throws \Framework\Exception\ActiveRecordException ActiveRecordException instance.
      *
-     * @return ActiveRecord ActiveRecord object.
+     * @return object ActiveRecord.
      */
     public function load($columns);
 
@@ -121,7 +121,7 @@ interface ActiveRecordInterface
      *
      * @throws \Framework\Exception\ActiveRecordException ActiveRecordException instance.
      *
-     * @return ActiveRecord ActiveRecord object.
+     * @return object ActiveRecord.
      */
     public function save($columns);
 
@@ -129,7 +129,7 @@ interface ActiveRecordInterface
      * Method to remove record from ActiveRecord::getTable() table
      * represented by current ActiveRecord object.
      *
-     * @return ActiveRecord ActiveRecord object.
+     * @return object ActiveRecord.
      */
     public function remove();
 

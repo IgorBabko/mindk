@@ -26,7 +26,7 @@ class HttpNotFoundException extends FrameworkException
      * @param  int    $code    Exception code.
      * @param  string $message Exception message.
      *
-     * @return \Framework\Exception\HttpNotFoundException HttpNotFoundException instance.
+     * @return object HttpNotFoundException.
      */
     function __construct($code, $message)
     {

@@ -26,7 +26,7 @@ class ConfigException extends FrameworkException
      * @param  int    $code    Exception code.
      * @param  string $message Exception message.
      *
-     * @return \Framework\Exception\ConfigException ConfigException instance.
+     * @return object ConfigException.
      */
     function __construct($code, $message)
     {

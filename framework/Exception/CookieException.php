@@ -26,7 +26,7 @@ class CookieException extends FrameworkException
      * @param  int    $code    Exception code.
      * @param  string $message Exception message.
      *
-     * @return \Framework\Exception\CookieException CookieException instance.
+     * @return object CookieException.
      */
     function __construct($code, $message)
     {

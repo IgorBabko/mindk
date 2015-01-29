@@ -32,7 +32,7 @@ class IP extends Constraint
      * @param  string      $ipType  Type of IP.
      * @param  null|string $message Error message.
      *
-     * @return IP IP object.
+     * @return object IP.
      */
     public function __construct($ipType, $message = null)
     {

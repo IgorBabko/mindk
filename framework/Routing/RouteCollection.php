@@ -36,7 +36,7 @@ class RouteCollection implements RouteCollectionInterface
     /**
      * RouteCollection constructor.
      *
-     * @return \Framework\Routing\RouteCollection RouteCollection object.
+     * @return object RouteCollection.
      */
     private function __construct()
     {
@@ -45,7 +45,7 @@ class RouteCollection implements RouteCollectionInterface
     /**
      * Method to clone objects of its class.
      *
-     * @return \Framework\Routing\RouteCollection RouteCollection instance.
+     * @return object RouteCollection.
      */
     private function __clone()
     {
@@ -55,7 +55,7 @@ class RouteCollection implements RouteCollectionInterface
      * Method returns RouteCollection instance creating it if it's not been instantiated before
      * otherwise existed RouteCollection object will be returned.
      *
-     * @return \Framework\Routing\RouteCollection RouteCollection instance.
+     * @return object RouteCollection.
      */
     public static function getInstance()
     {

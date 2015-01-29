@@ -32,7 +32,7 @@ class InList extends Constraint
      * @param  array       $list    List of allowed values.
      * @param  null|string $message Error message.
      *
-     * @return InList InList object.
+     * @return object InList.
      */
     public function __construct($list = array(), $message = null)
     {

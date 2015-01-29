@@ -26,7 +26,7 @@ class TemplateEngineException extends FrameworkException
      * @param  int    $code    Exception code.
      * @param  string $message Exception message.
      *
-     * @return \Framework\Exception\TemplateEngineException TemplateEngineException instance.
+     * @return object TemplateEngineException.
      */
     function __construct($code, $message)
     {

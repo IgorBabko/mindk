@@ -25,7 +25,7 @@ class AppException extends FrameworkException
      * @param  int    $code    Exception code
      * @param  string $message Exception message.
      *
-     * @return \Framework\Exception\AppException AppException instance.
+     * @return object AppException.
      */
     function __construct($code, $message)
     {

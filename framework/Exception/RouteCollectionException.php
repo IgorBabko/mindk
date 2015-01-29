@@ -26,7 +26,7 @@ class RouteCollectionException extends FrameworkException
      * @param  int    $code    Exception code.
      * @param  string $message Exception message.
      *
-     * @return \Framework\Exception\RouteCollectionException RouteCollectionException instance.
+     * @return object RouteCollectionException.
      */
     function __construct($code, $message)
     {

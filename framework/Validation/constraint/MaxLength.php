@@ -32,7 +32,7 @@ class MaxLength extends Constraint
      * @param  int         $max     Max allowed length.
      * @param  null|string $message Error message.
      *
-     * @return MaxLength MaxLength object.
+     * @return object MaxLength.
      */
     public function __construct($max, $message = null)
     {

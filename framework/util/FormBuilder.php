@@ -135,7 +135,7 @@ class FormBuilder
      * @throws FormBuilderException FormBuilderException instance.
      * @throws ValidatorException   ValidatorException   instance.
      *
-     * @return FormBuilder FormBuilder object.
+     * @return object FormBuilder.
      */
     public function createForm($name, $attrs = array())
     {
@@ -172,7 +172,7 @@ class FormBuilder
      *
      * @throws FormBuilderException FormBuilderException instance.
      *
-     * @return FormBuilder FormBuilder object.
+     * @return object FormBuilder.
      */
     public function closeForm()
     {
@@ -195,7 +195,7 @@ class FormBuilder
      * @throws FormBuilderException FormBuilderException instance.
      * @throws ValidatorException   ValidatorException   instance.
      *
-     * @return FormBuilder FormBuilder object.
+     * @return object FormBuilder.
      */
     public function chooseForm($name)
     {
@@ -219,7 +219,7 @@ class FormBuilder
      *
      * @throws FormBuilderException FormBuilderException instance.
      *
-     * @return FormBuilder FormBuilder object.
+     * @return object FormBuilder.
      */
     public function removeForm()
     {
@@ -393,7 +393,7 @@ class FormBuilder
      *
      * @throws FormBuilderException FormBuilderException instance.
      *
-     * @return FormBuilder FormBuilder object.
+     * @return object FormBuilder.
      */
     public function input($attrs = array(), $label = null)
     {
@@ -429,7 +429,7 @@ class FormBuilder
      *
      * @throws FormBuilderException FormBuilderException instance.
      *
-     * @return FormBuilder FormBuilder object.
+     * @return object FormBuilder.
      */
     public function select($options, $attrs = array(), $label = null)
     {
@@ -493,7 +493,7 @@ class FormBuilder
      *
      * @throws FormBuilderException FormBuilderException instance.
      *
-     * @return FormBuilder FormBuilder object.
+     * @return object FormBuilder.
      */
     public function textarea($attrs = array(), $label = null)
     {
@@ -536,7 +536,7 @@ class FormBuilder
      *
      * @throws FormBuilderException FormBuilderException instance.
      *
-     * @return FormBuilder FormBuilder object.
+     * @return object FormBuilder.
      */
     public function fieldset($legend = null)
     {
@@ -564,7 +564,7 @@ class FormBuilder
      *
      * @throws FormBuilderException FormBuilderException instance.
      *
-     * @return FormBuilder FormBuilder object.
+     * @return object FormBuilder.
      */
     public function endFieldset()
     {

@@ -26,7 +26,7 @@ abstract class FrameworkException extends \Exception implements FrameworkExcepti
      * @param  int    $code    Exception code.
      * @param  string $message Exception message.
      *
-     * @return \Framework\Exception\FrameworkException FrameworkException instance.
+     * @return object FrameworkException.
      */
     public function __construct($code, $message)
     {

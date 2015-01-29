@@ -26,7 +26,7 @@ class Numeric extends Constraint
      *
      * @param  null|string $message Error message.
      *
-     * @return Numeric Numeric object.
+     * @return object Numeric.
      */
     public function __construct($message = null)
     {

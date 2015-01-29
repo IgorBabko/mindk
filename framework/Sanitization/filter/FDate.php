@@ -31,7 +31,7 @@ class FDate extends Filter
      *
      * @param  array $allowedSymbols Array of allowed characters.
      *
-     * @return FDate FDate object.
+     * @return object FDate.
      */
     public function __construct($allowedSymbols = array())
     {

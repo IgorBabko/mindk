@@ -32,7 +32,7 @@ class RegExp extends Constraint
      * @param  string      $pattern Regular expression for validation.
      * @param  null|string $message Error message.
      *
-     * @return RegExp RegExp object.
+     * @return object RegExp.
      */
     public function __construct($pattern, $message = null)
     {

@@ -40,7 +40,7 @@ class Loader implements LoaderInterface
     /**
      * Loader constructor.
      *
-     * @return \Framework\Loader\Loader Loader object.
+     * @return object Loader.
      */
     private function __construct()
     {
@@ -49,7 +49,7 @@ class Loader implements LoaderInterface
     /**
      * Method to clone objects of its class.
      *
-     * @return \Framework\Loader\Loader Loader instance.
+     * @return object Loader.
      */
     private function __clone()
     {
@@ -59,7 +59,7 @@ class Loader implements LoaderInterface
      * Method returns Loader instance creating it if it's not been instantiated before
      * otherwise existed Loader object will be returned.
      *
-     * @return \Framework\Loader\Loader Loader instance.
+     * @return object Loader.
      */
     public static function getInstance()
     {

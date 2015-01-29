@@ -26,7 +26,7 @@ class LoaderException extends FrameworkException
      * @param  int    $code    Exception code.
      * @param  string $message Exception message.
      *
-     * @return \Framework\Exception\LoaderException LoaderException instance.
+     * @return object LoaderException.
      */
     function __construct($code, $message)
     {

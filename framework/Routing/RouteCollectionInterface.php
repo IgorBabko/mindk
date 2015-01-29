@@ -45,7 +45,7 @@ interface RouteCollectionInterface
      *
      * @throws \Framework\Exception\RouteCollectionException RouteCollectionException instance.
      *
-     * @return Route Route object that represents info of current route.
+     * @return object Route object that represents info of current route.
      */
     public function getRoute($routeName);
 

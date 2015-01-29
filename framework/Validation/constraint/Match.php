@@ -32,7 +32,7 @@ class Match extends Constraint
      * @param  string $equalValue Value to compare with.
      * @param  null   $message    Error message.
      *
-     * @return Match  Match object.
+     * @return object Match.
      */
     public function __construct($equalValue, $message = null)
     {

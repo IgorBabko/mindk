@@ -32,7 +32,7 @@ class True extends Constraint
      * @param  array       $booleanList Array of values that represent 'true'.
      * @param  null|string $message     Error message.
      *
-     * @return \Framework\Validation\Constraint\True True object.
+     * @return object True.
      */
     public function __construct($booleanList = array('1', 'true', 'yes', 'on'), $message = null)
     {

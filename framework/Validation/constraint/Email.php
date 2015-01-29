@@ -26,7 +26,7 @@ class Email extends Constraint
      *
      * @param  string $message Error message.
      *
-     * @return Email Email object.
+     * @return object Email.
      */
     public function __construct($message = null)
     {

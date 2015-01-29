@@ -81,7 +81,7 @@ class Request implements RequestInterface
      * @param  \Framework\Session\Session|null $session Session object.
      * @param  \Framework\Cookie\Cookie|null   $cookie  Cookie  object.
      *
-     * @return \Framework\Request\Request Request object.
+     * @return object Request.
      */
     private function __construct($session = null, $cookie = null)
     {
@@ -95,7 +95,7 @@ class Request implements RequestInterface
     /**
      * Method to clone objects of its class.
      *
-     * @return \Framework\Request\Request Request instance.
+     * @return object Request.
      */
     private function __clone()
     {
@@ -108,7 +108,7 @@ class Request implements RequestInterface
      * @param  \Framework\Session\Session|null $session Session object.
      * @param  \Framework\Cookie\Cookie|null   $cookie  Cookie  object.
      *
-     * @return \Framework\Request\Request Request instance.
+     * @return object Request.
      */
     public static function getInstance($session = null, $cookie = null)
     {

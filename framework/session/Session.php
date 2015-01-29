@@ -41,7 +41,7 @@ class Session implements SessionInterface
     /**
      * Session constructor.
      *
-     * @return \Framework\Session\Session Session object.
+     * @return object Session.
      */
     private function __construct()
     {
@@ -50,7 +50,7 @@ class Session implements SessionInterface
     /**
      * Method to clone objects of its class.
      *
-     * @return \Framework\Session\Session Session instance.
+     * @return object Session.
      */
     private function __clone()
     {
@@ -60,7 +60,7 @@ class Session implements SessionInterface
      * Method returns Session instance creating it if it's not been instantiated before
      * otherwise existed Session object will be returned.
      *
-     * @return \Framework\Session\Session Session instance.
+     * @return object Session.
      */
     public static function getInstance()
     {

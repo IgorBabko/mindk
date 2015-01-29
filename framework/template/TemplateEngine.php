@@ -38,7 +38,7 @@ class TemplateEngine implements TemplateEngineInterface
     /**
      * Method to clone objects of its class.
      *
-     * @return \Framework\Template\TemplateEngine TemplateEngine instance.
+     * @return object TemplateEngine.
      */
     private function __clone()
     {
@@ -48,7 +48,7 @@ class TemplateEngine implements TemplateEngineInterface
      * Method returns TemplateEngine instance creating it if it's not been instantiated before
      * otherwise existed TemplateEngine object will be returned.
      *
-     * @return \Framework\Template\TemplateEngine TemplateEngine instance.
+     * @return object TemplateEngine.
      */
     public static function getInstance()
     {

@@ -31,7 +31,7 @@ class FTime extends Filter
      *
      * @param  array $allowedSymbols Allowed characters.
      *
-     * @return FTime FTime object.
+     * @return object FTime.
      */
     public function __construct($allowedSymbols = array())
     {

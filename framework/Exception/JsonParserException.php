@@ -25,7 +25,7 @@ class JsonParserException extends FrameworkException
      * @param  int    $code    Exception code.
      * @param  string $message Exception message.
      *
-     * @return \Framework\Exception\JsonParserException JsonParserException instance.
+     * @return object JsonParserException.
      */
     function __construct($code, $message)
     {

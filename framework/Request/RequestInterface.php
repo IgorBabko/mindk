@@ -63,14 +63,14 @@ interface RequestInterface
     /**
      * Method returns Cookie object to work with http cookies using oop paradigm.
      *
-     * @return Cookie Cookie value.
+     * @return object Cookie.
      */
     public function getCookie();
 
     /**
      * Method returns Session object to work with http session using oop paradigm.
      *
-     * @return Session Session object.
+     * @return object Session.
      */
     public function getSession();
 

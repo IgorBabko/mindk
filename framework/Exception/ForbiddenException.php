@@ -27,7 +27,7 @@ class ForbiddenException extends FrameworkException
      * @param  int    $code    Exception code.
      * @param  string $message Exception message.
      *
-     * @return \Framework\Exception\ForbiddenException ForbiddenException instance.
+     * @return object ForbiddenException.
      */
     function __construct($code, $message)
     {

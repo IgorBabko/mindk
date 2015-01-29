@@ -32,7 +32,7 @@ class AlphaNumeric extends Constraint
      * @param  string $message        Error message.
      * @param  array  $allowedSymbols Array of allowed characters.
      *
-     * @return AlphaNumeric AlphaNumeric object.
+     * @return object AlphaNumeric.
      */
     public function __construct($message = null, $allowedSymbols = array())
     {

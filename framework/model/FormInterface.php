@@ -27,14 +27,14 @@ interface FormInterface
      *
      * @throws \Framework\Exception\FormException FormException instance.
      *
-     * @return Form Form object.
+     * @return object Form.
      */
     public function setModel(ActiveRecord $model);
 
     /**
      * Method to get model that current Form object represents.
      *
-     * @return ActiveRecord|null ActiveRecord object.
+     * @return object|null ActiveRecord.
      */
     public function getModel();
 
@@ -59,7 +59,7 @@ interface FormInterface
      *
      * @throws \Framework\Exception\FormException FormException instance.
      *
-     * @return Form Form object.
+     * @return object Form.
      */
     public function setConstraints($constraints);
 
@@ -77,7 +77,7 @@ interface FormInterface
      *
      * @throws \Framework\Exception\FormException FormException instance.
      *
-     * @return Form Form object.
+     * @return object Form.
      */
     public function bindDataToModel();
 
@@ -88,7 +88,7 @@ interface FormInterface
      *
      * @throws \Framework\Exception\FormException FormException instance.
      *
-     * @return Form Form object.
+     * @return object Form.
      */
     public function setView($view);
 

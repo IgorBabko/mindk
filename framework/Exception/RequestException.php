@@ -26,7 +26,7 @@ class RequestException extends FrameworkException
      * @param  int    $code    Exception code.
      * @param  string $message Exception message.
      *
-     * @return \Framework\Exception\RequestException RequestException instance.
+     * @return object RequestException.
      */
     function __construct($code, $message)
     {

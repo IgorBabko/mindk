@@ -30,7 +30,7 @@ class FSlash extends Filter
      *
      * @param  string $action Defines whether 'strip' or 'add' slashes to source string.
      *
-     * @return FSlash FSlash object.
+     * @return object FSlash.
      */
     public function __construct($action = 'add')
     {

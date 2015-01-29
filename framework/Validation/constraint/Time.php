@@ -32,7 +32,7 @@ class Time extends Constraint
      * @param  null|string $pattern Pattern for time validation.
      * @param  null|string $message Error message.
      *
-     * @return Time Time object.
+     * @return object Time.
      */
     public function __construct($pattern = null, $message = null)
     {

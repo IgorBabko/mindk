@@ -31,7 +31,7 @@ class FCustom extends Filter
      *
      * @param  string $callback Name of function for sanitization.
      *
-     * @return FCustom FCustom object.
+     * @return object FCustom.
      */
     public function __construct($callback)
     {

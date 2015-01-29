@@ -26,7 +26,7 @@ class ResponseException extends FrameworkException
      * @param  int    $code    Exception code.
      * @param  string $message Exception message.
      *
-     * @return \Framework\Exception\ResponseException ResponseException instance.
+     * @return object ResponseException.
      */
     function __construct($code, $message)
     {
