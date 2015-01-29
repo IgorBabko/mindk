@@ -6,7 +6,7 @@ use Blog\Models\Comment;
 use Blog\Models\Post;
 use Blog\Models\User;
 use Blog\Util;
-use CMS\Models\Category;
+use Blog\Models\Category;
 use Framework\Config\Config;
 use Framework\Controller\Controller;
 
@@ -34,7 +34,7 @@ class PostController extends Controller
                 );
                 exit();
             } else {
-                $rawQueryString = "SELECT * FROM ?i WHERE ?i LIKE ?s OR ?i LIKE ?s OR ?i LIKE ?s";
+                $rawQueryString = "SELECT * FROM ?i WHERE ?i LIKE ?s OR ?i LIKE ?s OR ?i LIKE ?s ORDER BY ?i DESC";
                 $bindParameters =
                     array(
                         Post::getTable(),
@@ -43,7 +43,8 @@ class PostController extends Controller
                         'small_text',
                         '%'.$_POST['search'].'%',
                         'text',
-                        '%'.$_POST['search'].'%'
+                        '%'.$_POST['search'].'%',
+                        'posted_date'
                     );
 
                 $session->add(
@@ -63,13 +64,13 @@ class PostController extends Controller
         } else {
             $session->remove('searchQuery');
             if ($categoryId == 0) {
-                $rawQueryString = "SELECT * FROM ?i";
-                $bindParameters = array(Post::getTable());
+                $rawQueryString = "SELECT * FROM ?i ORDER BY ?i DESC";
+                $bindParameters = array(Post::getTable(), 'posted_date');
             } else {
                 $category       = new Category(array('id' => $categoryId));
                 $categoryName   = $category->getName();
-                $rawQueryString = "SELECT * FROM ?i WHERE ?i = ?s";
-                $bindParameters = array(Post::getTable(), 'category', $categoryName);
+                $rawQueryString = "SELECT * FROM ?i WHERE ?i = ?s ORDER BY ?i DESC";
+                $bindParameters = array(Post::getTable(), 'category', $categoryName, 'posted_date');
             }
             $session->add('categoryId', $categoryId);
             $posts = Post::query($rawQueryString, $bindParameters);
@@ -121,7 +122,19 @@ class PostController extends Controller
             $comment['picture'] = $userPictures[$comment['author']];
         }
 
+        $categories = Category::query('SELECT * FROM ?i', array(Category::getTable()));
+        foreach ($categories as &$category) {
+            $count             = Post::query(
+                "SELECT COUNT(*) AS 'count' FROM ?i WHERE ?i = ?s",
+                array(Post::getTable(), 'category', $category['name'])
+            );
+            $category['count'] = $count[0]['count'];
+        }
+        $totalAmountOfPosts = Post::query('SELECT COUNT(*) AS "count" FROM ?i', array(Post::getTable()))[0]['count'];
+        array_unshift($categories, array('id' => 0, 'name' => 'All', 'count' => $totalAmountOfPosts));
+
         $templateEngine = $this->getTemplateEngine();
+        $templateEngine->setData('categories', $categories);
         $templateEngine->setData('router', $this->getRouter());
         $templateEngine->setData('post', $post);
         $templateEngine->setData('comments', $comments);

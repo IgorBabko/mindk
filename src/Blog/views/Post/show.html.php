@@ -12,7 +12,7 @@
                href='<?= isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:"/posts/0/1"; ?>'>Back</a>
         </div>
     </div>
-    <h2>Comments(<?= $post->getAmountOfComments(); ?>):</h2>
+    <h2 id="amountOfComments">Comments(<span><?= $post->getAmountOfComments(); ?></span>):</h2>
 <?php if (isset($_SESSION['user'])) { ?>
 
     <div>
@@ -109,7 +109,8 @@ foreach ($this->comments as $comment) {
 
             echo <<<HERE
                     <div class="panel-footer comment-footer">
-                        <button type="button" class="btn btn-danger delete_comment_button">Delete</button>
+                        <span class="comment-id">{$comment['id']}</span>
+                        <button type="button" class="btn btn-danger delete_comment_button" onclick="deleteComment(this)">Delete</button>
                     </div>
 HERE;
         }

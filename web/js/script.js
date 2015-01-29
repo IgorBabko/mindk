@@ -1,8 +1,23 @@
+function deleteComment(obj) {
+    var commentId = $(obj).prev().text();
+    var amountOfComments = $('#amountOfComments span');
+    $.ajax({
+        type: "POST",
+        url: "/comments/" + commentId + "/delete",
+        success: function () {
+            var commentDiv = $(obj).parent().parent();
+            commentDiv.prev().remove();
+            commentDiv.remove();
+            amountOfComments.text(parseInt(amountOfComments.text()) - 1);
+        }
+    });
+}
+
 $(document).ready(function () {
+
 
     var editor = $('#editor');
     var commentButton = $('#commentButton');
-    var deleteCommentButton = $('#deleteCommentButton');
 
     /* Adding and deleting comments */
 
@@ -20,7 +35,7 @@ $(document).ready(function () {
 
         var text = editor.html();
         var postTitle = $('#commentPost').val();
-
+        var amountOfComments = $('#amountOfComments span');
         $.ajax({
             type: "POST",
             url: "/comment/add",
@@ -28,16 +43,7 @@ $(document).ready(function () {
             success: function (html) {
                 editor.val('');
                 commentButton.parent().parent().next().after(html);
-            }
-        });
-    });
-
-    deleteCommentButton.click(function () {
-        $.ajax({
-            type: "POST",
-            url: "/comment/delete",
-            success: function () {
-                deleteCommentButton.parent().parent().remove();
+                amountOfComments.text(parseInt(amountOfComments.text()) + 1);
             }
         });
     });
@@ -59,8 +65,7 @@ $(document).ready(function () {
 
     /* CodeMirror */
 
-    function makeEditor(textarea)
-    {
+    function makeEditor(textarea) {
         return CodeMirror.fromTextArea(textarea, {
             lineNumbers: true,
             matchBrackets: true,
@@ -75,8 +80,9 @@ $(document).ready(function () {
     var codeEditors = document.getElementsByClassName('codeEditor');
     var size = codeEditors.length;
     var codeEditor = null;
-    for(var i = 0; i < size; ++i) {
-        codeEditor = makeEditor(codeEditors[i]);;
+    for (var i = 0; i < size; ++i) {
+        codeEditor = makeEditor(codeEditors[i]);
+        ;
         //codeEditor.setSize(300, null);
     }
 });

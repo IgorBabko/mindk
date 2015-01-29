@@ -4,7 +4,6 @@ return array(
 
     /***************************** Blog *************************/
 
-
     /* pages: home, posts, post, comment, show, feedback, dashboard */
     'home'            => array(
         'pattern'    => '/',
@@ -29,11 +28,21 @@ return array(
         )
     ),
     'comment'         => array(
-        'pattern'    => '/comment/add',
-        'controller' => 'Blog\\Controllers\\CommentController',
-        'action'     => 'add',
+        'pattern'       => '/comment/add',
+        'controller'    => 'Blog\\Controllers\\CommentController',
+        'action'        => 'add',
         '_requirements' => array(
             '_method' => 'POST',
+            '_ajax'
+        )
+    ),
+    'comment_delete'  => array(
+        'pattern'       => '/comments/{commentId}/delete',
+        'controller'    => 'Blog\\Controllers\\CommentController',
+        'action'        => 'delete',
+        '_requirements' => array(
+            'commentId' => '\d+',
+            '_method'   => 'POST',
             '_ajax'
         )
     ),
@@ -65,7 +74,7 @@ return array(
         'controller' => 'Blog\\Controllers\\UserController',
         'action'     => 'login'
     ),
-    'update'  => array(
+    'update'          => array(
         'pattern'    => '/update',
         'controller' => 'Blog\\Controllers\\UserController',
         'action'     => 'update'
@@ -82,9 +91,7 @@ return array(
     ),
     /* end profile management */
 
-
     /**************************** CMS ***************************/
-
 
     /* posts: show all, add, edit, delete */
     'show_posts'      => array(
@@ -117,7 +124,7 @@ return array(
         'action'        => 'delete',
         'security'      => array('ADMIN'),
         '_requirements' => array(
-            'id'     => '\d+'
+            'id' => '\d+'
         )
     ),
     /* end posts */
@@ -198,8 +205,7 @@ return array(
         'action'        => 'delete',
         'security'      => array('ADMIN'),
         '_requirements' => array(
-            'id' => '\d+',
-            '_method' => 'POST'
+            'id'      => '\d+'
         )
     ),
     /* end comments */
@@ -229,7 +235,7 @@ return array(
         'action'        => 'delete',
         'security'      => array('ADMIN'),
         '_requirements' => array(
-            'id'     => '\d+',
+            'id'      => '\d+',
             '_method' => 'POST'
         )
     ),
@@ -266,7 +272,7 @@ return array(
         'action'        => 'delete',
         'security'      => array('ADMIN'),
         '_requirements' => array(
-            'id' => '\d+',
+            'id'      => '\d+',
             '_method' => 'POST'
         )
     )

@@ -167,6 +167,7 @@ abstract class ActiveRecord implements ActiveRecordInterface
                 self::$_queryBuilder->where($columnName, '=', $value);
             }
         }
+
         $resultSet = self::$_dbConnection->safeQuery(
             self::$_queryBuilder->getRawQuery(),
             self::$_queryBuilder->getBindParameters()
@@ -176,11 +177,9 @@ abstract class ActiveRecord implements ActiveRecordInterface
             if (isset($resultRow)) {
                 $columnNames = static::getColumns();
                 foreach ($resultRow as $columnName => $value) {
-                    //@TODO
                     if ($value === null) {
                         continue;
                     }
-                    //
                     $fieldName        = array_search($columnName, $columnNames);
                     $this->$fieldName = $value;
                 }

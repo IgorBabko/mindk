@@ -21,6 +21,7 @@ class CommentController extends Controller
         $comment->setCreatedDate(date('Y-m-d H:i:s'));
         $comment->save();
 
+        $comment->load(array('author' => $session->get('user')['name'], 'created_date' => $comment->getCreatedDate()));
         $post = new Post(array('title' => $postTitle));
         $post->setAmountOfComments($post->getAmountOfComments() + 1);
         $post->save(array('title' => $postTitle));
@@ -37,7 +38,8 @@ class CommentController extends Controller
                     {$comment->getText()}
                 </div>
                 <div class="panel-footer comment-footer">
-                    <button type="button" class="btn btn-danger delete_comment_button">Delete</button>
+                    <span class="comment-id">{$comment->getId()}</span>
+                    <button type="button" class="btn btn-danger delete_comment_button" onclick="deleteComment(this)">Delete</button>
                 </div>
             </div>
 HERE;

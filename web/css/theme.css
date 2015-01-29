@@ -540,10 +540,15 @@ a {
     float: left;
     margin-left: 2%;
     width: 89%;
+    background-color: white;
 }
 
 .btn-toolbar div > a {
     margin-bottom: 3px;
+}
+
+.comment-id {
+    display: none;
 }
 
 .comment-button-div {

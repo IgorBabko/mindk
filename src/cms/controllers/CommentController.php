@@ -115,10 +115,15 @@ class CommentController extends Controller
                     $comment->setCreatedDate(date('Y-m-d H:i:s'));
                     $comment->save();
 
+                    $post = new Post(array('title' => $comment->getPostTitle()));
+                    $post->setAmountOfComments($post->getAmountOfComments() + 1);
+                    $post->save(array('title' => $comment->getPostTitle()));
+
+                    $router = $this->getRouter();
                     $session = $this->getRequest()->getSession();
                     $session->start();
                     $session->flash('comment_added', "<div class='flash-success well well-sm'>Comment has been added successfully!</div>");
-                    $this->getResponseRedirect()->route('show_comments');
+                    $this->getResponseRedirect()->to($router->generateRoute('show_comments', array('pageId' => 1)));
                     exit();
                 } else {
                     $errors = Validator::getErrorList();
@@ -138,11 +143,17 @@ class CommentController extends Controller
     {
         $id      = func_get_args()[0][0];
         $comment = new Comment(array('id' => $id));
+        $postTitle = $comment->getPostTitle();
         $comment->remove();
 
+        $post = new Post(array('title' => $postTitle));
+        $post->setAmountOfComments($post->getAmountOfComments() - 1);
+        $post->save(array('title' => $postTitle));
+
+        $router = $this->getRouter();
         $session = $this->getRequest()->getSession();
         $session->start();
         $session->flash('comment_deleted', "<div class='flash-success well well-sm'>Comment has been deleted successfully!</div>");
-        $this->getResponseRedirect()->route('show_comments');
+        $this->getResponseRedirect()->to($router->generateRoute('show_comments', array('pageId' => 1)));
     }
 }

@@ -10,7 +10,7 @@ namespace Blog\Controllers;
 
 use Blog\Models\Post;
 use Blog\Models\User;
-use CMS\Models\Category;
+use Blog\Models\Category;
 use Framework\Config\Config;
 use Framework\Controller\Controller;
 use Framework\Exception\FrameworkException;
@@ -27,61 +27,55 @@ class UserController extends Controller
         $session->start();
         $templateEngine = $this->getTemplateEngine();
 
-        $view = 'user/signup.html.php';
         if ($request->isMethod('POST')) {
-            try{
-                $user = new User();
-                $form = new Form($user, 'signup');
+            $user = new User();
+            $form = new Form($user, 'signup');
 
-                $wrongFile   = false;
-                $picturePath = null;
-                $pictureName = null;
-                if (empty($_FILES['profile_image']['name'])) {
-                    $wrongFile = false;
+            $wrongFile   = false;
+            $picturePath = null;
+            $pictureName = null;
+            if (empty($_FILES['profile_image']['name'])) {
+                $wrongFile = false;
+            } else {
+                $allowed = array('jpg', 'jpeg', 'gif', 'png');
+
+                $fileName     = $_FILES['profile_image']['name'];
+                $fileInfo     = explode('.', $fileName);
+                $fileExtn     = strtolower(end($fileInfo));
+                $fileTempPath = $_FILES['profile_image']['tmp_name'];
+
+                if (in_array($fileExtn, $allowed) === true) {
+                    $pictureName = substr(md5(time()), 0, 10).'.'.$fileExtn;
+                    $picturePath = 'uploads/'.$pictureName;
+                    move_uploaded_file($fileTempPath, $picturePath);
                 } else {
-                    $allowed = array('jpg', 'jpeg', 'gif', 'png');
-
-                    $fileName     = $_FILES['profile_image']['name'];
-                    $fileInfo     = explode('.', $fileName);
-                    $fileExtn     = strtolower(end($fileInfo));
-                    $fileTempPath = $_FILES['profile_image']['tmp_name'];
-
-                    if (in_array($fileExtn, $allowed) === true) {
-                        $pictureName = substr(md5(time()), 0, 10).'.'.$fileExtn;
-                        $picturePath = 'uploads/'.$pictureName;
-                        move_uploaded_file($fileTempPath, $picturePath);
-                    } else {
-                        $wrongFile = true;
-                        $templateEngine->setData('wrongFile', 'File type must be "jpg", "jpeg", "gif" or "png"');
-                    }
+                    $wrongFile = true;
+                    $templateEngine->setData('wrongFile', 'File type must be "jpg", "jpeg", "gif" or "png"');
                 }
+            }
 
-                if ($form->isValid() && $wrongFile == false) {
+            if ($form->isValid() && $wrongFile == false) {
 
-                    $form->bindDataToModel();
-                    $user->setPicturePath(
-                        ($pictureName != null)?'/web/uploads/'.$pictureName:'/web/uploads/profile_icon_trim.png'
-                    );
-                    $user->setSalt(Hash::generateSalt(32));
-                    $user->setPassword(Hash::generatePass($user->getPassword(), $user->getSalt()));
-                    $user->setRole('USER');
-                    $user->setJoinedDate(date('Y-m-d H:i:s'));
-                    $user->save();
+                $form->bindDataToModel();
+                $user->setPicturePath(
+                    ($pictureName != null)?'/web/uploads/'.$pictureName:'/web/uploads/profile_icon_trim.png'
+                );
+                $user->setSalt(Hash::generateSalt(32));
+                $user->setPassword(Hash::generatePass($user->getPassword(), $user->getSalt()));
+                $user->setRole('USER');
+                $user->setJoinedDate(date('Y-m-d H:i:s'));
+                $user->save();
 
-                    $redirect = $this->getResponseRedirect();
-                    $session->flash(
-                        'registered',
-                        "<div class='flash-success well well-sm'>You have been registered and can now log in!</div>"
-                    );
-                    $redirect->route('signup');
-                    exit();
-                } else {
-                    $errors = Validator::getErrorList();
-                    $templateEngine->setData('errors', $errors);
-                }
-            } catch(FrameworkException $e){
-                $templateEngine->setData('exception', $e);
-                $view = 'error.html.php';
+                $redirect = $this->getResponseRedirect();
+                $session->flash(
+                    'registered',
+                    "<div class='flash-success well well-sm'>You have been registered and can now log in!</div>"
+                );
+                $redirect->route('signup');
+                exit();
+            } else {
+                $errors = Validator::getErrorList();
+                $templateEngine->setData('errors', $errors);
             }
         }
 
@@ -97,7 +91,7 @@ class UserController extends Controller
         array_unshift($categories, array('id' => 0, 'name' => 'All', 'count' => $totalAmountOfPosts));
 
         $templateEngine->setData('categories', $categories);
-        $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS.$view);
+        $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS.'user/signup.html.php');
     }
 
     public function loginAction()
@@ -105,6 +99,19 @@ class UserController extends Controller
         $templateEngine = $this->getTemplateEngine();
         $request        = $this->getRequest();
         $session        = $request->getSession();
+
+        $categories = Category::query('SELECT * FROM ?i', array(Category::getTable()));
+        foreach ($categories as &$category) {
+            $count             = Post::query(
+                "SELECT COUNT(*) AS 'count' FROM ?i WHERE ?i = ?s",
+                array(Post::getTable(), 'category', $category['name'])
+            );
+            $category['count'] = $count[0]['count'];
+        }
+        $totalAmountOfPosts = Post::query('SELECT COUNT(*) AS "count" FROM ?i', array(Post::getTable()))[0]['count'];
+        array_unshift($categories, array('id' => 0, 'name' => 'All', 'count' => $totalAmountOfPosts));
+
+        $templateEngine->setData('categories', $categories);
 
         if ($request->isMethod('POST')) {
             try{
@@ -155,6 +162,19 @@ class UserController extends Controller
 
         $user = new User();
         $user->load(array('username' => $session->get('user')['name']));
+
+        $categories = Category::query('SELECT * FROM ?i', array(Category::getTable()));
+        foreach ($categories as &$category) {
+            $count             = Post::query(
+                "SELECT COUNT(*) AS 'count' FROM ?i WHERE ?i = ?s",
+                array(Post::getTable(), 'category', $category['name'])
+            );
+            $category['count'] = $count[0]['count'];
+        }
+        $totalAmountOfPosts = Post::query('SELECT COUNT(*) AS "count" FROM ?i', array(Post::getTable()))[0]['count'];
+        array_unshift($categories, array('id' => 0, 'name' => 'All', 'count' => $totalAmountOfPosts));
+
+        $templateEngine->setData('categories', $categories);
 
         if ($request->isMethod('POST')) {
             try{
@@ -227,6 +247,19 @@ class UserController extends Controller
         $session = $request->getSession();
         $session->start();
         $templateEngine = $this->getTemplateEngine();
+
+        $categories = Category::query('SELECT * FROM ?i', array(Category::getTable()));
+        foreach ($categories as &$category) {
+            $count             = Post::query(
+                "SELECT COUNT(*) AS 'count' FROM ?i WHERE ?i = ?s",
+                array(Post::getTable(), 'category', $category['name'])
+            );
+            $category['count'] = $count[0]['count'];
+        }
+        $totalAmountOfPosts = Post::query('SELECT COUNT(*) AS "count" FROM ?i', array(Post::getTable()))[0]['count'];
+        array_unshift($categories, array('id' => 0, 'name' => 'All', 'count' => $totalAmountOfPosts));
+
+        $templateEngine->setData('categories', $categories);
 
         $user = new User();
         $user->load(array('username' => $session->get('user')['name']));
