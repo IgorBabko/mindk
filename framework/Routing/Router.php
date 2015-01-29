@@ -56,7 +56,7 @@ class Router implements RouterInterface
      */
     private function __construct($routeCollection = null)
     {
-        $this->_host = 'http://'.$_SERVER['HTTP_HOST'];
+        $this->_host            = 'http://'.$_SERVER['HTTP_HOST'];
         $this->_routeCollection = $routeCollection;
     }
 

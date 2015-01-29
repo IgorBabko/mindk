@@ -16,7 +16,6 @@ use Framework\Cookie\Cookie;
 use Framework\Database\SafeSql;
 use Framework\DI\Service;
 use Framework\Exception\AppException;
-use Framework\Exception\ConfigException;
 use Framework\Loader\Loader;
 use Framework\Model\ActiveRecord;
 use Framework\Request\Request;
@@ -50,9 +49,7 @@ class App implements AppInterface
     private static $_dbConnection;
 
     /**
-     * Method to get database connection.
-     *
-     * @return object|null SafeSql object that represents database connection.
+     * {@inheritdoc}
      */
     public static function getDbConnection()
     {
@@ -60,13 +57,7 @@ class App implements AppInterface
     }
 
     /**
-     * Method to set database connection object.
-     *
-     * @param  object $dbConnection Database connection.
-     *
-     * @throws AppException AppException instance.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public static function dbConnect($dbConnection)
     {
@@ -81,20 +72,7 @@ class App implements AppInterface
     }
 
     /**
-     * Method is used to make full preparation before application startup.
-     *
-     * Method does next steps:
-     *     - reflects namespaces to its particular directories and sets loader;
-     *     - establishes app configurations;
-     *     - sets exception handler for uncaught exceptions;
-     *     - collects information about all needed services to successfully resolve all class dependencies;
-     *     - establishes database connection
-     *     - starts session.
-     *
-     * @throws AppException    AppException    instance.
-     * @throws ConfigException ConfigException instance.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public static function init()
     {
@@ -272,13 +250,7 @@ class App implements AppInterface
     }
 
     /**
-     * Method to start the app.
-     *
-     * It defines the route and calls particular controller's action of matched route.
-     *
-     * @throws \Framework\Exception\ServiceException ServiceException instance.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public static function run()
     {

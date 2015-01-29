@@ -18,6 +18,8 @@ use Framework\Validation\Validator;
 /**
  * Class QueryBuilder is used to build safe sql request with placeholders.
  *
+ * Default implementation of {@link QueryBuilderInterface}
+ *
  * Class provides methods which help building safe sql request with placeholders.
  *
  * Note: raw query is query with placeholders.
@@ -65,7 +67,7 @@ use Framework\Validation\Validator;
  * @package Framework
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
-class QueryBuilder
+class QueryBuilder implements QueryBuilderInterface
 {
     /**
      * @static
@@ -85,28 +87,24 @@ class QueryBuilder
      */
     private $_currentRawQuery = "";
 
+    /**
+     * {@inheritdoc}
+     */
     public static function getAllowedOperations()
     {
         return self::$_allowedOperations;
     }
 
-    public static function setAllowedOperations()
-    {
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function getCurrentRawQuery()
     {
         return $this->_currentRawQuery;
     }
 
     /**
-     * Method which stars creating raw query
-     *
-     * @param $name
-     *
-     * @throws QueryBuilderException QueryBuilderException instance.
-     *
-     * @return object QueryBuilder.
+     * {@inheritdoc}
      */
     public function createRawQuery($name)
     {
@@ -121,11 +119,7 @@ class QueryBuilder
     }
 
     /**
-     * Method to get bind parameters of current raw query.
-     *
-     * @throws QueryBuilderException QueryBuilderException instance.
-     *
-     * @return array Parameters of current raw query to replace placeholders in sql request.
+     * {@inheritdoc}
      */
     public function getBindParameters()
     {
@@ -137,9 +131,7 @@ class QueryBuilder
     }
 
     /**
-     * Method to get all raw queries.
-     *
-     * @return array Array of raw queries.
+     * {@inheritdoc}
      */
     public function getAllRawQueries()
     {
@@ -147,11 +139,7 @@ class QueryBuilder
     }
 
     /**
-     * Method to get current raw query string.
-     *
-     * @throws QueryBuilderException QueryBuilderException instance.
-     *
-     * @return string Current raw query string with placeholders.
+     * {@inheritdoc}
      */
     public function getRawQuery()
     {
@@ -163,11 +151,7 @@ class QueryBuilder
     }
 
     /**
-     * @param  $name
-     *
-     * @throws QueryBuilderException QueryBuilderException instance.
-     *
-     * @return object QueryBuilder.
+     * {@inheritdoc}
      */
     public function chooseRawQuery($name)
     {
@@ -187,9 +171,7 @@ class QueryBuilder
     }
 
     /**
-     * @throws QueryBuilderException QueryBuilderException instance.
-     *
-     * @return object QueryBuilder.
+     * {@inheritdoc}
      */
     public function removeRawQuery()
     {
@@ -203,14 +185,7 @@ class QueryBuilder
     }
 
     /**
-     * Method to make select request.
-     *
-     * @param  string|array $columns   Columns to select.
-     * @param  string       $tableName Table to select from.
-     *
-     * @throws QueryBuilderException QueryBuilderException instance.
-     *
-     * @return object QueryBuilder.
+     * {@inheritdoc}
      */
     public function select($columns = '*', $tableName)
     {
@@ -236,15 +211,7 @@ class QueryBuilder
     }
 
     /**
-     * Method to make insert request.
-     *
-     * @param  string $tableName Table to insert to.
-     * @param  array  $pairs     Data to insert where keys are column names
-     *                           and values are values to insert.
-     *
-     * @throws QueryBuilderException QueryBuilderException instance.
-     *
-     * @return object QueryBuilder.
+     * {@inheritdoc}
      */
     public function insert($tableName, $pairs)
     {
@@ -276,15 +243,7 @@ class QueryBuilder
     }
 
     /**
-     * Method to make update request.
-     *
-     * @param  string $tableName Table to update data of.
-     * @param  array  $pairs     Data to update where keys are column names
-     *                           and values are new values.
-     *
-     * @throws QueryBuilderException QueryBuilderException instance.
-     *
-     * @return object QueryBuilder.
+     * {@inheritdoc}
      */
     public function update($tableName, $pairs)
     {
@@ -311,13 +270,7 @@ class QueryBuilder
     }
 
     /**
-     * Method to make delete request.
-     *
-     * @param  string $tableName Table to delete from.
-     *
-     * @throws QueryBuilderException QueryBuilderException instance.
-     *
-     * @return object QueryBuilder.
+     * {@inheritdoc}
      */
     public function delete($tableName)
     {
@@ -331,15 +284,7 @@ class QueryBuilder
     }
 
     /**
-     * Method to make 'where' part of sql request.
-     *
-     * @param  null|string $columnName  Column name.
-     * @param  null|string $operator    Operator.
-     * @param  mixed       $columnValue Column value.
-     *
-     * @throws QueryBuilderException QueryBuilderException instance.
-     *
-     * @return object QueryBuilder.
+     * {@inheritdoc}
      */
     public function where($columnName = null, $operator = null, $columnValue = null)
     {
@@ -369,15 +314,7 @@ class QueryBuilder
     }
 
     /**
-     * Method to add 'OR' operator to sql request.
-     *
-     * @param  null|string $columnName  Column name.
-     * @param  null|string $operator    Operator.
-     * @param  mixed       $columnValue Column value.
-     *
-     * @throws QueryBuilderException QueryBuilderException instance.
-     *
-     * @return object QueryBuilder.
+     * {@inheritdoc}
      */
     public function addOR($columnName = null, $operator = null, $columnValue = null)
     {
@@ -407,15 +344,7 @@ class QueryBuilder
     }
 
     /**
-     * Method to add 'AND' operator.
-     *
-     * @param  null|string $columnName  Column name.
-     * @param  null|string $operator    Operator.
-     * @param  mixed       $columnValue Column value.
-     *
-     * @throws QueryBuilderException QueryBuilderException instance.
-     *
-     * @return object QueryBuilder.
+     * {@inheritdoc}
      */
     public function addAND($columnName = null, $operator = null, $columnValue = null)
     {
@@ -445,14 +374,7 @@ class QueryBuilder
     }
 
     /**
-     * Method to add 'IS NULL' operator or 'IS NOT NULL' when $not == true.
-     *
-     * @param  string $columnName Column name.
-     * @param  bool   $not        Inversion.
-     *
-     * @throws QueryBuilderException QueryBuilderException instance.
-     *
-     * @return object QueryBuilder.
+     * {@inheritdoc}
      */
     public function isNULL($columnName, $not = false)
     {
@@ -475,16 +397,7 @@ class QueryBuilder
     }
 
     /**
-     * Method to add 'BETWEEN' operator or 'NOT BETWEEN' when $not === true.
-     *
-     * @param  string $columnName Column name.
-     * @param  mixed  $begin      Start value.
-     * @param  mixed  $end        End value.
-     * @param  bool   $not        Inversion.
-     *
-     * @throws QueryBuilderException QueryBuilderException instance.
-     *
-     * @return object QueryBuilder.
+     * {@inheritdoc}
      */
     public function between($columnName, $begin, $end, $not = false)
     {
@@ -510,13 +423,7 @@ class QueryBuilder
     }
 
     /**
-     * Method to make 'GROUP BY' request.
-     *
-     * @param  string $groupBy Column name to group by.
-     *
-     * @throws QueryBuilderException QueryBuilderException instance.
-     *
-     * @return object QueryBuilder.
+     * {@inheritdoc}
      */
     public function groupBy($groupBy)
     {
@@ -530,15 +437,7 @@ class QueryBuilder
     }
 
     /**
-     * Method to make 'LIKE' request or 'NOT LIKE' if $not === true.
-     *
-     * @param  string $columnName  Column name.
-     * @param  mixed  $columnValue Column value.
-     * @param  bool   $not         Inversion.
-     *
-     * @throws QueryBuilderException QueryBuilderException instance.
-     *
-     * @return object QueryBuilder.
+     * {@inheritdoc}
      */
     public function like($columnName, $columnValue, $not = false)
     {
@@ -557,15 +456,7 @@ class QueryBuilder
     }
 
     /**
-     * Method to make 'IN' operator or 'NOT IN' if $not === true
-     *
-     * @param  string $columnName Column name.
-     * @param  array  $in         Array of values for 'IN' operator.
-     * @param  bool   $not        Inversion.
-     *
-     * @throws QueryBuilderException QueryBuilderException instance.
-     *
-     * @return object QueryBuilder.
+     * {@inheritdoc}
      */
     public function in($columnName, $in, $not = false)
     {
@@ -599,13 +490,7 @@ class QueryBuilder
     }
 
     /**
-     * Method to add 'ORDER BY' operator.
-     *
-     * @param  string $orderBy Column name to order by.
-     *
-     * @throws QueryBuilderException QueryBuilderException instance.
-     *
-     * @return object QueryBuilder.
+     * {@inheritdoc}
      */
     public function orderBy($orderBy)
     {
@@ -619,13 +504,7 @@ class QueryBuilder
     }
 
     /**
-     * Method to choose order for 'ORDER BY' operator.
-     *
-     * @param  string $order Order type ('ASC', 'DESC').
-     *
-     * @throws QueryBuilderException QueryBuilderException instance.
-     *
-     * @return object QueryBuilder.
+     * {@inheritdoc}
      */
     public function order($order = "DESC")
     {
@@ -641,14 +520,7 @@ class QueryBuilder
     }
 
     /**
-     * Method to specify 'LIMIT' for 'SELECT' or 'UPDATE' operators.
-     * If $limit isn't specified amount of records to select or update will be unlimited.
-     *
-     * @param  null|int $limit Maximum amount of records to select or update.
-     *
-     * @throws QueryBuilderException QueryBuilderException instance.
-     *
-     * @return object QueryBuilder.
+     * {@inheritdoc}
      */
     public function limit($limit)
     {

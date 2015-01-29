@@ -12,7 +12,6 @@
 namespace Framework\Util;
 
 use Framework\Exception\FormBuilderException;
-use Framework\Exception\ValidatorException;
 use Framework\Validation\Validator;
 use Framework\Validation\Constraint\InList;
 use Framework\Validation\Constraint\True;
@@ -22,12 +21,12 @@ use Framework\Validation\Constraint\RegExp;
 /**
  * Class FormBuilder is used to build html forms.
  *
- * Usage: ??????????????????? I'll fix it later ??????????????????????????
+ * Default implementation of {@link FormBuilderInterface}
  *
  * @package Framework\Util
  * @author  Igor Babko <i.i.bakbo@gmail.com>
  */
-class FormBuilder
+class FormBuilder implements FormBuilderInterface
 {
     /**
      * @static
@@ -86,9 +85,7 @@ class FormBuilder
     private $_currentForm = null;
 
     /**
-     * Method to get FormBuilder::_formData.
-     *
-     * @return array FormBuilder::_formData.
+     * {@inheritdoc}
      */
     public static function getFormData()
     {
@@ -96,13 +93,7 @@ class FormBuilder
     }
 
     /**
-     * Method to set FormBuilder::_formData.
-     *
-     * @param  array $formData Value for FormBuilder::_formData.
-     *
-     * @throws FormBuilderException FormBuilderException instance.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public static function setFormData($formData = array())
     {
@@ -117,9 +108,7 @@ class FormBuilder
     }
 
     /**
-     * Method to get name of current form.
-     *
-     * @return string|null Name of current form.
+     * {@inheritdoc}
      */
     public function getCurrentForm()
     {
@@ -127,15 +116,7 @@ class FormBuilder
     }
 
     /**
-     * Method to start building form. It takes form name and array of attributes for 'form' tag.
-     *
-     * @param  string $name  Form name.
-     * @param  array  $attrs Attributes for 'form' tag.
-     *
-     * @throws FormBuilderException FormBuilderException instance.
-     * @throws ValidatorException   ValidatorException   instance.
-     *
-     * @return object FormBuilder.
+     * {@inheritdoc}
      */
     public function createForm($name, $attrs = array())
     {
@@ -168,11 +149,7 @@ class FormBuilder
     }
 
     /**
-     * Method to close form putting '</form>' tag for current form.
-     *
-     * @throws FormBuilderException FormBuilderException instance.
-     *
-     * @return object FormBuilder.
+     * {@inheritdoc}
      */
     public function closeForm()
     {
@@ -188,14 +165,7 @@ class FormBuilder
     }
 
     /**
-     * Method to choose form to work with.
-     *
-     * @param  string $name Name of form to choose.
-     *
-     * @throws FormBuilderException FormBuilderException instance.
-     * @throws ValidatorException   ValidatorException   instance.
-     *
-     * @return object FormBuilder.
+     * {@inheritdoc}
      */
     public function chooseForm($name)
     {
@@ -215,11 +185,7 @@ class FormBuilder
     }
 
     /**
-     * Method to remove current form.
-     *
-     * @throws FormBuilderException FormBuilderException instance.
-     *
-     * @return object FormBuilder.
+     * {@inheritdoc}
      */
     public function removeForm()
     {
@@ -236,9 +202,7 @@ class FormBuilder
     }
 
     /**
-     * Method to get all forms created by current FormBuilder object.
-     *
-     * @return array Array of forms.
+     * {@inheritdoc}
      */
     public function getAllForms()
     {
@@ -246,14 +210,7 @@ class FormBuilder
     }
 
     /**
-     * Method to get current form.
-     *
-     * @param  bool $echo Whether echo current form or just return?
-     *
-     * @throws FormBuilderException FormBuilderException instance.
-     * @throws ValidatorException   ValidatorException   instance.
-     *
-     * @return string Current form.
+     * {@inheritdoc}
      */
     public function getForm($echo = false)
     {
@@ -275,14 +232,7 @@ class FormBuilder
     }
 
     /**
-     * Method to validate attributes of 'form' tag and its element tags ('input', 'select', ...).
-     *
-     * @param  array $attrs Attributes to validate.
-     *
-     * @throws FormBuilderException FormBuilderException instance.
-     * @throws ValidatorException   ValidatorException   instance.
-     *
-     * @return array Array of valid attributes.
+     * {@inheritdoc}
      */
     public static function cleanAttributes($attrs = array())
     {
@@ -386,14 +336,7 @@ class FormBuilder
     }
 
     /**
-     * Method to add 'input' field to current form.
-     *
-     * @param  array       $attrs Attributes of 'input' tag: 'attrName' => attrValue.
-     * @param  string|null $label Label for 'input' field.
-     *
-     * @throws FormBuilderException FormBuilderException instance.
-     *
-     * @return object FormBuilder.
+     * {@inheritdoc}
      */
     public function input($attrs = array(), $label = null)
     {
@@ -421,15 +364,7 @@ class FormBuilder
     }
 
     /**
-     * Method to add 'select' element to current form.
-     *
-     * @param  array       $options Array of 'option' elements and its attributes: 'optionText' => option attributes.
-     * @param  array       $attrs   Attributes of 'select' element: 'attrName' => attrValue.
-     * @param  string|null $label   Label for 'select' element.
-     *
-     * @throws FormBuilderException FormBuilderException instance.
-     *
-     * @return object FormBuilder.
+     * {@inheritdoc}
      */
     public function select($options, $attrs = array(), $label = null)
     {
@@ -486,14 +421,7 @@ class FormBuilder
     }
 
     /**
-     * Method to add 'textarea' element to current form.
-     *
-     * @param  array       $attrs Attributes for 'textarea' element: 'attrName' => attrValue.
-     * @param  string|null $label Label for 'textarea' element.
-     *
-     * @throws FormBuilderException FormBuilderException instance.
-     *
-     * @return object FormBuilder.
+     * {@inheritdoc}
      */
     public function textarea($attrs = array(), $label = null)
     {
@@ -530,13 +458,7 @@ class FormBuilder
     }
 
     /**
-     * Method to add 'fieldset' element to current form.
-     *
-     * @param  string|null $legend Legend for 'fieldset' element.
-     *
-     * @throws FormBuilderException FormBuilderException instance.
-     *
-     * @return object FormBuilder.
+     * {@inheritdoc}
      */
     public function fieldset($legend = null)
     {
@@ -560,11 +482,7 @@ class FormBuilder
     }
 
     /**
-     * Method to close 'fieldset' element of current form.
-     *
-     * @throws FormBuilderException FormBuilderException instance.
-     *
-     * @return object FormBuilder.
+     * {@inheritdoc}
      */
     public function endFieldset()
     {

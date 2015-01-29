@@ -22,14 +22,7 @@ use Framework\Exception\HashException;
 class Hash implements HashInterface
 {
     /**
-     * Method to hash password using 'sha256' with salt.
-     *
-     * @param  string $value Password to hash.
-     * @param  string $salt  Salt for password.
-     *
-     * @throws HashException HashException instance.
-     *
-     * @return string Hashed password.
+     * {@inheritdoc}
      */
     public static function generatePass($value, $salt = '')
     {
@@ -44,20 +37,14 @@ class Hash implements HashInterface
     }
 
     /**
-     * Method to generate salt with specified length.
-     *
-     * @param  int $length Length of salt.
-     *
-     * @throws HashException HashException instance.
-     *
-     * @return string Generated salt.
+     * {@inheritdoc}
      */
     public static function generateSalt($length)
     {
         if (is_int($length)) {
-            $chars = 'abdefhiknrstyzABDEFGHKNQRSTYZ23456789';
+            $chars    = 'abdefhiknrstyzABDEFGHKNQRSTYZ23456789';
             $numChars = strlen($chars);
-            $string = '';
+            $string   = '';
             for ($i = 0;$i < $length;$i++) {
                 $string .= substr($chars, rand(1, $numChars) - 1, 1);
             }

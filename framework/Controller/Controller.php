@@ -82,9 +82,7 @@ abstract class Controller implements ControllerInterface
     }
 
     /**
-     * Method to get Request object.
-     *
-     * @return object|null Request.
+     * {@inheritdoc}
      */
     public function getRequest()
     {
@@ -92,13 +90,7 @@ abstract class Controller implements ControllerInterface
     }
 
     /**
-     * Method to set Request object.
-     *
-     * @param  Request $request Request object.
-     *
-     * @throws ControllerException ControllerException instance.
-     *
-     * @return object Controller instance.
+     * {@inheritdoc}
      */
     public function setRequest($request)
     {
@@ -114,9 +106,7 @@ abstract class Controller implements ControllerInterface
     }
 
     /**
-     * Method to get Response object.
-     *
-     * @return object|null Response.
+     * {@inheritdoc}
      */
     public function getResponse()
     {
@@ -124,13 +114,7 @@ abstract class Controller implements ControllerInterface
     }
 
     /**
-     * Method to set Response object.
-     *
-     * @param  Response $response Response object.
-     *
-     * @throws ControllerException ControllerException instance.
-     *
-     * @return object Controller instance.
+     * {@inheritdoc}
      */
     public function setResponse($response)
     {
@@ -146,9 +130,7 @@ abstract class Controller implements ControllerInterface
     }
 
     /**
-     * Method to get Router object.
-     *
-     * @return object|null Router.
+     * {@inheritdoc}
      */
     public function getRouter()
     {
@@ -156,13 +138,7 @@ abstract class Controller implements ControllerInterface
     }
 
     /**
-     * Method to set Router object.
-     *
-     * @param  Router $router Router object.
-     *
-     * @throws ControllerException ControllerException instance.
-     *
-     * @return object Controller instance.
+     * {@inheritdoc}
      */
     public function setRouter($router)
     {
@@ -178,9 +154,7 @@ abstract class Controller implements ControllerInterface
     }
 
     /**
-     * Method to get TemplateEngine object.
-     *
-     * @return object|null TemplateEngine.
+     * {@inheritdoc}
      */
     public function getTemplateEngine()
     {
@@ -188,13 +162,7 @@ abstract class Controller implements ControllerInterface
     }
 
     /**
-     * Method to set TemplateEngine object.
-     *
-     * @param  TemplateEngine $templateEngine TemplateEngine object.
-     *
-     * @throws ControllerException ControllerException instance.
-     *
-     * @return object Controller instance.
+     * {@inheritdoc}
      */
     public function setTemplateEngine($templateEngine)
     {
@@ -210,9 +178,7 @@ abstract class Controller implements ControllerInterface
     }
 
     /**
-     * Method to get JsonResponse object.
-     *
-     * @return object|null JsonResponse.
+     * {@inheritdoc}
      */
     public function getJsonResponse()
     {
@@ -220,13 +186,7 @@ abstract class Controller implements ControllerInterface
     }
 
     /**
-     * Method to set JsonResponse object.
-     *
-     * @param  JsonResponse $jsonResponse JsonResponse object.
-     *
-     * @throws ControllerException ControllerException instance.
-     *
-     * @return object Controller instance.
+     * {@inheritdoc}
      */
     public function setJsonResponse($jsonResponse)
     {
@@ -242,9 +202,7 @@ abstract class Controller implements ControllerInterface
     }
 
     /**
-     * Method to get ResponseRedirect object.
-     *
-     * @return object|null ResponseRedirect.
+     * {@inheritdoc}
      */
     public function getResponseRedirect()
     {
@@ -252,13 +210,7 @@ abstract class Controller implements ControllerInterface
     }
 
     /**
-     * Method to set ResponseRedirect object.
-     *
-     * @param  ResponseRedirect $responseRedirect ResponseRedirect object.
-     *
-     * @throws ControllerException ControllerException instance.
-     *
-     * @return object Controller instance.
+     * {@inheritdoc}
      */
     public function setResponseRedirect($responseRedirect)
     {
