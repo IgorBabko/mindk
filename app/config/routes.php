@@ -231,46 +231,8 @@ return array(
         'action'        => 'delete',
         'security'      => array('ADMIN'),
         '_requirements' => array(
-            'id'      => '\d+',
-            '_method' => 'POST'
+            'id'      => '\d+'
         )
     ),
     /* end users */
-
-    /* roles: show all, add, edit, delete */
-    'show_roles'      => array(
-        'pattern'       => '/roles/{pageId]/show',
-        'controller'    => 'CMS\\Controllers\\RoleController',
-        'action'        => 'show',
-        'security'      => array('ADMIN'),
-        '_requirements' => array(
-            'pageId' => '\d+'
-        )
-    ),
-    'add_role'        => array(
-        'pattern'    => '/roles/add',
-        'controller' => 'CMS\\Controllers\\RoleController',
-        'action'     => 'add',
-        'security'   => array('ADMIN')
-    ),
-    'edit_role'       => array(
-        'pattern'       => '/role/{id}/edit',
-        'controller'    => 'CMS\\Controllers\\RoleController',
-        'action'        => 'edit',
-        'security'      => array('ADMIN'),
-        '_requirements' => array(
-            'id' => '\d+'
-        )
-    ),
-    'delete_role'     => array(
-        'pattern'       => '/role/{id}/delete',
-        'controller'    => 'CMS\\Controllers\\RoleController',
-        'action'        => 'delete',
-        'security'      => array('ADMIN'),
-        '_requirements' => array(
-            'id'      => '\d+',
-            '_method' => 'POST'
-        )
-    )
-    /* end roles */
 );
