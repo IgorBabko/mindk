@@ -39,7 +39,7 @@ $isRouteActive = function ($currentRoute) {
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="http://mindk.com"><img class="brand-logo"
+            <a class="navbar-brand" target="_blank" href="http://mindk.com"><img class="brand-logo"
                                                                  src="/web/images/img-logo-mindk-white.png"
                                                                  alt="Education"></a>
         </div>
