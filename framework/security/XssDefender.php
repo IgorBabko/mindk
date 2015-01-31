@@ -35,12 +35,6 @@ use Framework\Exception\XssDefenderException;
  *                e.g. "<span style='" . $input . "'></span>";
  *                e.g. "<style>"       . $input . "</style".
  *
- *     url)       used when input can be inserted into href or src attributes
- *                (only allows URLs that start with http(s) or ftp):
- *                e.g. "<a      href='" . $input . "'>click</a>";
- *                e.g. "<img    src='"  . $input . "'>";
- *                e.g. "<iframe src='"  . $input . "'>".
- *
  * @package Framework\security
  * @author  Igor Babko <i.i.babko@gmail.com>
  */
@@ -48,7 +42,7 @@ class XssDefender implements XssDefenderInterface
 {
     /**
      * @var array $_specialCharacters Characters which must be replaced
-     *                               depending on context
+     *                                depending on context
      */
     private static $_specialCharacters = array(
         'html' => array(
@@ -149,19 +143,5 @@ class XssDefender implements XssDefenderInterface
         $safeInput = str_replace($replace, $with, $input);
 
         return stripslashes($safeInput);
-    }
-
-    //@TODO
-    /**
-     * {@inheritdoc}
-     */
-    public static function cleanUrl($input)
-    {
-        if (preg_match("#^(?:(?:https?|ftp):{1})\/\/[^\"\s\\\\]*.[^\"\s\\\\]*$#iu", (string)$input, $match)) {
-            return $match[0];
-        } else {
-            $safeInput = 'javascript:void(0)';
-            return $safeInput;
-        }
     }
 }

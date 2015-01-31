@@ -73,13 +73,4 @@ interface XssDefenderInterface
      * @return string Secure string for 'style' context.
      */
     public static function cleanStyle($input);
-
-    /**
-     * Method to clean input using 'url' context.
-     *
-     * @param  string $input Insecure input.
-     *
-     * @return string Secure string for 'url' context.
-     */
-    public static function cleanUrl($input);
 }
