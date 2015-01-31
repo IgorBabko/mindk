@@ -10,6 +10,11 @@
     cursor: pointer;
 }
 
+#me {
+    float: left;
+    margin: 10px;
+}
+
 .panel {
     background-color: #eee;
 }
