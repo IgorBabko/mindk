@@ -108,14 +108,14 @@ $isRouteActive = function ($currentRoute) {
                        value="<?= isset($_POST['search'])?$_POST['search']:''; ?>"
                        placeholder="<?= ($this->searchResult != null)?$this->searchResult:'Search for...'; ?>"/>
                 <span class="input-group-btn">
-                    <button type="submit" class="btn btn-warning">Go!</span>
+                    <button type="submit" class="btn btn-warning">Go!
                     </button>
                 </span>
             </div>
         </form>
         <hr/>
         <ul id="nav-categories" class="nav nav-justified hidden-lg">
-            <?php if ($this->catigories != null) {
+            <?php if ($this->categories != null) {
                 if ($this->activeRoute != 'home' && $this->activeRoute != 'posts') {
                     $categoryId = null;
                 } else {
