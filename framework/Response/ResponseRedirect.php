@@ -82,7 +82,7 @@ class ResponseRedirect implements ResponseRedirectInterface
             header('HTTP/1.1 301 Moved Permanently');
         }
         $_SERVER['HTTP_REFERER'] = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '/';
-        header('Location: '.$_SERVER['HTTP_REFERER']);
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
         exit();
     }
 
@@ -116,7 +116,7 @@ class ResponseRedirect implements ResponseRedirectInterface
             if ($permanent) {
                 header('HTTP/1.1 301 Moved Permanently');
             }
-            header('Location: '.$url);
+            header('Location: ' . $url);
             exit();
         } else {
             $parameterType = gettype($url);

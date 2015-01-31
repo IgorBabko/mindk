@@ -29,15 +29,15 @@ class IP extends Constraint
     /**
      * IP constructor takes type of IP and error message.
      *
-     * @param  string      $ipType  Type of IP.
+     * @param  string $ipType Type of IP.
      * @param  null|string $message Error message.
      *
      * @return object IP.
      */
     public function __construct($ipType, $message = null)
     {
-        $this->_ipType = empty($ipType)?'both':$ipType;
-        $message       = isset($message)?$message:"must be $ipType IP-address";
+        $this->_ipType = empty($ipType) ? 'both' : $ipType;
+        $message = isset($message) ? $message : "must be $ipType IP-address";
         parent::__construct($message);
     }
 
@@ -84,7 +84,7 @@ class IP extends Constraint
     public function validate($value)
     {
         $this->_ipType = strtolower($this->_ipType);
-        $ipTypes       = array('both', 'ipv4', 'ipv6');
+        $ipTypes = array('both', 'ipv4', 'ipv6');
 
         if (!is_string($value)) {
             $parameterType = gettype($value);

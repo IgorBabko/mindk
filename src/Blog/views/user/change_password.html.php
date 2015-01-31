@@ -6,7 +6,7 @@
             <h3 class="panel-title">Change password</h3>
         </div>
         <div class="panel-body">
-            <?php $hasError = Util::errorBox(isset($this->errors['_password'])?$this->errors['_password']:null); ?>
+            <?php $hasError = Util::errorBox(isset($this->errors['_password']) ? $this->errors['_password'] : null); ?>
             <div class="form-group <?= $hasError; ?>">
                 <label for="password">New password:</label>
                 <input autocomplete="off" type="password" class="form-control" name="_password" id="password"

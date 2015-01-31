@@ -35,8 +35,8 @@ class Validator implements ValidatorInterface
         if (is_object($object)) {
             self::resetErrorList();
             $fieldConstraints = $object->getConstraints();
-            $data             = $object->getData();
-            $object           = isset($data)?$data:$object;
+            $data = $object->getData();
+            $object = isset($data) ? $data : $object;
             foreach ($fieldConstraints as $field => $constraints) {
                 foreach ($constraints as $constraint) {
                     if ($constraint instanceof Constraint) {
@@ -51,7 +51,7 @@ class Validator implements ValidatorInterface
                     }
                 }
             }
-            return (count(self::$_errorList) > 0)?self::$_errorList:true;
+            return (count(self::$_errorList) > 0) ? self::$_errorList : true;
         } else {
             $parameterType = gettype($object);
             throw new ValidatorException(
@@ -78,7 +78,7 @@ class Validator implements ValidatorInterface
             );
         } else {
             self::resetErrorList();
-            $constraints = is_object($constraints)?array($constraints):$constraints;
+            $constraints = is_object($constraints) ? array($constraints) : $constraints;
             foreach ($constraints as $constraint) {
                 if ($constraint instanceof Constraint) {
                     if (!$constraint->validate($value)) {
@@ -91,7 +91,7 @@ class Validator implements ValidatorInterface
                     );
                 }
             }
-            return (count(self::$_errorList) > 0)?self::$_errorList:true;
+            return (count(self::$_errorList) > 0) ? self::$_errorList : true;
         }
     }
 

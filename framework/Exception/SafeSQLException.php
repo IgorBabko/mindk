@@ -23,7 +23,7 @@ class SafeSqlException extends FrameworkException
     /**
      * SafeSqlException constructor.
      *
-     * @param  int    $code    Exception code.
+     * @param  int $code Exception code.
      * @param  string $message Exception message.
      *
      * @return object SafeSqlException.

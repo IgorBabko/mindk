@@ -29,7 +29,7 @@ class Sanitizer implements SanitizerInterface
     {
         if (is_object($object)) {
             $fieldFilters = $object->getFilters();
-            $object       = isset($object->data)?$object->data:$object;
+            $object = isset($object->data) ? $object->data : $object;
             foreach ($fieldFilters as $field => $filters) {
                 foreach ($filters as $filter) {
                     if ($filter instanceof Filter) {
@@ -68,7 +68,7 @@ class Sanitizer implements SanitizerInterface
                         must be Filter object or array of Filter objects"
             );
         } else {
-            $filters = is_object($filters)?array($filters):$filters;
+            $filters = is_object($filters) ? array($filters) : $filters;
             foreach ($filters as $filter) {
                 if ($filter instanceof Filter) {
                     $value = $filter->sanitize($value);

@@ -29,7 +29,7 @@ class MinLength extends Constraint
     /**
      * MinLength constructor takes min length and error message.
      *
-     * @param int         $min     Min allowed length.
+     * @param int $min Min allowed length.
      * @param null|string $message Error message.
      *
      * @return object MinLength.
@@ -37,7 +37,7 @@ class MinLength extends Constraint
     public function __construct($min, $message = null)
     {
         $this->_min = $min;
-        $message    = isset($message)?$message:"length must be at least $min character(s)";
+        $message = isset($message) ? $message : "length must be at least $min character(s)";
         parent::__construct($message);
     }
 

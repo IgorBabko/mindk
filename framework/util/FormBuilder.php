@@ -34,15 +34,15 @@ class FormBuilder implements FormBuilderInterface
      */
     private static $_formData = array(
 
-        'method'  => array('GET', 'POST'),
-        'button'  => array('button', 'reset', 'submit'),
-        'target'  => array('_blank', '_self', '_parent', '_top'),
+        'method' => array('GET', 'POST'),
+        'button' => array('button', 'reset', 'submit'),
+        'target' => array('_blank', '_self', '_parent', '_top'),
         'enctype' => array(
             'application/x-www-form-urlencoded',
             'multipart/form-data',
             'text/plain'
         ),
-        'type'    => array(
+        'type' => array(
             'text',
             'email',
             'color',
@@ -131,8 +131,8 @@ class FormBuilder implements FormBuilderInterface
             );
         } else {
             if (is_array($attrs)) {
-                $this->_currentForm  = $name;
-                $cleanAttrs          = FormBuilder::cleanAttributes($attrs);
+                $this->_currentForm = $name;
+                $cleanAttrs = FormBuilder::cleanAttributes($attrs);
                 $this->_forms[$name] = "<form ";
                 foreach ($cleanAttrs as $attr => $val) {
                     $this->_forms[$name] .= "$attr='$val' ";
@@ -191,7 +191,7 @@ class FormBuilder implements FormBuilderInterface
     {
         if (isset($this->_currentForm)) {
             $this->_forms[$this->_currentForm] = null;
-            $this->_currentForm                = null;
+            $this->_currentForm = null;
             return $this;
         } else {
             throw new FormBuilderException(
@@ -275,10 +275,10 @@ class FormBuilder implements FormBuilderInterface
                 case "class":
                     if (is_array($attrValue)) {
                         $classString = '';
-                        $space       = '';
+                        $space = '';
                         foreach ($attrValue as $className) {
                             if (Validator::validateValue($className, new RegExp("/[^a-zA-Z0-9-_]+/"))) {
-                                $classString .= $space.$className;
+                                $classString .= $space . $className;
                                 $space = " ";
                             } else {
                                 throw new FormBuilderException(
@@ -286,7 +286,7 @@ class FormBuilder implements FormBuilderInterface
                                 );
                             }
                         }
-                        $attrValue             = $classString;
+                        $attrValue = $classString;
                         $cleanAttrs[$attrName] = $attrValue;
                     } elseif (Validator::validateValue($attrValue, new RegExp("/[^a-zA-Z0-9-_]+/"))) {
                         $cleanAttrs[$attrName] = $attrValue;
@@ -352,12 +352,12 @@ class FormBuilder implements FormBuilderInterface
             );
         } else {
             $cleanAttrs = FormBuilder::cleanAttributes($attrs);
-            $input      = "<input ";
+            $input = "<input ";
             foreach ($cleanAttrs as $attr => $val) {
                 $input .= "$attr='$val' ";
             }
             $input .= "/>";
-            $input = is_string($label)?"\t<label>$label$input</label></br>":"\t$input</br>";
+            $input = is_string($label) ? "\t<label>$label$input</label></br>" : "\t$input</br>";
             $this->_forms[$this->_currentForm] .= $input;
             return $this;
         }
@@ -384,7 +384,7 @@ class FormBuilder implements FormBuilderInterface
                 500, "<strong>Internal server error:</strong> second parameter for FormBuilder::select method must be 'array', '$parameterType' is given"
             );
         } else {
-            $cleanAttrs       = FormBuilder::cleanAttributes($attrs);
+            $cleanAttrs = FormBuilder::cleanAttributes($attrs);
             $cleanOptionAttrs = array();
             foreach ($options as $text => $attrs) {
                 $cleanOptionAttrs[$text] = FormBuilder::cleanAttributes($attrs);
@@ -413,7 +413,7 @@ class FormBuilder implements FormBuilderInterface
             } else {
                 $select = is_string(
                     $label
-                )?"<label for='{$cleanAttrs['id']}'>$label</label>$select</br>":"$select</br>";
+                ) ? "<label for='{$cleanAttrs['id']}'>$label</label>$select</br>" : "$select</br>";
                 $this->_forms[$this->_currentForm] .= $select;
                 return $this;
             }
@@ -437,7 +437,7 @@ class FormBuilder implements FormBuilderInterface
             );
         } else {
             $cleanAttrs = FormBuilder::cleanAttributes($attrs);
-            $textarea   = "<textarea ";
+            $textarea = "<textarea ";
             foreach ($cleanAttrs as $attr => $val) {
                 $textarea .= "$attr='$val' ";
             }
@@ -450,7 +450,7 @@ class FormBuilder implements FormBuilderInterface
             } else {
                 $textarea = is_string(
                     $label
-                )?"<label for='{$cleanAttrs['id']}'>$label</label></br>$textarea</br>":"$textarea</br>";
+                ) ? "<label for='{$cleanAttrs['id']}'>$label</label></br>$textarea</br>" : "$textarea</br>";
                 $this->_forms[$this->_currentForm] .= $textarea;
                 return $this;
             }

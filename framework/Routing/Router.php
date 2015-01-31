@@ -56,7 +56,7 @@ class Router implements RouterInterface
      */
     private function __construct($routeCollection = null)
     {
-        $this->_host            = 'http://'.$_SERVER['HTTP_HOST'];
+        $this->_host = 'http://' . $_SERVER['HTTP_HOST'];
         $this->_routeCollection = $routeCollection;
     }
 
@@ -123,9 +123,9 @@ class Router implements RouterInterface
     public function matchCurrentRequest()
     {
         $request = Service::resolve('request');
-        $url     = '/'.trim($request->getURI(), '/');
+        $url = '/' . trim($request->getURI(), '/');
 
-        $role = isset($_SESSION['user'])?strtoupper($_SESSION['user']['role']):'GUEST';
+        $role = isset($_SESSION['user']) ? strtoupper($_SESSION['user']['role']) : 'GUEST';
 
         $templateEngine = TemplateEngine::getInstance();
         $templateEngine->setData('router', $this);
@@ -151,7 +151,7 @@ class Router implements RouterInterface
                     if (isset($routeInfo->getRequirements()[$paramName])) {
                         $pattern = preg_replace(
                             '/{(\w+)}/',
-                            '('.$routeInfo->getRequirements()[$paramName].')',
+                            '(' . $routeInfo->getRequirements()[$paramName] . ')',
                             $pattern,
                             1
                         );
@@ -159,9 +159,9 @@ class Router implements RouterInterface
                 }
 
                 $pattern = ltrim($pattern, '/');
-                $pattern = '^/'.$pattern.'$';
+                $pattern = '^/' . $pattern . '$';
                 $pattern = str_replace('/', '\/', $pattern);
-                $pattern = '/'.$pattern.'/';
+                $pattern = '/' . $pattern . '/';
 
                 if (preg_match($pattern, $url, $params) != 0) {
 
@@ -202,7 +202,7 @@ class Router implements RouterInterface
         }
 
         $route = $this->_routeCollection->getRoutes()[$routeName];
-        $url   = $route->getPattern();
+        $url = $route->getPattern();
 
         if ($params && preg_match_all('/{(\w+)}/', $url, $param_keys)) {
             $param_keys = $param_keys[1];

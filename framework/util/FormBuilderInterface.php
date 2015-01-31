@@ -52,8 +52,8 @@ interface FormBuilderInterface
     /**
      * Method to start building form. It takes form name and array of attributes for 'form' tag.
      *
-     * @param  string $name  Form name.
-     * @param  array  $attrs Attributes for 'form' tag.
+     * @param  string $name Form name.
+     * @param  array $attrs Attributes for 'form' tag.
      *
      * @throws FormBuilderException FormBuilderException instance.
      * @throws ValidatorException   ValidatorException   instance.
@@ -126,7 +126,7 @@ interface FormBuilderInterface
     /**
      * Method to add 'input' field to current form.
      *
-     * @param  array       $attrs Attributes of 'input' tag: 'attrName' => attrValue.
+     * @param  array $attrs Attributes of 'input' tag: 'attrName' => attrValue.
      * @param  string|null $label Label for 'input' field.
      *
      * @throws FormBuilderException FormBuilderException instance.
@@ -138,9 +138,9 @@ interface FormBuilderInterface
     /**
      * Method to add 'select' element to current form.
      *
-     * @param  array       $options Array of 'option' elements and its attributes: 'optionText' => option attributes.
-     * @param  array       $attrs   Attributes of 'select' element: 'attrName' => attrValue.
-     * @param  string|null $label   Label for 'select' element.
+     * @param  array $options Array of 'option' elements and its attributes: 'optionText' => option attributes.
+     * @param  array $attrs Attributes of 'select' element: 'attrName' => attrValue.
+     * @param  string|null $label Label for 'select' element.
      *
      * @throws FormBuilderException FormBuilderException instance.
      *
@@ -151,7 +151,7 @@ interface FormBuilderInterface
     /**
      * Method to add 'textarea' element to current form.
      *
-     * @param  array       $attrs Attributes for 'textarea' element: 'attrName' => attrValue.
+     * @param  array $attrs Attributes for 'textarea' element: 'attrName' => attrValue.
      * @param  string|null $label Label for 'textarea' element.
      *
      * @throws FormBuilderException FormBuilderException instance.

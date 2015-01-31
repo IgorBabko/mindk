@@ -37,11 +37,11 @@ class Comment extends ActiveRecord
     public static function getColumns()
     {
         return array(
-            '_id'          => 'id',
-            '_postTitle'   => 'post_title',
-            '_author'      => 'author',
+            '_id' => 'id',
+            '_postTitle' => 'post_title',
+            '_author' => 'author',
             '_createdDate' => 'created_date',
-            '_text'        => 'text'
+            '_text' => 'text'
         );
     }
 

@@ -31,14 +31,14 @@ class Date extends Constraint
      * Date constructor takes pattern (optional parameter) and error message.
      *
      * @param  null|string $pattern Pattern for validation.
-     * @param  string      $message Error message.
+     * @param  string $message Error message.
      *
      * @return object Date.
      */
     public function __construct($pattern = null, $message = null)
     {
-        $this->_pattern = empty($pattern)?"/^([012]\d|3[01])\.(0\d|1[012])\.20\d\d$/":$pattern;
-        $message        = isset($message)?$message:"must be date in a right format";
+        $this->_pattern = empty($pattern) ? "/^([012]\d|3[01])\.(0\d|1[012])\.20\d\d$/" : $pattern;
+        $message = isset($message) ? $message : "must be date in a right format";
         parent::__construct($message);
     }
 

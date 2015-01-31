@@ -34,7 +34,7 @@ interface SanitizerInterface
     /**
      * Method to filter values of primitive data types.
      *
-     * @param  mixed                $value   Values that must be filtered.
+     * @param  mixed $value Values that must be filtered.
      * @param  array|Filter\Filter $filters Filter object or array of filter objects.
      *
      * @throws \Framework\Exception\SanitizerException SanitizerException instance.

@@ -30,11 +30,11 @@ interface ServiceInterface
     /**
      * Method for setting new service based on passing parameters.
      *
-     * @param string        $name         Service name.
-     * @param string        $className    Service class name.
-     * @param \Closure|null $resolver     Function to create an instance of service with all needed dependencies.
-     * @param array         $params       Parameters for resolver.
-     * @param array         $dependencies List of classes service depends on.
+     * @param string $name Service name.
+     * @param string $className Service class name.
+     * @param \Closure|null $resolver Function to create an instance of service with all needed dependencies.
+     * @param array $params Parameters for resolver.
+     * @param array $dependencies List of classes service depends on.
      *
      * @return void
      */
@@ -49,8 +49,8 @@ interface ServiceInterface
      * For a case service parameters have to be set to is singleton setting parameters step will be ignored
      * 'cause for resolvers of singleton services (objects) parameters is set only once in /web/index.php .
      *
-     * @param string $name   Service name.
-     * @param array  $params Parameters array of particular service resolver.
+     * @param string $name Service name.
+     * @param array $params Parameters array of particular service resolver.
      *
      * @throws \Framework\Exception\ServiceException ServiceException instance.
      *
@@ -61,8 +61,8 @@ interface ServiceInterface
     /**
      * Method for setting dependencies to the service.
      *
-     * @param string $name         Service name to set dependencies to.
-     * @param array  $dependencies List of classes current service depends on.
+     * @param string $name Service name to set dependencies to.
+     * @param array $dependencies List of classes current service depends on.
      *
      * @throws \Framework\Exception\ServiceException ServiceException instance.
      *
@@ -73,7 +73,7 @@ interface ServiceInterface
     /**
      * Method to set resolvers for specified service.
      *
-     * @param string $name    Service name.
+     * @param string $name Service name.
      * @param object $resolve Resolver function.
      *
      * @throws \Framework\Exception\ServiceException ServiceException instance.

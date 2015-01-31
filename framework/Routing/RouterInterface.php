@@ -50,7 +50,7 @@ interface RouterInterface
      * Method to add route to routeCollection.
      *
      * @param  string $routeName Name of new route.
-     * @param  Route  $route     New route.
+     * @param  Route $route New route.
      *
      * @return void
      */
@@ -87,7 +87,7 @@ interface RouterInterface
      * parameters array and only then generated url will be returned.
      *
      * @param string $routeName Name of route to generate.
-     * @param array  $params    Params for route to generate.
+     * @param array $params Params for route to generate.
      *
      * @throws \Framework\Exception\RouterException RouterException instance.
      *

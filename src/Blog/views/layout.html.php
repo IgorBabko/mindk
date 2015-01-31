@@ -1,6 +1,6 @@
 <?php
 $isRouteActive = function ($currentRoute) {
-    return ($this->activeRoute === $currentRoute)?'class="active"':'';
+    return ($this->activeRoute === $currentRoute) ? 'class="active"' : '';
 };
 ?>
 <!DOCTYPE html>
@@ -14,8 +14,8 @@ $isRouteActive = function ($currentRoute) {
     <!-- CodeMirror -->
     <link href="/web/css/codeMirror/docs.css" rel="stylesheet"/>
     <link href="/web/css/codeMirror/codemirror.css" rel="stylesheet"/>
-    <link href="/web/css/codeMirror/themes/twilight.css" type="text/css" rel="stylesheet" />
-    <link href="/web/css/codeMirror/themes/monokai.css" type="text/css" rel="stylesheet" />
+    <link href="/web/css/codeMirror/themes/twilight.css" type="text/css" rel="stylesheet"/>
+    <link href="/web/css/codeMirror/themes/monokai.css" type="text/css" rel="stylesheet"/>
     <!-- End CodeMirror -->
 
     <link href="/web/css/reset.css" rel="stylesheet">
@@ -95,18 +95,18 @@ $isRouteActive = function ($currentRoute) {
         <form id="search" role="search"
               action="<?= $this->router->generateRoute(
                   'posts',
-                  array('categoryId' => ($this->categoryId != null)?$this->categoryId:0, 'pageId' => 1)
+                  array('categoryId' => ($this->categoryId != null) ? $this->categoryId : 0, 'pageId' => 1)
               ); ?>" name="search-form" method="post">
             <div class="input-group">
                 <span class="input-group-btn"><button
-                        type="submit" <?= isset($_SESSION['searchQuery'])?'':'disabled'; ?>
+                        type="submit" <?= isset($_SESSION['searchQuery']) ? '' : 'disabled'; ?>
                         form="reset_form"
                         class="btn btn-info">Reset
                     </button>
                 </span>
                 <input autocomplete="off" type="search" class="form-control" name="search"
-                       value="<?= isset($_POST['search'])?$_POST['search']:''; ?>"
-                       placeholder="<?= ($this->searchResult != null)?$this->searchResult:'Search for...'; ?>"/>
+                       value="<?= isset($_POST['search']) ? $_POST['search'] : ''; ?>"
+                       placeholder="<?= ($this->searchResult != null) ? $this->searchResult : 'Search for...'; ?>"/>
                 <span class="input-group-btn">
                     <button type="submit" class="btn btn-warning">Go!
                     </button>
@@ -121,8 +121,9 @@ $isRouteActive = function ($currentRoute) {
                 } else {
                     $categoryId = (int)$_SESSION['categoryId'];
                 }
-                foreach ($this->categories as $category) { ?>
-                    <li role="presentation" <?= ($categoryId === (int)$category['id'])?'id="active_category"':''; ?> >
+                foreach ($this->categories as $category) {
+                    ?>
+                    <li role="presentation" <?= ($categoryId === (int)$category['id']) ? 'id="active_category"' : ''; ?> >
                         <a href="<?= $this->router->generateRoute('posts', array('categoryId' => $category['id'], 'pageId' => 1)); ?>"><?= $category['name']; ?></a>
                     </li>
                 <?php } ?>
@@ -140,19 +141,21 @@ $isRouteActive = function ($currentRoute) {
                 <div class="panel-body">
                     <ul class="list-group" id="categories">
                         <?php if ($this->activeRoute != 'home' && $this->activeRoute != 'posts') {
-                                $categoryId = null;
-                            } else {
-                                $categoryId = (int)$_SESSION['categoryId'];
-                            }
-                            foreach ($this->categories as $category) { ?>
-                                <a href="<?= $this->router->generateRoute(
-                                    'posts',
-                                    array('categoryId' => $category['id'], 'pageId' => 1)
-                                ); ?>">
-                                    <li <?= ($categoryId === (int)$category['id'])?'id="active_category"':''; ?>
-                                        class="list-group-item"><span class="badge"><?= $category['count']; ?></span><?= $category['name']; ?>
-                                    </li>
-                                </a>
+                            $categoryId = null;
+                        } else {
+                            $categoryId = (int)$_SESSION['categoryId'];
+                        }
+                        foreach ($this->categories as $category) {
+                            ?>
+                            <a href="<?= $this->router->generateRoute(
+                                'posts',
+                                array('categoryId' => $category['id'], 'pageId' => 1)
+                            ); ?>">
+                                <li <?= ($categoryId === (int)$category['id']) ? 'id="active_category"' : ''; ?>
+                                    class="list-group-item"><span
+                                        class="badge"><?= $category['count']; ?></span><?= $category['name']; ?>
+                                </li>
+                            </a>
                         <?php } ?>
                     </ul>
                 </div>
@@ -170,21 +173,25 @@ $isRouteActive = function ($currentRoute) {
 <div id="footer">
     <div class="footer-top">
         <div id="footer-icons">
-            <a class="footer_img" id="html_img" href="<?= $this->router->generateRoute('posts', array('categoryId' => 1, 'pageId' => 1)); ?>"></a>
-            <a class="footer_img" id="css_img" href="<?=  $this->router->generateRoute('posts', array('categoryId' => 2, 'pageId' => 1)); ?>"></a>
-            <a class="footer_img" id="js_img" href="<?=   $this->router->generateRoute('posts', array('categoryId' => 3, 'pageId' => 1)); ?>"></a>
-            <a class="footer_img" id="php_img" href="<?=  $this->router->generateRoute('posts', array('categoryId' => 4, 'pageId' => 1)); ?>"></a>
+            <a class="footer_img" id="html_img"
+               href="<?= $this->router->generateRoute('posts', array('categoryId' => 1, 'pageId' => 1)); ?>"></a>
+            <a class="footer_img" id="css_img"
+               href="<?= $this->router->generateRoute('posts', array('categoryId' => 2, 'pageId' => 1)); ?>"></a>
+            <a class="footer_img" id="js_img"
+               href="<?= $this->router->generateRoute('posts', array('categoryId' => 3, 'pageId' => 1)); ?>"></a>
+            <a class="footer_img" id="php_img"
+               href="<?= $this->router->generateRoute('posts', array('categoryId' => 4, 'pageId' => 1)); ?>"></a>
         </div>
         <div class="clear"></div>
     </div>
     <div class="footer-middle">
-        <img id="footer-img" class="hidden-xs hidden-sm hidden-md" src="/web/images/web-footer.png" />
+        <img id="footer-img" class="hidden-xs hidden-sm hidden-md" src="/web/images/web-footer.png"/>
 
         <div id="footer-first-block">
             <h2>Contact us</h2>
 
             <div>
-                <img id="phone-img" src="/web/images/phone_white.png" />(096) 374-9502
+                <img id="phone-img" src="/web/images/phone_white.png"/>(096) 374-9502
             </div>
             <br/>
 

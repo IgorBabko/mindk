@@ -28,7 +28,7 @@ class CsrfToken implements CsrfTokenInterface
     public static function generate()
     {
         $tokenName = Config::getSetting('session/token_name');
-        $session   = Session::getInstance();
+        $session = Session::getInstance();
         return $session->add($tokenName, md5(uniqid()));
     }
 
@@ -39,7 +39,7 @@ class CsrfToken implements CsrfTokenInterface
     {
         if (is_string($token)) {
             $tokenName = Config::getSetting('session/token_name');
-            $session   = Session::getInstance();
+            $session = Session::getInstance();
             if ($session->exists($tokenName) && $token === $session->get($tokenName)) {
                 $session->remove($tokenName);
                 return true;

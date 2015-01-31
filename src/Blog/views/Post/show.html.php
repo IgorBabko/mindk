@@ -2,14 +2,14 @@
     <div class="panel panel-black post-block">
         <div class="panel-heading panel-title">
             <?= $post->getTitle(); ?><p class="text-right post-date">
-                <i><?= 'Date: '.$post->getPostedDate(); ?></i></p>
+                <i><?= 'Date: ' . $post->getPostedDate(); ?></i></p>
         </div>
         <div class="panel-body post-body">
             <?= html_entity_decode($post->getText()); ?>
         </div>
         <div class="panel-footer post-back">
             <a class='btn btn-default' role='button'
-               href='<?= isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:"/posts/0/1"; ?>'>Back</a>
+               href='<?= isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : "/posts/0/1"; ?>'>Back</a>
         </div>
     </div>
     <h2 id="amountOfComments">Comments(<span><?= $post->getAmountOfComments(); ?></span>):</h2>

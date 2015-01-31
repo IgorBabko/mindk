@@ -29,15 +29,15 @@ class True extends Constraint
     /**
      * True constructor takes array of values that represent true and error message.
      *
-     * @param  array       $booleanList Array of values that represent 'true'.
-     * @param  null|string $message     Error message.
+     * @param  array $booleanList Array of values that represent 'true'.
+     * @param  null|string $message Error message.
      *
      * @return object True.
      */
     public function __construct($booleanList = array('1', 'true', 'yes', 'on'), $message = null)
     {
         $this->_booleanList = $booleanList;
-        $message            = isset($message)?$message:"must be true";
+        $message = isset($message) ? $message : "must be true";
         parent::__construct($message);
     }
 

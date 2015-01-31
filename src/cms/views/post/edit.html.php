@@ -10,24 +10,24 @@
                 <select class="form-control" name="_category" id="category">
                     <?php foreach ($this->categories as $category) { ?>
                         <option
-                            value="<?= $category['name']; ?>" <?= ($_POST['_category'] == $category['name'])?'selected':''; ?> ><?= $category['name']; ?></option>
+                            value="<?= $category['name']; ?>" <?= ($_POST['_category'] == $category['name']) ? 'selected' : ''; ?> ><?= $category['name']; ?></option>
                     <?php } ?>
                 </select>
             </div>
-            <?php $hasError = Util::errorBox(isset($this->errors['_title'])?$this->errors['_title']:null); ?>
+            <?php $hasError = Util::errorBox(isset($this->errors['_title']) ? $this->errors['_title'] : null); ?>
             <div class="form-group <?= $hasError; ?>">
                 <label for="title">Title:</label>
                 <input autocomplete="off" type="text" class="form-control" id="title" name="_title"
                        value="<?= $_POST['_title']; ?>"
                        placeholder="Post description">
             </div>
-            <?php $hasError = Util::errorBox(isset($this->errors['_smallText'])?$this->errors['_smallText']:null); ?>
+            <?php $hasError = Util::errorBox(isset($this->errors['_smallText']) ? $this->errors['_smallText'] : null); ?>
             <div class="form-group <?= $hasError; ?>">
                 <label for="smallText">Short text:</label>
                 <textarea rows="10" class="form-control" name="_smallText"
                           id="smallText"><?= $_POST['_smallText']; ?></textarea>
             </div>
-            <?php $hasError = Util::errorBox(isset($this->errors['_text'])?$this->errors['_text']:null); ?>
+            <?php $hasError = Util::errorBox(isset($this->errors['_text']) ? $this->errors['_text'] : null); ?>
             <div class="form-group <?= $hasError; ?>">
                 <label for="text">Text:</label>
                 <textarea rows="25" class="form-control" name="_text" id="text"><?= $_POST['_text']; ?></textarea>

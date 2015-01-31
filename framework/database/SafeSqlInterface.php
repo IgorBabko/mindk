@@ -106,7 +106,7 @@ interface SafeSqlInterface
      * In the case of request failure method throws an error.
      *
      * @param  string $rawQueryString Query string QueryBuilder::rawQueryString with placeholders.
-     * @param  array $bindParameters  Parameters QueryBuilder::bindParameters to replace placeholders
+     * @param  array $bindParameters Parameters QueryBuilder::bindParameters to replace placeholders
      *                               in QueryBuilder::rawQueryString.
      *
      * @throws \Framework\Exception\SafeSqlException SafeSqlException object.
@@ -121,7 +121,7 @@ interface SafeSqlInterface
      * QueryBuilder::bindParameters and escape them before replacing.
      *
      * @param  string $rawQueryString Query string QueryBuilder::rawQueryString with placeholders.
-     * @param  array  $bindParameters Parameters QueryBuilder::bindParameters to replace placeholders
+     * @param  array $bindParameters Parameters QueryBuilder::bindParameters to replace placeholders
      *                               in QueryBuilder::rawQueryString.
      *
      * @return string Query string.

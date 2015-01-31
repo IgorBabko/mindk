@@ -62,7 +62,7 @@ class Request implements RequestInterface
         $out = array();
         foreach ($_SERVER as $key => $value) {
             if (substr($key, 0, 5) == "HTTP_") {
-                $key       = str_replace(" ", "-", ucwords(strtolower(str_replace("_", " ", substr($key, 5)))));
+                $key = str_replace(" ", "-", ucwords(strtolower(str_replace("_", " ", substr($key, 5)))));
                 $out[$key] = $value;
             } else {
                 $out[$key] = $value;
@@ -79,17 +79,17 @@ class Request implements RequestInterface
      *  - defines request method and request uri.
      *
      * @param  \Framework\Session\Session|null $session Session object.
-     * @param  \Framework\Cookie\Cookie|null   $cookie  Cookie  object.
+     * @param  \Framework\Cookie\Cookie|null $cookie Cookie  object.
      *
      * @return object Request.
      */
     private function __construct($session = null, $cookie = null)
     {
         $this->_headers = $this->getRequestHeaders();
-        $this->_method  = $_SERVER['REQUEST_METHOD'];
-        $this->_uri     = $_SERVER['REQUEST_URI'];
+        $this->_method = $_SERVER['REQUEST_METHOD'];
+        $this->_uri = $_SERVER['REQUEST_URI'];
         $this->_session = $session;
-        $this->_cookie  = $cookie;
+        $this->_cookie = $cookie;
     }
 
     /**
@@ -106,7 +106,7 @@ class Request implements RequestInterface
      * otherwise existed Request object will be returned.
      *
      * @param  \Framework\Session\Session|null $session Session object.
-     * @param  \Framework\Cookie\Cookie|null   $cookie  Cookie  object.
+     * @param  \Framework\Cookie\Cookie|null $cookie Cookie  object.
      *
      * @return object Request.
      */
@@ -171,7 +171,7 @@ class Request implements RequestInterface
      */
     public function getEnv($name)
     {
-        return isset($_ENV[$name])?$_ENV[$name]:null;
+        return isset($_ENV[$name]) ? $_ENV[$name] : null;
     }
 
     /**
@@ -179,7 +179,7 @@ class Request implements RequestInterface
      */
     public function get($name)
     {
-        return isset($_REQUEST[$name])?$_REQUEST[$name]:null;
+        return isset($_REQUEST[$name]) ? $_REQUEST[$name] : null;
     }
 
     /**
@@ -187,7 +187,7 @@ class Request implements RequestInterface
      */
     public function getPost($name)
     {
-        return isset($_POST[$name])?$_POST[$name]:null;
+        return isset($_POST[$name]) ? $_POST[$name] : null;
     }
 
     /**
@@ -195,7 +195,7 @@ class Request implements RequestInterface
      */
     public function getQuery($name)
     {
-        return isset($_GET[$name])?$_GET[$name]:null;
+        return isset($_GET[$name]) ? $_GET[$name] : null;
     }
 
     /**
@@ -203,7 +203,7 @@ class Request implements RequestInterface
      */
     public function getServer($name)
     {
-        return isset($_SERVER[$name])?$_SERVER[$name]:null;
+        return isset($_SERVER[$name]) ? $_SERVER[$name] : null;
     }
 
     /**
@@ -277,7 +277,7 @@ class Request implements RequestInterface
     public function getHttpHost()
     {
         $parsed_url = parse_url($_SERVER('REQUEST_URI'));
-        return $parsed_url['scheme'].$parsed_url['host'].$parsed_url['port'];
+        return $parsed_url['scheme'] . $parsed_url['host'] . $parsed_url['port'];
     }
 
     /**

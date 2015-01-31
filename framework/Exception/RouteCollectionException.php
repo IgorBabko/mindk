@@ -23,7 +23,7 @@ class RouteCollectionException extends FrameworkException
     /**
      * RouteCollectionException constructor.
      *
-     * @param  int    $code    Exception code.
+     * @param  int $code Exception code.
      * @param  string $message Exception message.
      *
      * @return object RouteCollectionException.

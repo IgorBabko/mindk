@@ -40,9 +40,9 @@ interface LoaderInterface
      * will be set as first element of Namespace prefixes array otherwise $base_dir pushes
      * to the end of this array.
      *
-     * @param  string $prefix   Prefix of namespace.
+     * @param  string $prefix Prefix of namespace.
      * @param  string $base_dir Base_dir.
-     * @param  bool   $prepend  Whether to append loading function at the end or at the beginning of auto loading stack.
+     * @param  bool $prepend Whether to append loading function at the end or at the beginning of auto loading stack.
      *
      * @return void
      */
@@ -67,7 +67,7 @@ interface LoaderInterface
      * Method loads $relative_class iterating through all paths related to prefix $prefix.
      * Once class file is detected in one of paths this path is required by Loader::requireFile.
      *
-     * @param  string $prefix         Namespace prefix.
+     * @param  string $prefix Namespace prefix.
      * @param  string $relative_class Class name to load.
      *
      * @throws \Framework\Exception\LoaderException LoaderException instance.

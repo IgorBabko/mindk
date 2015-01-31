@@ -23,7 +23,7 @@ abstract class FrameworkException extends \Exception implements FrameworkExcepti
     /**
      * FrameworkException constructor.
      *
-     * @param  int    $code    Exception code.
+     * @param  int $code Exception code.
      * @param  string $message Exception message.
      *
      * @return object FrameworkException.

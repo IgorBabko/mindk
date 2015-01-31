@@ -34,8 +34,8 @@ class Between extends Constraint
     /**
      * Between constructor takes points for defining range and error message.
      *
-     * @param float|int   $min     Start point of range.
-     * @param float|int   $max     End point of range.
+     * @param float|int $min Start point of range.
+     * @param float|int $max End point of range.
      * @param null|string $message Error message.
      *
      * @return object Between.
@@ -44,7 +44,7 @@ class Between extends Constraint
     {
         $this->_min = $min;
         $this->_max = $max;
-        $message    = isset($message)?$message:"must belong to ($min;$max)";
+        $message = isset($message) ? $message : "must belong to ($min;$max)";
         parent::__construct($message);
     }
 

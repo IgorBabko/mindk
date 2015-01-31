@@ -55,11 +55,11 @@ class Database extends \PDO implements DatabaseInterface
     /**
      * Constructor establishes connection with database server, sets charset and error reporting mode.
      *
-     * @param string $user    Database user.
-     * @param string $pass    Database password.
-     * @param string $db      Database name.
-     * @param string $engine  Database engine.
-     * @param string $host    Database host.
+     * @param string $user Database user.
+     * @param string $pass Database password.
+     * @param string $db Database name.
+     * @param string $engine Database engine.
+     * @param string $host Database host.
      * @param string $charset Database charset.
      *
      * @throws DatabaseException DatabaseException instance.
@@ -69,13 +69,13 @@ class Database extends \PDO implements DatabaseInterface
     public function __construct($user, $pass, $db, $engine = "mysql", $host = "localhost", $charset = "utf8")
     {
         if (is_string($user) && is_string($pass) && is_string($db)) {
-            $this->_engine  = $engine;
-            $this->_host    = $host;
-            $this->_user    = $user;
-            $this->_pass    = $pass;
-            $this->_db      = $db;
+            $this->_engine = $engine;
+            $this->_host = $host;
+            $this->_user = $user;
+            $this->_pass = $pass;
+            $this->_db = $db;
             $this->_charset = $charset;
-            $dsn            = $engine.":dbname=".$db.";host=".$host;
+            $dsn = $engine . ":dbname=" . $db . ";host=" . $host;
             parent::__construct($dsn, $user, $pass);
             $this->exec("SET CHARACTER SET $charset");
             $this->setAttribute(self::ATTR_ERRMODE, self::ERRMODE_EXCEPTION);

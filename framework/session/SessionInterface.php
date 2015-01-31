@@ -84,7 +84,7 @@ interface SessionInterface
     /**
      * Method sets session variable $name with value $value.
      *
-     * @param  string $name  Name of session variable to be added.
+     * @param  string $name Name of session variable to be added.
      * @param  string $value Value of session variable with name $name.
      *
      * @throws \Framework\Exception\SessionException SessionException instance.
@@ -108,7 +108,7 @@ interface SessionInterface
      * Method to add flash message to $_SESSION['flashMsgs'] array.
      * Note: flash message is message that exists until next redirection.
      *
-     * @param  string $name  Name of flash message.
+     * @param  string $name Name of flash message.
      * @param  string $value Flash message.
      *
      * @throws SessionException SessionException instance.

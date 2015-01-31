@@ -23,7 +23,7 @@ class JsonResponseException extends FrameworkException
     /**
      * JsonResponseException constructor.
      *
-     * @param  int    $code    Exception code.
+     * @param  int $code Exception code.
      * @param  string $message Exception message.
      *
      * @return object JsonResponseException.

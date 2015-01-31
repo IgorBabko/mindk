@@ -34,7 +34,7 @@ interface ValidatorInterface
     /**
      * Method to validate primitive values (e.g. int, string, ...).
      *
-     * @param  mixed        $value       Value to validate.
+     * @param  mixed $value Value to validate.
      * @param  array|object $constraints Constraints for validation (Constraint object or array of Constraint objects).
      *
      * @throws \Framework\Exception\ValidatorException ValidatorException instance.

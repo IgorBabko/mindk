@@ -14,14 +14,14 @@ class PostController extends Controller
 {
     public function indexAction()
     {
-        $args       = func_get_args();
-        $categoryId = empty($args[0])?0:$args[0][0];
-        $pageId     = empty($args[0])?1:$args[0][1];
+        $args = func_get_args();
+        $categoryId = empty($args[0]) ? 0 : $args[0][0];
+        $pageId = empty($args[0]) ? 1 : $args[0][1];
 
         $session = $this->getRequest()->getSession();
         $session->start();
 
-        $request        = $this->getRequest();
+        $request = $this->getRequest();
         $templateEngine = $this->getTemplateEngine();
 
         $posts = array();
@@ -39,11 +39,11 @@ class PostController extends Controller
                     array(
                         Post::getTable(),
                         'title',
-                        '%'.$_POST['search'].'%',
+                        '%' . $_POST['search'] . '%',
                         'small_text',
-                        '%'.$_POST['search'].'%',
+                        '%' . $_POST['search'] . '%',
                         'text',
-                        '%'.$_POST['search'].'%',
+                        '%' . $_POST['search'] . '%',
                         'posted_date'
                     );
 
@@ -59,16 +59,16 @@ class PostController extends Controller
             }
         } elseif ($session->exists('searchQuery') && $categoryId == $_SESSION['categoryId']) {
             $searchQuery = $session->get('searchQuery');
-            $posts       = Post::query($searchQuery['rawQueryString'], $searchQuery['bindParameters']);
-            $templateEngine->setData('searchResult', 'Search result: '.count($posts).' items');
+            $posts = Post::query($searchQuery['rawQueryString'], $searchQuery['bindParameters']);
+            $templateEngine->setData('searchResult', 'Search result: ' . count($posts) . ' items');
         } else {
             $session->remove('searchQuery');
             if ($categoryId == 0) {
                 $rawQueryString = "SELECT * FROM ?i ORDER BY ?i DESC";
                 $bindParameters = array(Post::getTable(), 'posted_date');
             } else {
-                $category       = new Category(array('id' => $categoryId));
-                $categoryName   = $category->getName();
+                $category = new Category(array('id' => $categoryId));
+                $categoryName = $category->getName();
                 $rawQueryString = "SELECT * FROM ?i WHERE ?i = ?s ORDER BY ?i DESC";
                 $bindParameters = array(Post::getTable(), 'category', $categoryName, 'posted_date');
             }
@@ -78,7 +78,7 @@ class PostController extends Controller
 
         $categories = Category::query('SELECT * FROM ?i', array(Category::getTable()));
         foreach ($categories as &$category) {
-            $count             = Post::query(
+            $count = Post::query(
                 "SELECT COUNT(*) AS 'count' FROM ?i WHERE ?i = ?s",
                 array(Post::getTable(), 'category', $category['name'])
             );
@@ -90,7 +90,7 @@ class PostController extends Controller
         $templateEngine->setData('categories', $categories);
 
         $itemsPerPage = Config::getSetting('pagination/items_per_page');
-        $pagination   = Util::pagination(
+        $pagination = Util::pagination(
             'posts',
             array('categoryId' => $categoryId, 'pageId' => $pageId),
             count($posts)
@@ -100,7 +100,7 @@ class PostController extends Controller
         $templateEngine->setData('posts', array_slice($posts, $start, $itemsPerPage));
         $templateEngine->setData('router', $this->getRouter());
         $templateEngine->setData('pagination', $pagination);
-        $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS.'post/index.html.php');
+        $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS . 'post/index.html.php');
     }
 
     public function showAction()
@@ -108,8 +108,8 @@ class PostController extends Controller
         $session = $this->getRequest()->getSession();
         $session->start();
         $id = func_get_args()[0][0];;
-        $post           = new Post(array('id' => $id));
-        $comments       = Comment::query(
+        $post = new Post(array('id' => $id));
+        $comments = Comment::query(
             'SELECT * FROM ?i WHERE ?i = ?s ORDER BY ?i DESC',
             array(Comment::getTable(), 'post_title', $post->getTitle(), 'created_date')
         );
@@ -124,7 +124,7 @@ class PostController extends Controller
 
         $categories = Category::query('SELECT * FROM ?i', array(Category::getTable()));
         foreach ($categories as &$category) {
-            $count             = Post::query(
+            $count = Post::query(
                 "SELECT COUNT(*) AS 'count' FROM ?i WHERE ?i = ?s",
                 array(Post::getTable(), 'category', $category['name'])
             );
@@ -138,6 +138,6 @@ class PostController extends Controller
         $templateEngine->setData('router', $this->getRouter());
         $templateEngine->setData('post', $post);
         $templateEngine->setData('comments', $comments);
-        $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS.'post/show.html.php');
+        $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS . 'post/show.html.php');
     }
 }

@@ -52,14 +52,14 @@ class Form implements FormInterface
     /**
      * Form constructor takes model (ActiveRecord) that current Form object will represent.
      *
-     * @param  ActiveRecord|null $model   Model that current Form object will represent.
-     * @param  string|null       $context Context for form validation.
+     * @param  ActiveRecord|null $model Model that current Form object will represent.
+     * @param  string|null $context Context for form validation.
      *
      * @return object Form.
      */
     public function __construct(ActiveRecord $model = null, $context = null)
     {
-        $this->_model       = $model;
+        $this->_model = $model;
         $this->_constraints = $model->getConstraints($context);
     }
 
@@ -69,7 +69,7 @@ class Form implements FormInterface
     public function setModel(ActiveRecord $model)
     {
         if (is_object($model)) {
-            $this->_model       = $model;
+            $this->_model = $model;
             $this->_constraints = $model->getConstraints();
             return $this;
         } else {
@@ -126,9 +126,9 @@ class Form implements FormInterface
     public function isValid()
     {
         if (isset($this->_model)) {
-            $this->_data  = (object)$_POST;
+            $this->_data = (object)$_POST;
             $this->_valid = Validator::validate($this);
-            return ($this->_valid === true)?true:false;
+            return ($this->_valid === true) ? true : false;
         } else {
             throw new FormException(500, "<strong>Internal server error:</strong> model for the form has not been set");
         }

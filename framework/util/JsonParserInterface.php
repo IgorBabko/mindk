@@ -37,9 +37,9 @@ interface JsonParserInterface
     /**
      * Method for serialization values into json string (based on 'json_encode' function).
      *
-     * @param  mixed $value   Value to serialize into json string.
-     * @param  int   $options Options to define serialization behaviour.
-     * @param  int   $depth   Maximum depth.
+     * @param  mixed $value Value to serialize into json string.
+     * @param  int $options Options to define serialization behaviour.
+     * @param  int $depth Maximum depth.
      *
      * @throws \Framework\Exception\JsonParserException JsonParserException instance.
      *
@@ -51,9 +51,9 @@ interface JsonParserInterface
      * Method to parse json string into PHP value.
      *
      * @param  string $jsonString Json string.
-     * @param  bool   $assoc      When true, returned objects will be converted into associative arrays.
-     * @param  int    $depth      Recursion depth.
-     * @param  int    $options    Decode options (self::$options['bigIntAsStr'] is only available).
+     * @param  bool $assoc When true, returned objects will be converted into associative arrays.
+     * @param  int $depth Recursion depth.
+     * @param  int $options Decode options (self::$options['bigIntAsStr'] is only available).
      *
      * @throws \Framework\Exception\JsonParserException JsonParserException instance.
      *

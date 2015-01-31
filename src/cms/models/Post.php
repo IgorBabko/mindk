@@ -41,17 +41,18 @@ class Post extends ActiveRecord
     public static function getColumns()
     {
         return array(
-            '_id'               => 'id',
-            '_category'         => 'category',
-            '_title'            => 'title',
-            '_smallText'        => 'small_text',
-            '_text'             => 'text',
-            '_postedDate'       => 'posted_date',
+            '_id' => 'id',
+            '_category' => 'category',
+            '_title' => 'title',
+            '_smallText' => 'small_text',
+            '_text' => 'text',
+            '_postedDate' => 'posted_date',
             '_amountOfComments' => 'amount_of_comments'
         );
     }
 
-    public static function getFilters() {
+    public static function getFilters()
+    {
         return array(
             '_smallText' => array(
                 new FHtmlEntity()
@@ -67,7 +68,7 @@ class Post extends ActiveRecord
         switch ($context) {
             case 'add':
                 return array(
-                    '_title'     => array(
+                    '_title' => array(
                         new Unique('posts', 'title'),
                         new MaxLength(255),
 
@@ -75,19 +76,19 @@ class Post extends ActiveRecord
                     '_smallText' => array(
                         new NotBlank('"Small text" field must not be blank')
                     ),
-                    '_text'      => array(
+                    '_text' => array(
                         new NotBlank('"Text" field must not be blank')
                     )
                 );
             case 'edit':
                 return array(
-                    '_title'     => array(
+                    '_title' => array(
                         new MaxLength(255)
                     ),
                     '_smallText' => array(
                         new NotBlank('"Small text" field must not be blank')
                     ),
-                    '_text'      => array(
+                    '_text' => array(
                         new NotBlank('"Text" field must not be blank')
                     )
                 );

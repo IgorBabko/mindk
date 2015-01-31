@@ -124,14 +124,14 @@ class Response implements ResponseInterface
      *  - Cookie  object.
      *
      * @param  \Framework\Session\Session $session Session object.
-     * @param  \Framework\Cookie\Cookie   $cookie  Cookie  object.
+     * @param  \Framework\Cookie\Cookie $cookie Cookie  object.
      *
      * @return object Response.
      */
     private function __construct($session = null, $cookie = null)
     {
         $this->_session = $session;
-        $this->_cookie  = $cookie;
+        $this->_cookie = $cookie;
     }
 
     /**
@@ -148,7 +148,7 @@ class Response implements ResponseInterface
      * otherwise existed Response object will be returned.
      *
      * @param  \Framework\Session\Session $session Session object.
-     * @param  \Framework\Cookie\Cookie   $cookie  Cookie  object.
+     * @param  \Framework\Cookie\Cookie $cookie Cookie  object.
      *
      * @return object Response.
      */
@@ -252,7 +252,7 @@ class Response implements ResponseInterface
      */
     public function getHeader($name)
     {
-        return isset($this->_headers[$name])?$this->_headers[$name]:null;
+        return isset($this->_headers[$name]) ? $this->_headers[$name] : null;
     }
 
     /**
@@ -276,7 +276,7 @@ class Response implements ResponseInterface
      */
     public function download($filename)
     {
-        $this->header('Content-Disposition', 'attachment; filename="'.$filename.'"');
+        $this->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
     }
 
     /**
@@ -307,9 +307,9 @@ class Response implements ResponseInterface
      */
     public function setContentType($contentType, $charset)
     {
-        $this->_contentType             = $contentType;
-        $this->_charset                 = $charset;
-        $this->_headers['Content-Type'] = $contentType.';charset='.$charset;
+        $this->_contentType = $contentType;
+        $this->_charset = $charset;
+        $this->_headers['Content-Type'] = $contentType . ';charset=' . $charset;
     }
 
     /**
@@ -318,7 +318,7 @@ class Response implements ResponseInterface
     public function sendHeaders()
     {
         foreach ($this->_headers as $headerName => $headerValue) {
-            header($headerName.": ".$headerValue);
+            header($headerName . ": " . $headerValue);
         }
     }
 
@@ -388,7 +388,7 @@ class Response implements ResponseInterface
         if (!is_integer($time)) {
             $time = strtotime($time);
         }
-        $this->header('Date', gmdate("D, j M Y G:i:s ", time()).'GMT');
+        $this->header('Date', gmdate("D, j M Y G:i:s ", time()) . 'GMT');
         $this->modified($since);
         $this->expires($time);
         $this->maxAge($time - time());
@@ -400,8 +400,8 @@ class Response implements ResponseInterface
     public function modified($time = null)
     {
         if ($time !== null) {
-            $date                            = $this->_getUTCDate($time);
-            $this->_headers['Last-Modified'] = $date->format('D, j M Y H:i:s').' GMT';
+            $date = $this->_getUTCDate($time);
+            $this->_headers['Last-Modified'] = $date->format('D, j M Y H:i:s') . ' GMT';
         }
         if (isset($this->_headers['Last-Modified'])) {
             return $this->_headers['Last-Modified'];
@@ -430,8 +430,8 @@ class Response implements ResponseInterface
     public function expires($time = null)
     {
         if ($time !== null) {
-            $date                      = $this->_getUTCDate($time);
-            $this->_headers['Expires'] = $date->format('D, j M Y H:i:s').' GMT';
+            $date = $this->_getUTCDate($time);
+            $this->_headers['Expires'] = $date->format('D, j M Y H:i:s') . ' GMT';
         }
         if (isset($this->_headers['Expires'])) {
             return $this->_headers['Expires'];
@@ -462,7 +462,7 @@ class Response implements ResponseInterface
     {
         $control = '';
         foreach ($this->_cacheDirectives as $key => $val) {
-            $control .= $val === true?$key:sprintf('%s=%s', $key, $val);
+            $control .= $val === true ? $key : sprintf('%s=%s', $key, $val);
             $control .= ', ';
         }
         $control = rtrim($control, ', ');

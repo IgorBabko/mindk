@@ -34,7 +34,7 @@ class FSlash extends Filter
      */
     public function __construct($action = 'add')
     {
-        $this->_action = ($action === 'add')?'add':'strip';
+        $this->_action = ($action === 'add') ? 'add' : 'strip';
     }
 
     /**

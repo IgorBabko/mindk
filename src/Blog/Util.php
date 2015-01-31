@@ -42,9 +42,9 @@ class Util //implements UtilInterface
     public static function pagination($routeName, $routeParams, $totalNumOfItems)
     {
         $currentPageId = $routeParams['pageId'];
-        $itemsPerPage  = Config::getSetting('pagination/items_per_page');
-        $visiblePages  = Config::getSetting('pagination/visible_pages');
-        $router        = Router::getInstance();
+        $itemsPerPage = Config::getSetting('pagination/items_per_page');
+        $visiblePages = Config::getSetting('pagination/visible_pages');
+        $router = Router::getInstance();
 
         $amountOfPages = ceil($totalNumOfItems / $itemsPerPage);
 
@@ -63,12 +63,12 @@ class Util //implements UtilInterface
             $pagination .= "<li class='disabled'><a href='javascript:void(0)'><<</a></li>";
         } else {
             $routeParams['pageId'] = 1;
-            $pagination .= "<li><a href='".$router->generateRoute($routeName, $routeParams)."'>First</a></li>";
+            $pagination .= "<li><a href='" . $router->generateRoute($routeName, $routeParams) . "'>First</a></li>";
             $routeParams['pageId'] = $currentPageId - 1;
-            $pagination .= "<li><a href='".$router->generateRoute(
+            $pagination .= "<li><a href='" . $router->generateRoute(
                     $routeName,
                     $routeParams
-                )."'><<</a></li>";
+                ) . "'><<</a></li>";
         }
 
         $i = $currentPageId - floor($visiblePages / 2);
@@ -79,18 +79,18 @@ class Util //implements UtilInterface
         $end = $i + $visiblePages - 1;
         if ($end > $amountOfPages) {
             $end = $amountOfPages;
-            $i   = $amountOfPages - $visiblePages + 1;
+            $i = $amountOfPages - $visiblePages + 1;
         }
 
-        for (;($i <= $end && $i <= $amountOfPages);$i++) {
+        for (; ($i <= $end && $i <= $amountOfPages); $i++) {
             if ($currentPageId == $i) {
                 $pagination .= "<li class='active'><a href='javascript:void(0)'>$i</a></li>";
             } else {
                 $routeParams['pageId'] = $i;
-                $pagination .= "<li><a href='".$router->generateRoute(
+                $pagination .= "<li><a href='" . $router->generateRoute(
                         $routeName,
                         $routeParams
-                    )."'>$i</a></li>";
+                    ) . "'>$i</a></li>";
             }
         }
 
@@ -99,15 +99,15 @@ class Util //implements UtilInterface
             $pagination .= "<li class='disabled'><a href='javascript:void(0)'>Last</a></li>";
         } else {
             $routeParams['pageId'] = $currentPageId + 1;
-            $pagination .= "<li><a href='".$router->generateRoute(
+            $pagination .= "<li><a href='" . $router->generateRoute(
                     $routeName,
                     $routeParams
-                )."'>>></a></li>";
+                ) . "'>>></a></li>";
             $routeParams['pageId'] = $amountOfPages;
-            $pagination .= "<li><a href='".$router->generateRoute(
+            $pagination .= "<li><a href='" . $router->generateRoute(
                     $routeName,
                     $routeParams
-                )."'>Last</a></li>";
+                ) . "'>Last</a></li>";
         }
         $pagination .= '</ul>';
         return $pagination;

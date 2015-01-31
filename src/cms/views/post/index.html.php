@@ -2,7 +2,7 @@
     <?= $this->pagination; ?>
     <table class="table cms_table">
         <thead>
-        <?= isset($_SESSION['searchPostQuery'])?"<tr><td colspan='3'></td><td colspan='2' id='search_result' class='link_button'>$this->searchResult</td></tr>":''; ?>
+        <?= isset($_SESSION['searchPostQuery']) ? "<tr><td colspan='3'></td><td colspan='2' id='search_result' class='link_button'>$this->searchResult</td></tr>" : ''; ?>
         <tr>
             <td>#</td>
             <td>Category</td>
@@ -17,15 +17,15 @@
                   id="cms_search_form">
                 <td class="search-id">
                     <input autocomplete="off" id="search_id" type="text" class="form-control" name="_id"
-                           value="<?= isset($_POST['_id'])?$_POST['_id']:''; ?>">
+                           value="<?= isset($_POST['_id']) ? $_POST['_id'] : ''; ?>">
                 </td>
                 <td class=search-category">
                     <input autocomplete="off" id="search_category" type="text" class="form-control" name="_category"
-                           value="<?= isset($_POST['_category'])?$_POST['_category']:''; ?>">
+                           value="<?= isset($_POST['_category']) ? $_POST['_category'] : ''; ?>">
                 </td>
                 <td>
                     <input autocomplete="off" id="search_title" type="text" class="form-control" name="_title"
-                           value="<?= isset($_POST['_title'])?$_POST['_title']:''; ?>">
+                           value="<?= isset($_POST['_title']) ? $_POST['_title'] : ''; ?>">
                 </td>
                 <td>
                     <a class='btn btn-warning' role='button'
@@ -37,7 +37,7 @@
                       method="post">
                     <input id="search_reset" type="hidden" name="search_post_reset">
                     <button type="submit"
-                            class="btn btn-default" <?= isset($_SESSION['searchPostQuery'])?'':'disabled'; ?>>Reset
+                            class="btn btn-default" <?= isset($_SESSION['searchPostQuery']) ? '' : 'disabled'; ?>>Reset
                     </button>
                 </form>
             </td>
@@ -48,16 +48,16 @@
         foreach ($this->posts as $post) {
             echo '<tr>';
             foreach ($post as $item) {
-                echo '<td>'.$item.'</td>';
+                echo '<td>' . $item . '</td>';
             }
-            echo "<td class='link_button'><a class='btn btn-primary' role='button' href='".$this->router->generateRoute(
+            echo "<td class='link_button'><a class='btn btn-primary' role='button' href='" . $this->router->generateRoute(
                     'edit_post',
                     array('id' => $post['id'])
-                )."'>Edit</a></td>";
-            echo "<td class='link_button'><a class='btn btn-danger' role='button' href='".$this->router->generateRoute(
+                ) . "'>Edit</a></td>";
+            echo "<td class='link_button'><a class='btn btn-danger' role='button' href='" . $this->router->generateRoute(
                     'delete_post',
                     array('id' => $post['id'])
-                )."'>Delete</a></td>";
+                ) . "'>Delete</a></td>";
             echo '</tr>';
         }
         ?>

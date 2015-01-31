@@ -50,11 +50,11 @@ interface CookieInterface
     /**
      * Method adds cookie to $_cookies array.
      *
-     * @param string $name   Name of cookie to be added.
-     * @param string $value  Value of cookie $name.
-     * @param int    $expiry cookie expiration date.
-     * @param string $path   Path where cookie will be available.
-     * @param bool   $domain Domain where cookie will be available.
+     * @param string $name Name of cookie to be added.
+     * @param string $value Value of cookie $name.
+     * @param int $expiry cookie expiration date.
+     * @param string $path Path where cookie will be available.
+     * @param bool $domain Domain where cookie will be available.
      *
      * @return void
      */
@@ -75,8 +75,8 @@ interface CookieInterface
      * Method returns cookie with specified name $name. When there's no cookie $name
      * it returns value specified in second parameter.
      *
-     * @param string $name    Name of cookie value of to be returned.
-     * @param mixed  $default Default value to be returned.
+     * @param string $name Name of cookie value of to be returned.
+     * @param mixed $default Default value to be returned.
      *
      * @return mixed Value of cookie with name $name or default value.
      */
@@ -86,10 +86,10 @@ interface CookieInterface
      * Method removes cookie with specified name $name.
      * When $global is true then cookie also will be removed from $_COOKIE global array.
      *
-     * @param  string $name   Name of cookie to be removed.
-     * @param  string $path   Path where cookie is available.
-     * @param  bool   $domain Domain where cookie is available.
-     * @param  bool   $global Should cookie be removed from $_COOKIE global array.
+     * @param  string $name Name of cookie to be removed.
+     * @param  string $path Path where cookie is available.
+     * @param  bool $domain Domain where cookie is available.
+     * @param  bool $global Should cookie be removed from $_COOKIE global array.
      *
      * @throws \Framework\Exception\CookieException CookieException instance.
      *

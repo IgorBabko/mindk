@@ -1,6 +1,6 @@
 <?php
 $isRouteActive = function ($currentRoute) {
-    return ($this->activeRoute === $currentRoute)?'class="active"':'';
+    return ($this->activeRoute === $currentRoute) ? 'class="active"' : '';
 };
 ?>
 <!DOCTYPE html>
@@ -14,8 +14,8 @@ $isRouteActive = function ($currentRoute) {
     <!-- CodeMirror -->
     <link href="/web/css/codeMirror/docs.css" rel="stylesheet"/>
     <link href="/web/css/codeMirror/codemirror.css" rel="stylesheet"/>
-    <link href="/web/css/codeMirror/themes/twilight.css" type="text/css" rel="stylesheet" />
-    <link href="/web/css/codeMirror/themes/monokai.css" type="text/css" rel="stylesheet" />
+    <link href="/web/css/codeMirror/themes/twilight.css" type="text/css" rel="stylesheet"/>
+    <link href="/web/css/codeMirror/themes/monokai.css" type="text/css" rel="stylesheet"/>
     <!-- End CodeMirror -->
 
     <link href="/web/css/reset.css" rel="stylesheet">
@@ -47,12 +47,15 @@ $isRouteActive = function ($currentRoute) {
             <ul class="nav navbar-nav">
                 <li <?= $isRouteActive('show_users'); ?> ><a
                         href="<?= $this->router->generateRoute('show_users', array('pageId' => 1)); ?>">Users</a></li>
-                <li <?= $isRouteActive('show_posts'); ?> ><a href="<?= $this->router->generateRoute('show_posts', array('pageId' => 1)); ?>">Posts</a>
+                <li <?= $isRouteActive('show_posts'); ?> ><a
+                        href="<?= $this->router->generateRoute('show_posts', array('pageId' => 1)); ?>">Posts</a>
                 </li>
                 <li <?= $isRouteActive('show_categories'); ?> ><a
-                        href="<?= $this->router->generateRoute('show_categories', array('pageId' => 1)); ?>">Categories</a></li>
+                        href="<?= $this->router->generateRoute('show_categories', array('pageId' => 1)); ?>">Categories</a>
+                </li>
                 <li <?= $isRouteActive('show_comments'); ?> ><a
-                        href="<?= $this->router->generateRoute('show_comments', array('pageId' => 1)); ?>">Comments</a></li>
+                        href="<?= $this->router->generateRoute('show_comments', array('pageId' => 1)); ?>">Comments</a>
+                </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="<?= $this->router->generateRoute('home', array('pageId' => 1)); ?>">Quit</a></li>

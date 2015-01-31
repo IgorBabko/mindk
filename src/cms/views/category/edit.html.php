@@ -6,7 +6,7 @@
             <h3 class="panel-title">Edit category</h3>
         </div>
         <div class="panel-body">
-            <?php $hasError = Util::errorBox(isset($this->errors['_name'])?$this->errors['_name']:null); ?>
+            <?php $hasError = Util::errorBox(isset($this->errors['_name']) ? $this->errors['_name'] : null); ?>
             <div class="form-group <?= $hasError; ?>">
                 <label for="name">Name:</label>
                 <input autocomplete="off" type="text" class="form-control" id="name" name="_name"

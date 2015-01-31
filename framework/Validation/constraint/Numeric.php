@@ -30,7 +30,7 @@ class Numeric extends Constraint
      */
     public function __construct($message = null)
     {
-        $message = isset($message)?$message:"must be numeric";
+        $message = isset($message) ? $message : "must be numeric";
         parent::__construct($message);
     }
 

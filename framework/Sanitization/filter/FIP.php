@@ -61,7 +61,7 @@ class FIP extends Filter
      */
     public function setType($type)
     {
-        $type    = strtolower($type);
+        $type = strtolower($type);
         $ipTypes = array('both', 'ipv4', 'ipv6');
         if (in_array($type, $ipTypes, true)) {
             $this->_type = $type;

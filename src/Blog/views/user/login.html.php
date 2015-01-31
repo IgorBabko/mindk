@@ -10,7 +10,7 @@
                 <label for="username">Username:</label>
                 <input autocomplete="off" type="text" class="form-control" name="_username" id="username"
                        placeholder="Username"
-                       value="<?= isset($_POST['_username'])?$_POST['_username']:''; ?>">
+                       value="<?= isset($_POST['_username']) ? $_POST['_username'] : ''; ?>">
             </div>
             <div class="form-group <?= $hasError; ?>">
                 <label for="password">Password:</label>

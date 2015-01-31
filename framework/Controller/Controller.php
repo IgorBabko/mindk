@@ -54,11 +54,11 @@ abstract class Controller implements ControllerInterface
     /**
      * Controller constructor injects all needed dependencies.
      *
-     * @param  Router           $router           Router           object.
-     * @param  Request          $request          Request          object.
-     * @param  Response         $response         Response         object.
-     * @param  TemplateEngine   $templateEngine   TemplateEngine   object.
-     * @param  JsonResponse     $jsonResponse     JsonResponse     object.
+     * @param  Router $router Router           object.
+     * @param  Request $request Request          object.
+     * @param  Response $response Response         object.
+     * @param  TemplateEngine $templateEngine TemplateEngine   object.
+     * @param  JsonResponse $jsonResponse JsonResponse     object.
      * @param  ResponseRedirect $responseRedirect ResponseRedirect object.
      *
      * @throws \Framework\Exception\ServiceException ServiceException instance.
@@ -72,12 +72,13 @@ abstract class Controller implements ControllerInterface
         TemplateEngine $templateEngine = null,
         JsonResponse $jsonResponse = null,
         ResponseRedirect $responseRedirect = null
-    ) {
-        $this->_router           = Service::resolve('router');
-        $this->_request          = Service::resolve('request');
-        $this->_response         = Service::resolve('response');
-        $this->_templateEngine   = Service::resolve('templateEngine');
-        $this->_jsonResponse     = Service::resolve('jsonResponse');
+    )
+    {
+        $this->_router = Service::resolve('router');
+        $this->_request = Service::resolve('request');
+        $this->_response = Service::resolve('response');
+        $this->_templateEngine = Service::resolve('templateEngine');
+        $this->_jsonResponse = Service::resolve('jsonResponse');
         $this->_responseRedirect = Service::resolve('responseRedirect');
     }
 

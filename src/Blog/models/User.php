@@ -36,14 +36,14 @@ class User extends ActiveRecord
     public static function getColumns()
     {
         return array(
-            '_id'          => 'id',
-            '_username'    => 'username',
-            '_password'    => 'password',
-            '_email'       => 'email',
+            '_id' => 'id',
+            '_username' => 'username',
+            '_password' => 'password',
+            '_email' => 'email',
             '_picturePath' => 'picture_path',
-            '_salt'        => 'salt',
-            '_role'        => 'role',
-            '_joinedDate'  => 'joined_date'
+            '_salt' => 'salt',
+            '_role' => 'role',
+            '_joinedDate' => 'joined_date'
         );
     }
 
@@ -62,7 +62,7 @@ class User extends ActiveRecord
                         new MinLength(8, 'Password length must be at least 8 characters'),
                         new NotBlank('"Password" field must not be blank')
                     ),
-                    '_email'    => array(
+                    '_email' => array(
                         new Unique('users', 'email'),
                         new Email('Email address is not valid'),
                         new NotBlank('Email must not be blank')
@@ -74,16 +74,16 @@ class User extends ActiveRecord
                         new Unique(
                             'users',
                             'username',
-                            isset($_SESSION['user']['name'])?array($_SESSION['user']['name']):null
+                            isset($_SESSION['user']['name']) ? array($_SESSION['user']['name']) : null
                         ),
                         new AlphaNumeric('Username must contain only alphanumeric characters'),
                         new NotBlank('Username must not be blank')
                     ),
-                    '_email'    => array(
+                    '_email' => array(
                         new Unique(
                             'users',
                             'email',
-                            isset($_SESSION['user']['email'])?array($_SESSION['user']['email']):null
+                            isset($_SESSION['user']['email']) ? array($_SESSION['user']['email']) : null
                         ),
                         new Email('Email address is not valid')
                     )

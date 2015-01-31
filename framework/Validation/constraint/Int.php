@@ -30,7 +30,7 @@ class Int extends Constraint
      */
     public function __construct($message = null)
     {
-        $message = isset($message)?$message:"must be integer";
+        $message = isset($message) ? $message : "must be integer";
         parent::__construct($message);
     }
 

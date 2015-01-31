@@ -42,7 +42,7 @@ interface ResponseRedirectInterface
      * Method to redirect using route name defined in routes of application.
      *
      * @param string $routeName Route name defined in routes of application.
-     * @param bool   $permanent Whether redirect permanently or not?
+     * @param bool $permanent Whether redirect permanently or not?
      *
      * @throws \Framework\Exception\ResponseRedirectException ResponseRedirectException instance.
      *
@@ -53,8 +53,8 @@ interface ResponseRedirectInterface
     /**
      * Method to redirect using URL.
      *
-     * @param string $url       URL to redirect to.
-     * @param bool   $permanent Whether redirect permanently or not?
+     * @param string $url URL to redirect to.
+     * @param bool $permanent Whether redirect permanently or not?
      *
      * @throws \Framework\Exception\ResponseRedirectException ResponseRedirectException instance.
      *

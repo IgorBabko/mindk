@@ -29,15 +29,15 @@ class AlphaNumeric extends Constraint
     /**
      * AlphaNumeric constructor takes array of allowed characters except of alpha-numeric.
      *
-     * @param  string $message        Error message.
-     * @param  array  $allowedSymbols Array of allowed characters.
+     * @param  string $message Error message.
+     * @param  array $allowedSymbols Array of allowed characters.
      *
      * @return object AlphaNumeric.
      */
     public function __construct($message = null, $allowedSymbols = array())
     {
         $this->_allowedSymbols = $allowedSymbols;
-        $message               = isset($message)?$message:"must be alpha-numeric";
+        $message = isset($message) ? $message : "must be alpha-numeric";
         parent::__construct($message);
     }
 

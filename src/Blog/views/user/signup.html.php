@@ -6,14 +6,14 @@
             <h3 class="panel-title">Registration</h3>
         </div>
         <div class="panel-body">
-            <?php $hasError = Util::errorBox(isset($this->errors['_username'])?$this->errors['_username']:null); ?>
+            <?php $hasError = Util::errorBox(isset($this->errors['_username']) ? $this->errors['_username'] : null); ?>
             <div class="form-group <?= $hasError ?>">
                 <label for="username">Username:</label>
                 <input autocomplete="off" type="text" class="form-control" name="_username" id="username"
                        placeholder="Username"
-                       value="<?= isset($_POST['_username'])?$_POST['_username']:''; ?>">
+                       value="<?= isset($_POST['_username']) ? $_POST['_username'] : ''; ?>">
             </div>
-            <?php $hasError = Util::errorBox(isset($this->errors['_password'])?$this->errors['_password']:null); ?>
+            <?php $hasError = Util::errorBox(isset($this->errors['_password']) ? $this->errors['_password'] : null); ?>
             <div class="form-group <?= $hasError; ?>">
                 <label for="password">Password:</label>
                 <input autocomplete="off" type="password" class="form-control" name="_password" id="password"
@@ -24,14 +24,14 @@
                 <input autocomplete="off" type="password" class="form-control" name="confirmation" id="confirmation"
                        placeholder="Confirm password">
             </div>
-            <?php $hasError = Util::errorBox(isset($this->errors['_email'])?$this->errors['_email']:null); ?>
+            <?php $hasError = Util::errorBox(isset($this->errors['_email']) ? $this->errors['_email'] : null); ?>
             <div class="form-group <?= $hasError; ?>">
                 <label for="email">Email:</label>
                 <input autocomplete="off" type="email" class="form-control" name="_email" id="email"
                        placeholder="Email address"
-                       value="<?= isset($_POST['_email'])?$_POST['_email']:''; ?>">
+                       value="<?= isset($_POST['_email']) ? $_POST['_email'] : ''; ?>">
             </div>
-            <?php $hasError = Util::errorBox(($this->wrongFile != null)?$this->wrongFile:null); ?>
+            <?php $hasError = Util::errorBox(($this->wrongFile != null) ? $this->wrongFile : null); ?>
             <div class="<?= $hasError; ?>">
                 <label for="profile_image">Choose profile picture:</label><br/>
                 <span class="btn btn-default btn-file">

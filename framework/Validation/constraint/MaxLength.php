@@ -29,7 +29,7 @@ class MaxLength extends Constraint
     /**
      * MaxLength constructor takes max length and error message.
      *
-     * @param  int         $max     Max allowed length.
+     * @param  int $max Max allowed length.
      * @param  null|string $message Error message.
      *
      * @return object MaxLength.
@@ -37,7 +37,7 @@ class MaxLength extends Constraint
     public function __construct($max, $message = null)
     {
         $this->_max = $max;
-        $message    = isset($message)?$message:"length must be no more than $max character(s)";
+        $message = isset($message) ? $message : "length must be no more than $max character(s)";
         parent::__construct($message);
     }
 

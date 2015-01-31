@@ -29,7 +29,7 @@ class RegExp extends Constraint
     /**
      * RegExp constructor takes regular expression for validation and error message.
      *
-     * @param  string      $pattern Regular expression for validation.
+     * @param  string $pattern Regular expression for validation.
      * @param  null|string $message Error message.
      *
      * @return object RegExp.
@@ -37,7 +37,7 @@ class RegExp extends Constraint
     public function __construct($pattern, $message = null)
     {
         $this->_pattern = $pattern;
-        $message        = isset($message)?$message:"must match pattern: $pattern";
+        $message = isset($message) ? $message : "must match pattern: $pattern";
         parent::__construct($message);
     }
 

@@ -13,9 +13,9 @@ class PageController extends Controller
         $session = $this->getRequest()->getSession();
         $session->start();
         $templateEngine = $this->getTemplateEngine();
-        $categories     = Category::query('SELECT * FROM ?i', array(Category::getTable()));
+        $categories = Category::query('SELECT * FROM ?i', array(Category::getTable()));
         foreach ($categories as &$category) {
-            $count             = Post::query(
+            $count = Post::query(
                 "SELECT COUNT(*) AS 'count' FROM ?i WHERE ?i = ?s",
                 array(Post::getTable(), 'category', $category['name'])
             );
@@ -25,6 +25,6 @@ class PageController extends Controller
         array_unshift($categories, array('id' => 0, 'name' => 'All', 'count' => $totalAmountOfPosts));
 
         $templateEngine->setData('categories', $categories);
-        $this->getTemplateEngine()->render(BLOG_LAYOUT, BLOG_VIEWS.'page/about.html.php');
+        $this->getTemplateEngine()->render(BLOG_LAYOUT, BLOG_VIEWS . 'page/about.html.php');
     }
 }

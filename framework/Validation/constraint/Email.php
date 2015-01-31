@@ -30,7 +30,7 @@ class Email extends Constraint
      */
     public function __construct($message = null)
     {
-        $message = isset($message)?$message:"must be email address";
+        $message = isset($message) ? $message : "must be email address";
         parent::__construct($message);
     }
 

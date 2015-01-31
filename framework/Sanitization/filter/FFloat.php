@@ -33,15 +33,15 @@ class FFloat extends Filter
     /**
      * FFloat constructor takes bool values that define behavior of float sanitization.
      *
-     * @param bool $allowedFraction   Defines whether allow fraction or not.
+     * @param bool $allowedFraction Defines whether allow fraction or not.
      * @param bool $allowedScientific Defines whether allow scientific (E) notation or not.
      *
      * @return object FFloat.
      */
     public function __construct($allowedFraction = true, $allowedScientific = true)
     {
-        $this->_allowedFraction   = ($allowedFraction === true)?true:false;
-        $this->_allowedScientific = ($allowedScientific === true)?true:false;
+        $this->_allowedFraction = ($allowedFraction === true) ? true : false;
+        $this->_allowedScientific = ($allowedScientific === true) ? true : false;
     }
 
     /**

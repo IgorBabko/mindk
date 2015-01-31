@@ -96,8 +96,8 @@ interface QueryBuilderInterface
     /**
      * Method to make select request.
      *
-     * @param  string|array $columns   Columns to select.
-     * @param  string       $tableName Table to select from.
+     * @param  string|array $columns Columns to select.
+     * @param  string $tableName Table to select from.
      *
      * @throws QueryBuilderException QueryBuilderException instance.
      *
@@ -109,7 +109,7 @@ interface QueryBuilderInterface
      * Method to make insert request.
      *
      * @param  string $tableName Table to insert to.
-     * @param  array  $pairs     Data to insert where keys are column names
+     * @param  array $pairs Data to insert where keys are column names
      *                           and values are values to insert.
      *
      * @throws QueryBuilderException QueryBuilderException instance.
@@ -122,7 +122,7 @@ interface QueryBuilderInterface
      * Method to make update request.
      *
      * @param  string $tableName Table to update data of.
-     * @param  array  $pairs     Data to update where keys are column names
+     * @param  array $pairs Data to update where keys are column names
      *                           and values are new values.
      *
      * @throws QueryBuilderException QueryBuilderException instance.
@@ -145,9 +145,9 @@ interface QueryBuilderInterface
     /**
      * Method to make 'where' part of sql request.
      *
-     * @param  null|string $columnName  Column name.
-     * @param  null|string $operator    Operator.
-     * @param  mixed       $columnValue Column value.
+     * @param  null|string $columnName Column name.
+     * @param  null|string $operator Operator.
+     * @param  mixed $columnValue Column value.
      *
      * @throws QueryBuilderException QueryBuilderException instance.
      *
@@ -158,9 +158,9 @@ interface QueryBuilderInterface
     /**
      * Method to add 'OR' operator to sql request.
      *
-     * @param  null|string $columnName  Column name.
-     * @param  null|string $operator    Operator.
-     * @param  mixed       $columnValue Column value.
+     * @param  null|string $columnName Column name.
+     * @param  null|string $operator Operator.
+     * @param  mixed $columnValue Column value.
      *
      * @throws QueryBuilderException QueryBuilderException instance.
      *
@@ -171,9 +171,9 @@ interface QueryBuilderInterface
     /**
      * Method to add 'AND' operator.
      *
-     * @param  null|string $columnName  Column name.
-     * @param  null|string $operator    Operator.
-     * @param  mixed       $columnValue Column value.
+     * @param  null|string $columnName Column name.
+     * @param  null|string $operator Operator.
+     * @param  mixed $columnValue Column value.
      *
      * @throws QueryBuilderException QueryBuilderException instance.
      *
@@ -185,7 +185,7 @@ interface QueryBuilderInterface
      * Method to add 'IS NULL' operator or 'IS NOT NULL' when $not == true.
      *
      * @param  string $columnName Column name.
-     * @param  bool   $not        Inversion.
+     * @param  bool $not Inversion.
      *
      * @throws QueryBuilderException QueryBuilderException instance.
      *
@@ -197,9 +197,9 @@ interface QueryBuilderInterface
      * Method to add 'BETWEEN' operator or 'NOT BETWEEN' when $not === true.
      *
      * @param  string $columnName Column name.
-     * @param  mixed  $begin      Start value.
-     * @param  mixed  $end        End value.
-     * @param  bool   $not        Inversion.
+     * @param  mixed $begin Start value.
+     * @param  mixed $end End value.
+     * @param  bool $not Inversion.
      *
      * @throws QueryBuilderException QueryBuilderException instance.
      *
@@ -221,9 +221,9 @@ interface QueryBuilderInterface
     /**
      * Method to make 'LIKE' request or 'NOT LIKE' if $not === true.
      *
-     * @param  string $columnName  Column name.
-     * @param  mixed  $columnValue Column value.
-     * @param  bool   $not         Inversion.
+     * @param  string $columnName Column name.
+     * @param  mixed $columnValue Column value.
+     * @param  bool $not Inversion.
      *
      * @throws QueryBuilderException QueryBuilderException instance.
      *
@@ -235,8 +235,8 @@ interface QueryBuilderInterface
      * Method to make 'IN' operator or 'NOT IN' if $not === true
      *
      * @param  string $columnName Column name.
-     * @param  array  $in         Array of values for 'IN' operator.
-     * @param  bool   $not        Inversion.
+     * @param  array $in Array of values for 'IN' operator.
+     * @param  bool $not Inversion.
      *
      * @throws QueryBuilderException QueryBuilderException instance.
      *

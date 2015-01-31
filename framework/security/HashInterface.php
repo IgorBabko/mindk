@@ -26,7 +26,7 @@ interface HashInterface
      * Method to hash password using 'sha256' with salt.
      *
      * @param  string $value Password to hash.
-     * @param  string $salt  Salt for password.
+     * @param  string $salt Salt for password.
      *
      * @throws HashException HashException instance.
      *

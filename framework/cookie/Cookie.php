@@ -166,7 +166,7 @@ class Cookie implements CookieInterface
             'value' => $value,
             'expiry' => $expiry,
             'path' => $path,
-            'domain' => $domain?$_SERVER['HTTP_HOST']:$domain
+            'domain' => $domain ? $_SERVER['HTTP_HOST'] : $domain
         );
     }
 
@@ -187,7 +187,7 @@ class Cookie implements CookieInterface
      */
     public function get($name, $default = '')
     {
-        return isset($_COOKIE[$name])?$_COOKIE[$name]:$default;
+        return isset($_COOKIE[$name]) ? $_COOKIE[$name] : $default;
     }
 
     /**

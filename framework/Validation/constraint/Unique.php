@@ -40,19 +40,19 @@ class Unique extends Constraint
     /**
      * Unique constructor takes table name, field name and error message.
      *
-     * @param  string      $tableName     Table name.
-     * @param  string      $fieldName     Field name.
-     * @param  null|array  $allowedValues Values that are allowed to be repeated.
-     * @param  null|string $message       Error message.
+     * @param  string $tableName Table name.
+     * @param  string $fieldName Field name.
+     * @param  null|array $allowedValues Values that are allowed to be repeated.
+     * @param  null|string $message Error message.
      *
      * @return object Unique.
      */
     public function __construct($tableName, $fieldName, $allowedValues = null, $message = null)
     {
-        $this->_tableName     = $tableName;
-        $this->_fieldName     = $fieldName;
+        $this->_tableName = $tableName;
+        $this->_fieldName = $fieldName;
         $this->_allowedValues = $allowedValues;
-        $message              = isset($message)?$message:"already exists";
+        $message = isset($message) ? $message : "already exists";
         parent::__construct($message);
     }
 
@@ -163,17 +163,17 @@ class Unique extends Constraint
     {
         if (isset($value)) {
             if (is_int($value) || is_float($value) || is_string($value)) {
-                $rawQuery       = is_string(
+                $rawQuery = is_string(
                     $value
-                )?$rawQuery = "SELECT * FROM ?i WHERE ?i = ?s":"SELECT ?i FROM ?i WHERE ?i = ?n";
+                ) ? $rawQuery = "SELECT * FROM ?i WHERE ?i = ?s" : "SELECT ?i FROM ?i WHERE ?i = ?n";
                 $bindParameters = array($this->_tableName, $this->_fieldName, $value);
-                $resultSet      = App::getDbConnection()->safeQuery($rawQuery, $bindParameters);
+                $resultSet = App::getDbConnection()->safeQuery($rawQuery, $bindParameters);
                 if (empty($resultSet)) {
                     return true;
                 } else {
                     if (isset($this->_allowedValues)) {
                         $value = $resultSet[0][$this->_fieldName];
-                        return in_array($value, $this->_allowedValues)?true:false;
+                        return in_array($value, $this->_allowedValues) ? true : false;
                     }
                     return false;
                 }

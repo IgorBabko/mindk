@@ -64,7 +64,7 @@ interface ActiveRecordInterface
      * Method to make query to database.
      *
      * @param  string $rawQuery Raw query string (with placeholders).
-     * @param  string $params   Parameters to replace placeholders in $rawQuery.
+     * @param  string $params Parameters to replace placeholders in $rawQuery.
      *
      * @throws \Framework\Exception\ActiveRecordException ActiveRecordException instance.
      *
@@ -76,7 +76,7 @@ interface ActiveRecordInterface
      * Magic setter.
      *
      * @param  string $fieldName Field name to set new value to.
-     * @param  mixed  $value     New value to assign.
+     * @param  mixed $value New value to assign.
      *
      * @return void
      */

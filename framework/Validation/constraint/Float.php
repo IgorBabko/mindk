@@ -30,7 +30,7 @@ class Float extends Constraint
      */
     public function __construct($message = null)
     {
-        $message = isset($message)?$message:"must be float";
+        $message = isset($message) ? $message : "must be float";
         parent::__construct($message);
     }
 

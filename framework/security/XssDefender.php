@@ -51,7 +51,7 @@ class XssDefender implements XssDefenderInterface
      *                               depending on context
      */
     private static $_specialCharacters = array(
-        'html'      => array(
+        'html' => array(
             '<' => '&lt;',
             '>' => '&gt;'
         ),
@@ -60,23 +60,23 @@ class XssDefender implements XssDefenderInterface
             "'" => '&apos;',
             '`' => '&grave;'
         ),
-        'style'     => array(
-            '"'  => '&quot;',
-            "'"  => '&apos;',
-            '`'  => '&grave;',
-            '('  => '&lpar;',
+        'style' => array(
+            '"' => '&quot;',
+            "'" => '&apos;',
+            '`' => '&grave;',
+            '(' => '&lpar;',
             '\\' => '&bsol;',
-            '<'  => '&lt;',
-            '&'  => '&amp;'
+            '<' => '&lt;',
+            '&' => '&amp;'
 
         ),
-        'script'    => array(
-            '"'  => '&quot;',
-            '<'  => '&lt;',
-            "'"  => '&apos;',
+        'script' => array(
+            '"' => '&quot;',
+            '<' => '&lt;',
+            "'" => '&apos;',
             '\\' => '&bsol;',
-            '%'  => '&percnt;',
-            '&'  => '&amp;'
+            '%' => '&percnt;',
+            '&' => '&amp;'
         )
     );
 
@@ -108,8 +108,8 @@ class XssDefender implements XssDefenderInterface
      */
     public static function cleanHtml($input)
     {
-        $replace   = array_keys(self::$_specialCharacters['html']);
-        $with      = array_values(self::$_specialCharacters['html']);
+        $replace = array_keys(self::$_specialCharacters['html']);
+        $with = array_values(self::$_specialCharacters['html']);
         $safeInput = str_replace($replace, $with, $input);
 
         return stripslashes($safeInput);
@@ -120,8 +120,8 @@ class XssDefender implements XssDefenderInterface
      */
     public static function cleanScript($input)
     {
-        $replace   = array_keys(self::$_specialCharacters['script']);
-        $with      = array_values(self::$_specialCharacters['script']);
+        $replace = array_keys(self::$_specialCharacters['script']);
+        $with = array_values(self::$_specialCharacters['script']);
         $safeInput = str_replace($replace, $with, $input);
 
         return stripslashes($safeInput);
@@ -132,8 +132,8 @@ class XssDefender implements XssDefenderInterface
      */
     public static function cleanAttribute($input)
     {
-        $replace   = array_keys(self::$_specialCharacters['attribute']);
-        $with      = array_values(self::$_specialCharacters['attribute']);
+        $replace = array_keys(self::$_specialCharacters['attribute']);
+        $with = array_values(self::$_specialCharacters['attribute']);
         $safeInput = str_replace($replace, $with, $input);
 
         return stripslashes($safeInput);
@@ -144,8 +144,8 @@ class XssDefender implements XssDefenderInterface
      */
     public static function cleanStyle($input)
     {
-        $replace   = array_keys(self::$_specialCharacters['style']);
-        $with      = array_values(self::$_specialCharacters['style']);
+        $replace = array_keys(self::$_specialCharacters['style']);
+        $with = array_values(self::$_specialCharacters['style']);
         $safeInput = str_replace($replace, $with, $input);
 
         return stripslashes($safeInput);

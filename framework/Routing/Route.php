@@ -62,12 +62,12 @@ class Route implements RouteInterface
      */
     public function __construct($routeInfo)
     {
-        $this->_pattern    = $routeInfo['pattern'];
+        $this->_pattern = $routeInfo['pattern'];
         $this->_controller = $routeInfo['controller'];
-        $this->_action     = $routeInfo['action'];
+        $this->_action = $routeInfo['action'];
 
-        $this->_security     = isset($routeInfo['security'])?$routeInfo['security']:null;
-        $this->_requirements = isset($routeInfo['_requirements'])?$routeInfo['_requirements']:null;
+        $this->_security = isset($routeInfo['security']) ? $routeInfo['security'] : null;
+        $this->_requirements = isset($routeInfo['_requirements']) ? $routeInfo['_requirements'] : null;
     }
 
     /**

@@ -13,7 +13,7 @@ class CommentController extends Controller
         $request = $this->getRequest();
         $session = $request->getSession();
         $session->start();
-        $comment   = new Comment();
+        $comment = new Comment();
         $postTitle = $request->getPost('postTitle');
         $comment->setPostTitle($postTitle);
         $comment->setAuthor($session->get('user')['name']);
@@ -47,8 +47,8 @@ HERE;
 
     public function deleteAction($id)
     {
-        $id        = func_get_args()[0][0];
-        $comment   = new Comment(array('id' => $id));
+        $id = func_get_args()[0][0];
+        $comment = new Comment(array('id' => $id));
         $postTitle = $comment->getPostTitle();
         $comment->remove();
 

@@ -23,7 +23,7 @@ class ResponseException extends FrameworkException
     /**
      * ResponseException constructor.
      *
-     * @param  int    $code    Exception code.
+     * @param  int $code Exception code.
      * @param  string $message Exception message.
      *
      * @return object ResponseException.

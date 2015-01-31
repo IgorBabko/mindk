@@ -24,11 +24,11 @@ class PostController extends Controller
 {
     public function indexAction()
     {
-        $pageId  = func_get_args()[0][0];
+        $pageId = func_get_args()[0][0];
         $session = $this->getRequest()->getSession();
         $session->start();
 
-        $request        = $this->getRequest();
+        $request = $this->getRequest();
         $templateEngine = $this->getTemplateEngine();
         $rawQueryString = "SELECT ?i, ?i, ?i FROM ?i";
         $bindParameters = array('id', 'category', 'title', Post::getTable());
@@ -48,17 +48,17 @@ class PostController extends Controller
                 foreach ($_POST as $fieldName => $fieldValue) {
                     if (!empty($fieldValue)) {
                         if (!is_numeric($fieldValue)) {
-                            $queryPart  = " LIKE ?s";
-                            $fieldValue = '%'.$fieldValue.'%';
+                            $queryPart = " LIKE ?s";
+                            $fieldValue = '%' . $fieldValue . '%';
                         } else {
-                            $queryPart  = " = ?n";
+                            $queryPart = " = ?n";
                             $fieldValue = (int)$fieldValue;
                         }
 
                         if ($k === true) {
-                            $rawQueryString .= " AND ?i".$queryPart;
+                            $rawQueryString .= " AND ?i" . $queryPart;
                         } else {
-                            $rawQueryString .= " WHERE ?i".$queryPart;
+                            $rawQueryString .= " WHERE ?i" . $queryPart;
                             $k = true;
                         }
                         $bindParameters = array_merge($bindParameters, array($columnNames[$fieldName], $fieldValue));
@@ -75,33 +75,33 @@ class PostController extends Controller
             }
         } elseif ($session->exists('searchPostQuery')) {
             $searchPostQuery = $session->get('searchPostQuery');
-            $posts           = Post::query($searchPostQuery['rawQueryString'], $searchPostQuery['bindParameters']);
-            $templateEngine->setData('searchResult', 'Search result: '.count($posts).' items');
+            $posts = Post::query($searchPostQuery['rawQueryString'], $searchPostQuery['bindParameters']);
+            $templateEngine->setData('searchResult', 'Search result: ' . count($posts) . ' items');
         } else {
             $posts = Post::query($rawQueryString, $bindParameters);
         }
 
         $itemsPerPage = Config::getSetting('pagination/items_per_page');
-        $pagination   = Util::pagination('show_posts', array('pageId' => $pageId), count($posts));
+        $pagination = Util::pagination('show_posts', array('pageId' => $pageId), count($posts));
 
         $start = ($pageId - 1) * $itemsPerPage;
         $templateEngine->setData('posts', array_slice($posts, $start, $itemsPerPage));
         $templateEngine->setData('router', $this->getRouter());
         $templateEngine->setData('pagination', $pagination);
-        $templateEngine->render(CMS_LAYOUT, CMS_VIEWS.'post/index.html.php');
+        $templateEngine->render(CMS_LAYOUT, CMS_VIEWS . 'post/index.html.php');
     }
 
     public function addAction()
     {
-        $request        = $this->getRequest();
+        $request = $this->getRequest();
         $templateEngine = $this->getTemplateEngine();
         $templateEngine->setData('router', $this->getRouter());
         $categories = Category::query("SELECT ?i FROM ?i", array('name', Category::getTable()));
         $templateEngine->setData('categories', $categories);
 
         if ($request->isMethod('POST')) {
-            try{
-                $post     = new Post();
+            try {
+                $post = new Post();
                 $postForm = new Form($post, 'add');
 
                 if ($postForm->isValid()) {
@@ -110,7 +110,7 @@ class PostController extends Controller
                     Sanitizer::sanitize($post);
                     $post->save();
                     $postTitle = $post->getTitle();
-                    $router  = $this->getRouter();
+                    $router = $this->getRouter();
                     $session = $this->getRequest()->getSession();
                     $session->start();
                     $session->flash(
@@ -122,36 +122,36 @@ class PostController extends Controller
                 } else {
                     $errors = Validator::getErrorList();
                     $templateEngine->setData('errors', $errors);
-                    $templateEngine->render(CMS_LAYOUT, CMS_VIEWS.'post/add.html.php');
+                    $templateEngine->render(CMS_LAYOUT, CMS_VIEWS . 'post/add.html.php');
                 }
-            } catch(FrameworkException $e){
+            } catch (FrameworkException $e) {
                 $templateEngine->setData('exception', $e);
-                $templateEngine->render(CMS_LAYOUT, CMS_VIEWS.'error.html.php');
+                $templateEngine->render(CMS_LAYOUT, CMS_VIEWS . 'error.html.php');
             }
         } else {
-            $templateEngine->render(CMS_LAYOUT, CMS_VIEWS.'post/add.html.php');
+            $templateEngine->render(CMS_LAYOUT, CMS_VIEWS . 'post/add.html.php');
         }
     }
 
     public function editAction()
     {
-        $id             = func_get_args()[0][0];
-        $categories     = Category::query("SELECT ?i FROM ?i", array('name', Category::getTable()));
-        $request        = $this->getRequest();
+        $id = func_get_args()[0][0];
+        $categories = Category::query("SELECT ?i FROM ?i", array('name', Category::getTable()));
+        $request = $this->getRequest();
         $templateEngine = $this->getTemplateEngine();
         $templateEngine->setData('router', $this->getRouter());
         $templateEngine->setData('categories', $categories);
         $templateEngine->setData('id', $id);
 
-        $post                       = new Post(array('id' => $id));
-        $_POST['_category']         = isset($_POST['_category'])?$_POST['_category']:$post->getCategory();
-        $_POST['_title']            = isset($_POST['_title'])?$_POST['_title']:$post->getTitle();
-        $_POST['_smallText']        = isset($_POST['_smallText'])?$_POST['_smallText']:$post->getSmallText();
-        $_POST['_text']             = isset($_POST['_text'])?$_POST['_text']:$post->getText();
+        $post = new Post(array('id' => $id));
+        $_POST['_category'] = isset($_POST['_category']) ? $_POST['_category'] : $post->getCategory();
+        $_POST['_title'] = isset($_POST['_title']) ? $_POST['_title'] : $post->getTitle();
+        $_POST['_smallText'] = isset($_POST['_smallText']) ? $_POST['_smallText'] : $post->getSmallText();
+        $_POST['_text'] = isset($_POST['_text']) ? $_POST['_text'] : $post->getText();
         $_POST['_amountOfComments'] = $post->getAmountOfComments();
 
         if ($request->isMethod('POST')) {
-            try{
+            try {
                 $postForm = new Form($post, 'edit');
 
                 if ($postForm->isValid()) {
@@ -173,27 +173,27 @@ class PostController extends Controller
                 } else {
                     $errors = Validator::getErrorList();
                     $templateEngine->setData('errors', $errors);
-                    $templateEngine->render(CMS_LAYOUT, CMS_VIEWS.'post/edit.html.php');
+                    $templateEngine->render(CMS_LAYOUT, CMS_VIEWS . 'post/edit.html.php');
                 }
-            } catch(FrameworkException $e){
+            } catch (FrameworkException $e) {
                 $templateEngine->setData('exception', $e);
-                $templateEngine->render(CMS_LAYOUT, CMS_VIEWS.'error.html.php');
+                $templateEngine->render(CMS_LAYOUT, CMS_VIEWS . 'error.html.php');
             }
         } else {
-            $templateEngine->render(CMS_LAYOUT, CMS_VIEWS.'post/edit.html.php');
+            $templateEngine->render(CMS_LAYOUT, CMS_VIEWS . 'post/edit.html.php');
         }
     }
 
     public function deleteAction()
     {
-        $id        = func_get_args()[0][0];
-        $post      = new Post(array('id' => $id));
+        $id = func_get_args()[0][0];
+        $post = new Post(array('id' => $id));
         $postTitle = $post->getTitle();
         $post->remove();
 
         Comment::query('DELETE FROM ?i WHERE ?i = ?s', array(Comment::getTable(), 'post_title', $postTitle));
 
-        $router  = $this->getRouter();
+        $router = $this->getRouter();
         $session = $this->getRequest()->getSession();
         $session->start();
         $session->flash(

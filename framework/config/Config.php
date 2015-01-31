@@ -82,7 +82,7 @@ class Config implements ConfigInterface
             );
         }
 
-        $path    = explode('/', $path);
+        $path = explode('/', $path);
         $setting = &self::$_config;
         foreach ($path as $bit) {
             if (!isset($setting[$bit])) {

@@ -31,7 +31,7 @@ interface TemplateEngineInterface
      * Method sets data to be used in view.
      *
      * @param  string $name Data name;
-     * @param  mixed  $value Data itself.
+     * @param  mixed $value Data itself.
      *
      * @throws \Framework\Exception\TemplateEngineException TemplateEngineException instance.
      *
@@ -63,7 +63,7 @@ interface TemplateEngineInterface
      * will be available into the view while rendering.
      *
      * @param  string $layout Path to layout.
-     * @param  string $view   Path to view.
+     * @param  string $view Path to view.
      *
      * @return void
      */

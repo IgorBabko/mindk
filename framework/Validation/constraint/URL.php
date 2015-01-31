@@ -34,17 +34,17 @@ class URL extends Constraint
     /**
      * URL constructor takes $pathRequired, $queryRequired and error message.
      *
-     * @param bool        $pathRequired  Is path required for URL validation?
-     * @param bool        $queryRequired Is query required for URL validation?
-     * @param null|string $message       Error message.
+     * @param bool $pathRequired Is path required for URL validation?
+     * @param bool $queryRequired Is query required for URL validation?
+     * @param null|string $message Error message.
      *
      * @return object URL.
      */
     public function __construct($pathRequired = false, $queryRequired = false, $message = null)
     {
-        $this->_pathRequired  = $pathRequired;
+        $this->_pathRequired = $pathRequired;
         $this->_queryRequired = $queryRequired;
-        $message              = isset($message)?$message:"must be URL";
+        $message = isset($message) ? $message : "must be URL";
         parent::__construct($message);
     }
 

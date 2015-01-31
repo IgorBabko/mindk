@@ -62,6 +62,6 @@ class ExceptionHandler implements ExceptionHandlerInterface
     {
         $templateEngine = TemplateEngine::getInstance();
         $templateEngine->setData('exception', $exception);
-        $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS.'error.html.php');
+        $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS . 'error.html.php');
     }
 }

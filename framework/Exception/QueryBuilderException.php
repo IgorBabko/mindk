@@ -23,7 +23,7 @@ class QueryBuilderException extends FrameworkException
     /**
      * QueryBuilderException constructor.
      *
-     * @param  int    $code    Exception code.
+     * @param  int $code Exception code.
      * @param  string $message Exception message.
      *
      * @return object QueryBuilderException.

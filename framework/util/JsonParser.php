@@ -26,14 +26,14 @@ class JsonParser implements JsonParserInterface
      * @var array $_errorDescriptions Error descriptions which might occur while serializing or parsing json
      */
     private static $_errorDescriptions = array(
-        JSON_ERROR_NONE             => "No error has occurred",
-        JSON_ERROR_DEPTH            => "The maximum stack depth has been exceeded",
-        JSON_ERROR_STATE_MISMATCH   => "Incorrect JSON",
-        JSON_ERROR_CTRL_CHAR        => "Control character error, possibly incorrectly encoded",
-        JSON_ERROR_SYNTAX           => "Syntax error",
-        JSON_ERROR_UTF8             => "Malformed UTF-8 characters, possibly incorrectly encoded",
-        JSON_ERROR_RECURSION        => "The object or array passed to JSON::encode method include recursive references and cannot be encoded",
-        JSON_ERROR_INF_OR_NAN       => "The value passed to JSON::encode method includes either NAN or INF",
+        JSON_ERROR_NONE => "No error has occurred",
+        JSON_ERROR_DEPTH => "The maximum stack depth has been exceeded",
+        JSON_ERROR_STATE_MISMATCH => "Incorrect JSON",
+        JSON_ERROR_CTRL_CHAR => "Control character error, possibly incorrectly encoded",
+        JSON_ERROR_SYNTAX => "Syntax error",
+        JSON_ERROR_UTF8 => "Malformed UTF-8 characters, possibly incorrectly encoded",
+        JSON_ERROR_RECURSION => "The object or array passed to JSON::encode method include recursive references and cannot be encoded",
+        JSON_ERROR_INF_OR_NAN => "The value passed to JSON::encode method includes either NAN or INF",
         JSON_ERROR_UNSUPPORTED_TYPE => "A value of an unsupported type was given to JSON::encode method, such as a resource"
     );
 
@@ -54,14 +54,14 @@ class JsonParser implements JsonParserInterface
      *     $key = 'unescapedUnicode') encode multibyte Unicode characters literally (default is to escape as \uXXXX).
      */
     private static $_options = array(
-        'hexTag'           => JSON_HEX_TAG,
-        'hexAmp'           => JSON_HEX_AMP,
-        'hexApos'          => JSON_HEX_APOS,
-        'hexQuot'          => JSON_HEX_QUOT,
-        'forceObj'         => JSON_FORCE_OBJECT,
-        'numeric'          => JSON_NUMERIC_CHECK,
-        'bigIntAsStr'      => JSON_BIGINT_AS_STRING,
-        'prettyPrint'      => JSON_PRETTY_PRINT,
+        'hexTag' => JSON_HEX_TAG,
+        'hexAmp' => JSON_HEX_AMP,
+        'hexApos' => JSON_HEX_APOS,
+        'hexQuot' => JSON_HEX_QUOT,
+        'forceObj' => JSON_FORCE_OBJECT,
+        'numeric' => JSON_NUMERIC_CHECK,
+        'bigIntAsStr' => JSON_BIGINT_AS_STRING,
+        'prettyPrint' => JSON_PRETTY_PRINT,
         'unescapedSlashes' => JSON_UNESCAPED_SLASHES,
         'unescapedUnicode' => JSON_UNESCAPED_UNICODE
     );
@@ -88,7 +88,7 @@ class JsonParser implements JsonParserInterface
     public static function encode($value, $options = 0, $depth = 512)
     {
         $jsonString = json_encode($value, $options, $depth);
-        $errorCode  = json_last_error();
+        $errorCode = json_last_error();
 
         if ($errorCode === 0) {
             return $jsonString;
@@ -102,7 +102,7 @@ class JsonParser implements JsonParserInterface
      */
     public static function decode($jsonString, $assoc = false, $depth = 512, $options = 0)
     {
-        $data      = json_decode($jsonString, $assoc, $depth, $options);
+        $data = json_decode($jsonString, $assoc, $depth, $options);
         $errorCode = json_last_error();
 
         if ($errorCode === 0) {

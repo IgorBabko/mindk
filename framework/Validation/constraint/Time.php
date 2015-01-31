@@ -36,8 +36,8 @@ class Time extends Constraint
      */
     public function __construct($pattern = null, $message = null)
     {
-        $this->_pattern = empty($pattern)?"/^([01]\d|2[0123]):(60|[012345]\d)$/":$pattern;
-        $message        = isset($message)?$message:" must be time matching pattern: {$this->pattern}";
+        $this->_pattern = empty($pattern) ? "/^([01]\d|2[0123]):(60|[012345]\d)$/" : $pattern;
+        $message = isset($message) ? $message : " must be time matching pattern: {$this->pattern}";
         parent::__construct($message);
     }
 

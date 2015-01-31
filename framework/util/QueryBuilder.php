@@ -111,9 +111,9 @@ class QueryBuilder implements QueryBuilderInterface
         if (!is_string($name)) {
             throw new QueryBuilderException(500, "<strong>Internal server error:</strong> query name must be string.");
         } else {
-            $this->_rawQueries[$name]['rawQuery']       = "";
+            $this->_rawQueries[$name]['rawQuery'] = "";
             $this->_rawQueries[$name]['bindParameters'] = array();
-            $this->_currentRawQuery                     = $name;
+            $this->_currentRawQuery = $name;
             return $this;
         }
     }
@@ -177,7 +177,7 @@ class QueryBuilder implements QueryBuilderInterface
     {
         if (isset($this->_currentRawQuery)) {
             $this->_rawQueries[$this->_currentRawQuery] = null;
-            $this->_currentRawQuery                     = null;
+            $this->_currentRawQuery = null;
             return $this;
         } else {
             throw new QueryBuilderException(500, "<strong>Internal server error:</strong> raw query is not chosen.");
@@ -192,17 +192,17 @@ class QueryBuilder implements QueryBuilderInterface
         if (!isset($this->_currentRawQuery)) {
             throw new QueryBuilderException(500, "<strong>Internal server error:</strong> raw query is not chosen.");
         } elseif (is_array($columns) && empty($columns) || $columns === '*') {
-            $this->_rawQueries[$this->_currentRawQuery]['rawQuery']       = "SELECT * FROM ?i";
+            $this->_rawQueries[$this->_currentRawQuery]['rawQuery'] = "SELECT * FROM ?i";
             $this->_rawQueries[$this->_currentRawQuery]['bindParameters'] = array($tableName);
             return $this;
         } else {
-            $this->_rawQueries[$this->_currentRawQuery]['rawQuery']         = "SELECT ";
-            $this->_rawQueries[$this->_currentRawQuery]['bindParameters']   = $columns;
+            $this->_rawQueries[$this->_currentRawQuery]['rawQuery'] = "SELECT ";
+            $this->_rawQueries[$this->_currentRawQuery]['bindParameters'] = $columns;
             $this->_rawQueries[$this->_currentRawQuery]['bindParameters'][] = $tableName;
-            $numOfColumns                                                   = count($columns);
-            $comma                                                          = "";
-            for ($i = 0;$i < $numOfColumns;$i++) {
-                $this->_rawQueries[$this->_currentRawQuery]['rawQuery'] .= $comma."?i";
+            $numOfColumns = count($columns);
+            $comma = "";
+            for ($i = 0; $i < $numOfColumns; $i++) {
+                $this->_rawQueries[$this->_currentRawQuery]['rawQuery'] .= $comma . "?i";
                 $comma = ", ";
             }
             $this->_rawQueries[$this->_currentRawQuery]['rawQuery'] .= " FROM ?i";
@@ -219,21 +219,21 @@ class QueryBuilder implements QueryBuilderInterface
             throw new QueryBuilderException(500, "<strong>Internal server error:</strong> raw query is not chosen.");
         } else {
             $this->_rawQueries[$this->_currentRawQuery]['bindParameters'] = array($tableName);
-            $this->_rawQueries[$this->_currentRawQuery]['rawQuery']       = "INSERT INTO ?i ";
+            $this->_rawQueries[$this->_currentRawQuery]['rawQuery'] = "INSERT INTO ?i ";
             array_shift($pairs);
             $this->_rawQueries[$this->_currentRawQuery]['bindParameters']
-                   = array_merge(
+                = array_merge(
                 $this->_rawQueries[$this->_currentRawQuery]['bindParameters'],
                 array_keys($pairs),
                 array_values($pairs)
             );
             $comma = $columns = $values = "";
             foreach ($pairs as $value) {
-                $columns .= $comma."?i";
+                $columns .= $comma . "?i";
                 if (is_float($value) || is_int($value)) {
-                    $values .= $comma."?n";
+                    $values .= $comma . "?n";
                 } elseif (is_string($value)) {
-                    $values .= $comma."?s";
+                    $values .= $comma . "?s";
                 }
                 $comma = ", ";
             }
@@ -251,7 +251,7 @@ class QueryBuilder implements QueryBuilderInterface
             throw new QueryBuilderException(500, "<strong>Internal server error:</strong> raw query is not chosen.");
         } else {
             $this->_rawQueries[$this->_currentRawQuery]['bindParameters'] = array($tableName);
-            $this->_rawQueries[$this->_currentRawQuery]['rawQuery']       = "UPDATE ?i SET ";
+            $this->_rawQueries[$this->_currentRawQuery]['rawQuery'] = "UPDATE ?i SET ";
             foreach ($pairs as $column => $value) {
                 $this->_rawQueries[$this->_currentRawQuery]['bindParameters'][] = $column;
                 $this->_rawQueries[$this->_currentRawQuery]['bindParameters'][] = $value;
@@ -259,9 +259,9 @@ class QueryBuilder implements QueryBuilderInterface
             $comma = "";
             foreach ($pairs as $value) {
                 if (is_float($value) || is_integer($value)) {
-                    $this->_rawQueries[$this->_currentRawQuery]['rawQuery'] .= $comma."?i = ?n";
+                    $this->_rawQueries[$this->_currentRawQuery]['rawQuery'] .= $comma . "?i = ?n";
                 } elseif (is_string($value)) {
-                    $this->_rawQueries[$this->_currentRawQuery]['rawQuery'] .= $comma."?i = ?s";
+                    $this->_rawQueries[$this->_currentRawQuery]['rawQuery'] .= $comma . "?i = ?s";
                 }
                 $comma = ", ";
             }
@@ -278,7 +278,7 @@ class QueryBuilder implements QueryBuilderInterface
             throw new QueryBuilderException(500, "<strong>Internal server error:</strong> raw query is not chosen.");
         } else {
             $this->_rawQueries[$this->_currentRawQuery]['bindParameters'] = array($tableName);
-            $this->_rawQueries[$this->_currentRawQuery]['rawQuery']       = "DELETE FROM ?i";
+            $this->_rawQueries[$this->_currentRawQuery]['rawQuery'] = "DELETE FROM ?i";
             return $this;
         }
     }
@@ -404,7 +404,7 @@ class QueryBuilder implements QueryBuilderInterface
         if (!isset($this->_currentRawQuery)) {
             throw new QueryBuilderException(500, "<strong>Internal server error:</strong> raw query is not chosen.");
         } elseif (isset($columnName) && isset($begin) && isset($end)) {
-            $not = ($not === true)?"NOT":"";
+            $not = ($not === true) ? "NOT" : "";
             if (is_string($begin)) {
                 $this->_rawQueries[$this->_currentRawQuery]['rawQuery'] .= " ?i $not BETWEEN ?s AND ?s ";
             } elseif (is_float($begin) || is_integer($begin)) {
@@ -465,7 +465,7 @@ class QueryBuilder implements QueryBuilderInterface
         } else {
             $this->_rawQueries[$this->_currentRawQuery]['bindParameters'][] = $columnName;
             $this->_rawQueries[$this->_currentRawQuery]['bindParameters']
-                                                                            = array_merge(
+                = array_merge(
                 $this->_rawQueries[$this->_currentRawQuery]['bindParameters'],
                 $in
             );
@@ -478,9 +478,9 @@ class QueryBuilder implements QueryBuilderInterface
             $comma = $values = "";
             foreach ($in as $value) {
                 if (is_float($value) || is_integer($value)) {
-                    $values .= $comma."?n";
+                    $values .= $comma . "?n";
                 } elseif (is_string($value)) {
-                    $values .= $comma."?s";
+                    $values .= $comma . "?s";
                 }
                 $comma = ", ";
             }

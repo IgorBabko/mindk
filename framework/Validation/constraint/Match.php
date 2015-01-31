@@ -30,14 +30,14 @@ class Match extends Constraint
      * Match constructor takes value to compare with and error message.
      *
      * @param  string $equalValue Value to compare with.
-     * @param  null   $message    Error message.
+     * @param  null $message Error message.
      *
      * @return object Match.
      */
     public function __construct($equalValue, $message = null)
     {
         $this->_equalValue = $equalValue;
-        $message           = isset($message)?$message:"must match value '$equalValue'";
+        $message = isset($message) ? $message : "must match value '$equalValue'";
         parent::__construct($message);
     }
 

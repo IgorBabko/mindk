@@ -180,7 +180,7 @@ abstract class ActiveRecord implements ActiveRecordInterface
                     if ($value === null) {
                         continue;
                     }
-                    $fieldName        = array_search($columnName, $columnNames);
+                    $fieldName = array_search($columnName, $columnNames);
                     $this->$fieldName = $value;
                 }
             }
@@ -200,13 +200,13 @@ abstract class ActiveRecord implements ActiveRecordInterface
                 "<strong>Internal server error:</strong> wrong parameter for ActiveRecord::save method, must be an array."
             );
         } else {
-            $classInfo     = new \ReflectionClass($model);
+            $classInfo = new \ReflectionClass($model);
             $newRecordData = array();
-            $columnNames   = static::getColumns();
+            $columnNames = static::getColumns();
             if (empty($columns)) {
                 foreach ($this as $fieldName => $value) {
                     if ($classInfo->getProperty($fieldName)->getDeclaringClass()->getName() !== "ActiveRecord") {
-                        $columnName                 = $columnNames[$fieldName];
+                        $columnName = $columnNames[$fieldName];
                         $newRecordData[$columnName] = $value;
                     }
                 }
@@ -220,7 +220,7 @@ abstract class ActiveRecord implements ActiveRecordInterface
             } else {
                 foreach ($this as $fieldName => $value) {
                     if ($classInfo->getProperty($fieldName)->getDeclaringClass()->getName() !== "ActiveRecord") {
-                        $columnName                 = $columnNames[$fieldName];
+                        $columnName = $columnNames[$fieldName];
                         $newRecordData[$columnName] = $value;
                     }
                 }
@@ -255,8 +255,8 @@ abstract class ActiveRecord implements ActiveRecordInterface
      */
     public function remove()
     {
-        $model      = get_class($this);
-        $classInfo  = new \ReflectionClass($model);
+        $model = get_class($this);
+        $classInfo = new \ReflectionClass($model);
         $recordData = array();
         foreach ($this as $field => $value) {
             if ($classInfo->getProperty($field)->getDeclaringClass()->getName() !== 'ActiveRecord') {

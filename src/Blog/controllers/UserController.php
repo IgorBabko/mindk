@@ -31,7 +31,7 @@ class UserController extends Controller
             $user = new User();
             $form = new Form($user, 'signup');
 
-            $wrongFile   = false;
+            $wrongFile = false;
             $picturePath = null;
             $pictureName = null;
             if (empty($_FILES['profile_image']['name'])) {
@@ -39,14 +39,14 @@ class UserController extends Controller
             } else {
                 $allowed = array('jpg', 'jpeg', 'gif', 'png');
 
-                $fileName     = $_FILES['profile_image']['name'];
-                $fileInfo     = explode('.', $fileName);
-                $fileExtn     = strtolower(end($fileInfo));
+                $fileName = $_FILES['profile_image']['name'];
+                $fileInfo = explode('.', $fileName);
+                $fileExtn = strtolower(end($fileInfo));
                 $fileTempPath = $_FILES['profile_image']['tmp_name'];
 
                 if (in_array($fileExtn, $allowed) === true) {
-                    $pictureName = substr(md5(time()), 0, 10).'.'.$fileExtn;
-                    $picturePath = 'uploads/'.$pictureName;
+                    $pictureName = substr(md5(time()), 0, 10) . '.' . $fileExtn;
+                    $picturePath = 'uploads/' . $pictureName;
                     move_uploaded_file($fileTempPath, $picturePath);
                 } else {
                     $wrongFile = true;
@@ -58,7 +58,7 @@ class UserController extends Controller
 
                 $form->bindDataToModel();
                 $user->setPicturePath(
-                    ($pictureName != null)?'/web/uploads/'.$pictureName:'/web/uploads/profile_icon_trim.png'
+                    ($pictureName != null) ? '/web/uploads/' . $pictureName : '/web/uploads/profile_icon_trim.png'
                 );
                 $user->setSalt(Hash::generateSalt(32));
                 $user->setPassword(Hash::generatePass($user->getPassword(), $user->getSalt()));
@@ -81,7 +81,7 @@ class UserController extends Controller
 
         $categories = Category::query('SELECT * FROM ?i', array(Category::getTable()));
         foreach ($categories as &$category) {
-            $count             = Post::query(
+            $count = Post::query(
                 "SELECT COUNT(*) AS 'count' FROM ?i WHERE ?i = ?s",
                 array(Post::getTable(), 'category', $category['name'])
             );
@@ -91,18 +91,18 @@ class UserController extends Controller
         array_unshift($categories, array('id' => 0, 'name' => 'All', 'count' => $totalAmountOfPosts));
 
         $templateEngine->setData('categories', $categories);
-        $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS.'user/signup.html.php');
+        $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS . 'user/signup.html.php');
     }
 
     public function loginAction()
     {
         $templateEngine = $this->getTemplateEngine();
-        $request        = $this->getRequest();
-        $session        = $request->getSession();
+        $request = $this->getRequest();
+        $session = $request->getSession();
 
         $categories = Category::query('SELECT * FROM ?i', array(Category::getTable()));
         foreach ($categories as &$category) {
-            $count             = Post::query(
+            $count = Post::query(
                 "SELECT COUNT(*) AS 'count' FROM ?i WHERE ?i = ?s",
                 array(Post::getTable(), 'category', $category['name'])
             );
@@ -114,7 +114,7 @@ class UserController extends Controller
         $templateEngine->setData('categories', $categories);
 
         if ($request->isMethod('POST')) {
-            try{
+            try {
                 $user = new User();
                 $user->load(array('username' => $request->getPost('_username')));
                 $username = $user->getUsername();
@@ -130,10 +130,10 @@ class UserController extends Controller
                         $session->add(
                             'user',
                             array(
-                                'name'    => $user->getUsername(),
-                                'email'   => $user->getEmail(),
+                                'name' => $user->getUsername(),
+                                'email' => $user->getEmail(),
                                 'picture' => $user->getPicturePath(),
-                                'role'    => $user->getRole()
+                                'role' => $user->getRole()
                             )
                         );
                         $redirect = $this->getResponseRedirect();
@@ -146,11 +146,11 @@ class UserController extends Controller
                     }
                 }
                 $templateEngine->setData('fail', 'Invalid login or password');
-            } catch(FrameworkException $e){
-                $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS.'error.html.php');
+            } catch (FrameworkException $e) {
+                $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS . 'error.html.php');
             }
         }
-        $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS.'user/login.html.php');
+        $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS . 'user/login.html.php');
     }
 
     public function updateAction()
@@ -165,7 +165,7 @@ class UserController extends Controller
 
         $categories = Category::query('SELECT * FROM ?i', array(Category::getTable()));
         foreach ($categories as &$category) {
-            $count             = Post::query(
+            $count = Post::query(
                 "SELECT COUNT(*) AS 'count' FROM ?i WHERE ?i = ?s",
                 array(Post::getTable(), 'category', $category['name'])
             );
@@ -177,11 +177,11 @@ class UserController extends Controller
         $templateEngine->setData('categories', $categories);
 
         if ($request->isMethod('POST')) {
-            try{
+            try {
                 $redirect = $this->getResponseRedirect();
-                $form     = new Form($user, 'update');
+                $form = new Form($user, 'update');
 
-                $wrongFile   = false;
+                $wrongFile = false;
                 $picturePath = null;
                 $pictureName = null;
                 if (empty($_FILES['profile_image']['name'])) {
@@ -189,14 +189,14 @@ class UserController extends Controller
                 } else {
                     $allowed = array('jpg', 'jpeg', 'gif', 'png');
 
-                    $fileName     = $_FILES['profile_image']['name'];
-                    $fileInfo     = explode('.', $fileName);
-                    $fileExtn     = strtolower(end($fileInfo));
+                    $fileName = $_FILES['profile_image']['name'];
+                    $fileInfo = explode('.', $fileName);
+                    $fileExtn = strtolower(end($fileInfo));
                     $fileTempPath = $_FILES['profile_image']['tmp_name'];
 
                     if (in_array($fileExtn, $allowed) === true) {
-                        $pictureName = substr(md5(time()), 0, 10).'.'.$fileExtn;
-                        $picturePath = 'uploads/'.$pictureName;
+                        $pictureName = substr(md5(time()), 0, 10) . '.' . $fileExtn;
+                        $picturePath = 'uploads/' . $pictureName;
                         move_uploaded_file($fileTempPath, $picturePath);
                     } else {
                         $wrongFile = true;
@@ -207,16 +207,16 @@ class UserController extends Controller
                 if ($form->isValid() && $wrongFile == false) {
                     $form->bindDataToModel();
                     $user->setPicturePath(
-                        ($pictureName != null)?'/web/uploads/'.$pictureName:'/web/uploads/profile_icon_trim.png'
+                        ($pictureName != null) ? '/web/uploads/' . $pictureName : '/web/uploads/profile_icon_trim.png'
                     );
                     $user->save(array('username' => $session->get('user')['name']));
                     $session->add(
                         'user',
                         array(
-                            'name'    => $user->getUsername(),
-                            'email'   => $user->getEmail(),
+                            'name' => $user->getUsername(),
+                            'email' => $user->getEmail(),
                             'picture' => $user->getPicturePath(),
-                            'role'    => $user->getRole()
+                            'role' => $user->getRole()
                         )
                     );
                     $session->flash(
@@ -228,16 +228,16 @@ class UserController extends Controller
                 } else {
                     $errors = Validator::getErrorList();
                     $templateEngine->setData('errors', $errors);
-                    $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS.'user/update.html.php');
+                    $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS . 'user/update.html.php');
                 }
-            } catch(FrameworkException $e){
+            } catch (FrameworkException $e) {
                 $templateEngine->setData('exception', $e);
-                $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS.'error.html.php');
+                $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS . 'error.html.php');
             }
         } else {
             $_POST['_username'] = $user->getUsername();
-            $_POST['_email']    = $user->getEmail();
-            $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS.'user/update.html.php');
+            $_POST['_email'] = $user->getEmail();
+            $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS . 'user/update.html.php');
         }
     }
 
@@ -250,7 +250,7 @@ class UserController extends Controller
 
         $categories = Category::query('SELECT * FROM ?i', array(Category::getTable()));
         foreach ($categories as &$category) {
-            $count             = Post::query(
+            $count = Post::query(
                 "SELECT COUNT(*) AS 'count' FROM ?i WHERE ?i = ?s",
                 array(Post::getTable(), 'category', $category['name'])
             );
@@ -267,7 +267,7 @@ class UserController extends Controller
         if ($request->isMethod('POST')) {
 
             $currentPassword = $user->getPassword();
-            $salt            = $user->getSalt();
+            $salt = $user->getSalt();
 
             $form = new Form($user, 'change_password');
             if ($form->isValid()) {
@@ -295,10 +295,10 @@ class UserController extends Controller
             } else {
                 $errors = Validator::getErrorList();
                 $templateEngine->setData('errors', $errors);
-                $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS.'user/change_password.html.php');
+                $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS . 'user/change_password.html.php');
             }
         } else {
-            $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS.'user/change_password.html.php');
+            $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS . 'user/change_password.html.php');
         }
     }
 

@@ -78,29 +78,29 @@ class App implements AppInterface
     {
         if (!file_exists(CONF)) {
             throw new AppException(
-                500, "<strong>Internal server error:</strong> config file '".CONF."' does not exist'"
+                500, "<strong>Internal server error:</strong> config file '" . CONF . "' does not exist'"
             );
         }
 
-        Loader::addNamespacePath('Framework\\Application\\', __DIR__.'/../application/');
-        Loader::addNamespacePath('Framework\\Config\\', __DIR__.'/../config/');
-        Loader::addNamespacePath('Framework\\Database\\', __DIR__.'/../database/');
-        Loader::addNamespacePath('Framework\\Exception\\', __DIR__.'/../exception/');
-        Loader::addNamespacePath('Framework\\Routing\\', __DIR__.'/../routing/');
-        Loader::addNamespacePath('Framework\\Request\\', __DIR__.'/../request/');
-        Loader::addNamespacePath('Framework\\Response\\', __DIR__.'/../response/');
-        Loader::addNamespacePath('Framework\\Session\\', __DIR__.'/../session/');
-        Loader::addNamespacePath('Framework\\Cookie\\', __DIR__.'/../cookie/');
-        Loader::addNamespacePath('Framework\\DI\\', __DIR__.'/../DI/');
-        Loader::addNamespacePath('Framework\\Controller\\', __DIR__.'/../controller/');
-        Loader::addNamespacePath('Framework\\Model\\', __DIR__.'/../model/');
-        Loader::addNamespacePath('Framework\\Validation\\', __DIR__.'/../validation/');
-        Loader::addNamespacePath('Framework\\Template\\', __DIR__.'/../template/');
-        Loader::addNamespacePath('Framework\\Sanitization\\', __DIR__.'/../sanitization/');
-        Loader::addNamespacePath('Framework\\Security\\', __DIR__.'/../security/');
-        Loader::addNamespacePath('Framework\\Util\\', __DIR__.'/../util/');
-        Loader::addNamespacePath('Framework\\Validation\\Constraint\\', __DIR__.'/../validation/constraint/');
-        Loader::addNamespacePath('Framework\\Sanitization\\Filter\\', __DIR__.'/../sanitization/filter/');
+        Loader::addNamespacePath('Framework\\Application\\', __DIR__ . '/../application/');
+        Loader::addNamespacePath('Framework\\Config\\', __DIR__ . '/../config/');
+        Loader::addNamespacePath('Framework\\Database\\', __DIR__ . '/../database/');
+        Loader::addNamespacePath('Framework\\Exception\\', __DIR__ . '/../exception/');
+        Loader::addNamespacePath('Framework\\Routing\\', __DIR__ . '/../routing/');
+        Loader::addNamespacePath('Framework\\Request\\', __DIR__ . '/../request/');
+        Loader::addNamespacePath('Framework\\Response\\', __DIR__ . '/../response/');
+        Loader::addNamespacePath('Framework\\Session\\', __DIR__ . '/../session/');
+        Loader::addNamespacePath('Framework\\Cookie\\', __DIR__ . '/../cookie/');
+        Loader::addNamespacePath('Framework\\DI\\', __DIR__ . '/../DI/');
+        Loader::addNamespacePath('Framework\\Controller\\', __DIR__ . '/../controller/');
+        Loader::addNamespacePath('Framework\\Model\\', __DIR__ . '/../model/');
+        Loader::addNamespacePath('Framework\\Validation\\', __DIR__ . '/../validation/');
+        Loader::addNamespacePath('Framework\\Template\\', __DIR__ . '/../template/');
+        Loader::addNamespacePath('Framework\\Sanitization\\', __DIR__ . '/../sanitization/');
+        Loader::addNamespacePath('Framework\\Security\\', __DIR__ . '/../security/');
+        Loader::addNamespacePath('Framework\\Util\\', __DIR__ . '/../util/');
+        Loader::addNamespacePath('Framework\\Validation\\Constraint\\', __DIR__ . '/../validation/constraint/');
+        Loader::addNamespacePath('Framework\\Sanitization\\Filter\\', __DIR__ . '/../sanitization/filter/');
 
         Loader::register();
         Config::setConfig(CONF);
@@ -126,10 +126,10 @@ class App implements AppInterface
             'routeCollection',
             'RouteCollection',
             function ($params = array()) {
-                $routes          = array();
+                $routes = array();
                 $routeCollection = null;
                 if (file_exists($params['routes'])) {
-                    $routes          = require($params['routes']);
+                    $routes = require($params['routes']);
                     $routeCollection = RouteCollection::getInstance();
                 }
                 foreach ($routes as $routeName => $routeInfo) {
@@ -217,12 +217,12 @@ class App implements AppInterface
                 );
             },
             array(
-                'user'     => Config::getSetting('pdo/user'),
+                'user' => Config::getSetting('pdo/user'),
                 'password' => Config::getSetting('pdo/password'),
-                'dbname'   => Config::getSetting('pdo/dbname'),
-                'engine'   => Config::getSetting('pdo/engine'),
-                'host'     => Config::getSetting('pdo/host'),
-                'charset'  => Config::getSetting('pdo/charset')
+                'dbname' => Config::getSetting('pdo/dbname'),
+                'engine' => Config::getSetting('pdo/engine'),
+                'host' => Config::getSetting('pdo/host'),
+                'charset' => Config::getSetting('pdo/charset')
             )
         );
 
@@ -254,13 +254,13 @@ class App implements AppInterface
      */
     public static function run()
     {
-        $router         = Service::resolve('router');
-        $matchedRoute   = $router->matchCurrentRequest();
+        $router = Service::resolve('router');
+        $matchedRoute = $router->matchCurrentRequest();
         $controllerName = $matchedRoute->getControllerName();
 
         $controller = new $controllerName();
 
-        $action     = $matchedRoute->getActionName()."Action";
+        $action = $matchedRoute->getActionName() . "Action";
         $parameters = $matchedRoute->getParameters();
 
         $controller->$action($parameters);

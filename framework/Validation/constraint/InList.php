@@ -29,7 +29,7 @@ class InList extends Constraint
     /**
      * InList constructor takes list of allowed values and error message.
      *
-     * @param  array       $list    List of allowed values.
+     * @param  array $list List of allowed values.
      * @param  null|string $message Error message.
      *
      * @return object InList.
@@ -37,7 +37,7 @@ class InList extends Constraint
     public function __construct($list = array(), $message = null)
     {
         $this->_list = $list;
-        $message     = isset($message)?$message:"must be from specified list";
+        $message = isset($message) ? $message : "must be from specified list";
         parent::__construct($message);
     }
 

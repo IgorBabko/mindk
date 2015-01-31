@@ -135,7 +135,7 @@ interface ResponseInterface
     /**
      * Method sets response header with name $name and value $value.
      *
-     * @param  string $name  Name  of response header to set.
+     * @param  string $name Name  of response header to set.
      * @param  string $value Value of response header $name.
      *
      * @return void
@@ -157,7 +157,7 @@ interface ResponseInterface
      * Method sets content type of response.
      *
      * @param  string $contentType Response content type.
-     * @param  string $charset     Response charset.
+     * @param  string $charset Response charset.
      *
      * @return void
      */
@@ -180,7 +180,7 @@ interface ResponseInterface
     /**
      * Method add cookie with name $name and $value value.
      *
-     * @param  string $name  Cookie name.
+     * @param  string $name Cookie name.
      * @param  string $value Cookie value.
      *
      * @return void
@@ -228,7 +228,7 @@ interface ResponseInterface
      * Method sets all needed headers and cache directives related to cache.
      *
      * @param  int $since Last modification time of current file.
-     * @param  int $time  Time when response is sent.
+     * @param  int $time Time when response is sent.
      *
      * @return void
      */

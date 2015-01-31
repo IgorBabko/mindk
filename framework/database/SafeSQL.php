@@ -238,8 +238,8 @@ class SafeSql extends Database implements SafeSqlInterface
             }
         } else {
             $this->_sqlResultSet = null;
-            $this->_resultSet    = null;
-            $this->_numOfRows    = null;
+            $this->_resultSet = null;
+            $this->_numOfRows = null;
             $this->_numOfColumns = null;
             $this->_numOfAffectedRows = $this->exec($queryString);
             if ($this->_numOfAffectedRows === false) {
@@ -257,7 +257,7 @@ class SafeSql extends Database implements SafeSqlInterface
     public function prepareQuery($rawQueryString, $bindParameters)
     {
         $queryString = '';
-        $array       = preg_split('/(\?[isn])/', $rawQueryString, null, PREG_SPLIT_DELIM_CAPTURE);
+        $array = preg_split('/(\?[isn])/', $rawQueryString, null, PREG_SPLIT_DELIM_CAPTURE);
 
         foreach ($array as $index => $queryPart) {
             if (($index % 2) === 0) {
@@ -298,9 +298,9 @@ class SafeSql extends Database implements SafeSqlInterface
         } else {
             throw new SafeSqlException(
                 500,
-                "<strong>Internal server error:</strong> number (?n) placeholder expects numeric value, ".gettype(
+                "<strong>Internal server error:</strong> number (?n) placeholder expects numeric value, " . gettype(
                     $value
-                )." given"
+                ) . " given"
             );
         }
     }
@@ -326,7 +326,7 @@ class SafeSql extends Database implements SafeSqlInterface
     public function escapeIdentifier($value = null)
     {
         if (isset($value)) {
-            return "`".str_replace("`", "``", $value)."`";
+            return "`" . str_replace("`", "``", $value) . "`";
         } else {
             throw new SafeSqlException(
                 500,

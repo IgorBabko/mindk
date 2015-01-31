@@ -23,7 +23,7 @@ interface RouteCollectionInterface
     /**
      * Method to set new route to the routeCollection.
      *
-     * @param  string                   $routeName Name of new route.
+     * @param  string $routeName Name of new route.
      * @param  \Framework\Routing\Route $routeInfo Info of new route (pattern, controller, action).
      *
      * @throws \Framework\Exception\RouteCollectionException RouteCollectionException instance.

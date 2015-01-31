@@ -33,7 +33,7 @@ class Category extends ActiveRecord
     public static function getColumns()
     {
         return array(
-            '_id'   => 'id',
+            '_id' => 'id',
             '_name' => 'name',
         );
     }

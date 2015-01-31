@@ -23,7 +23,7 @@ class ActiveRecordException extends FrameworkException
     /**
      * ActiveRecordException constructor.
      *
-     * @param  int    $code    Exception code.
+     * @param  int $code Exception code.
      * @param  string $message Exception message.
      *
      * @return object ActiveRecordException.

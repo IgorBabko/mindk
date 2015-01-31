@@ -132,9 +132,9 @@ class Session implements SessionInterface
     public function init()
     {
         $_SESSION[$this->_meta] = array(
-            'ip'       => $_SERVER['REMOTE_ADDR'],
-            'name'     => session_name(),
-            'created'  => $_SERVER['REQUEST_TIME'],
+            'ip' => $_SERVER['REMOTE_ADDR'],
+            'name' => session_name(),
+            'created' => $_SERVER['REQUEST_TIME'],
             'activity' => $_SERVER['REQUEST_TIME'],
         );
     }
@@ -157,7 +157,7 @@ class Session implements SessionInterface
     public function get($name)
     {
         if ($this->_started === true) {
-            return isset($_SESSION[$name])?$_SESSION[$name]:null;
+            return isset($_SESSION[$name]) ? $_SESSION[$name] : null;
         } else {
             throw new SessionException(500, "<strong>Internal server error:</strong> session isn't started.");
         }
@@ -199,7 +199,7 @@ class Session implements SessionInterface
                 500, "<strong>Internal server error:</strong> second parameter for Session::flash method must be 'string', '$parameterType' is given"
             );
         } else {
-            $flashMsgs        = $this->exists('flashMsgs')?$this->get('flashMsgs'):array();
+            $flashMsgs = $this->exists('flashMsgs') ? $this->get('flashMsgs') : array();
             $flashMsgs[$name] = $value;
             $this->add('flashMsgs', $flashMsgs);
         }

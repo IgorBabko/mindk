@@ -30,7 +30,7 @@ class NotBlank extends Constraint
      */
     public function __construct($message = null)
     {
-        $message = isset($message)?$message:"must not be blank";
+        $message = isset($message) ? $message : "must not be blank";
         parent::__construct($message);
     }
 

@@ -23,7 +23,7 @@ class ServiceException extends FrameworkException
     /**
      * ServiceException constructor.
      *
-     * @param  int    $code    Exception code.
+     * @param  int $code Exception code.
      * @param  string $message Exception message.
      *
      * @return object ServiceException.

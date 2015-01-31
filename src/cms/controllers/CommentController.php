@@ -21,11 +21,11 @@ class CommentController extends Controller
 {
     public function indexAction()
     {
-        $pageId  = func_get_args()[0][0];
+        $pageId = func_get_args()[0][0];
         $session = $this->getRequest()->getSession();
         $session->start();
 
-        $request        = $this->getRequest();
+        $request = $this->getRequest();
         $templateEngine = $this->getTemplateEngine();
         $rawQueryString = "SELECT ?i, ?i, ?i FROM ?i";
         $bindParameters = array('id', 'author', 'post_title', Comment::getTable());
@@ -44,17 +44,17 @@ class CommentController extends Controller
                 foreach ($_POST as $fieldName => $fieldValue) {
                     if (!empty($fieldValue)) {
                         if (!is_numeric($fieldValue)) {
-                            $queryPart  = " LIKE ?s";
-                            $fieldValue = '%'.$fieldValue.'%';
+                            $queryPart = " LIKE ?s";
+                            $fieldValue = '%' . $fieldValue . '%';
                         } else {
-                            $queryPart  = " = ?n";
+                            $queryPart = " = ?n";
                             $fieldValue = (int)$fieldValue;
                         }
 
                         if ($k === true) {
-                            $rawQueryString .= " AND ?i".$queryPart;
+                            $rawQueryString .= " AND ?i" . $queryPart;
                         } else {
-                            $rawQueryString .= " WHERE ?i".$queryPart;
+                            $rawQueryString .= " WHERE ?i" . $queryPart;
                             $k = true;
                         }
 
@@ -69,30 +69,30 @@ class CommentController extends Controller
         } elseif ($session->exists('searchCommentQuery')) {
             $searchCommentQuery = $session->get('searchCommentQuery');
             $comments = Comment::query($searchCommentQuery['rawQueryString'], $searchCommentQuery['bindParameters']);
-            $templateEngine->setData('searchResult', 'Search result: '.count($comments).' items');
+            $templateEngine->setData('searchResult', 'Search result: ' . count($comments) . ' items');
         } else {
             $comments = Comment::query($rawQueryString, $bindParameters);
         }
 
         $itemsPerPage = Config::getSetting('pagination/items_per_page');
-        $pagination   = Util::pagination('show_comments', array('pageId' => $pageId), count($comments));
+        $pagination = Util::pagination('show_comments', array('pageId' => $pageId), count($comments));
 
         $start = ($pageId - 1) * $itemsPerPage;
         $templateEngine->setData('comments', array_slice($comments, $start, $itemsPerPage));
         $templateEngine->setData('router', $this->getRouter());
         $templateEngine->setData('pagination', $pagination);
-        $templateEngine->render(CMS_LAYOUT, CMS_VIEWS.'comment/index.html.php');
+        $templateEngine->render(CMS_LAYOUT, CMS_VIEWS . 'comment/index.html.php');
     }
 
     public function showAction()
     {
-        $id             = func_get_args()[0][0];
-        $comment        = new Comment(array('id' => $id));
+        $id = func_get_args()[0][0];
+        $comment = new Comment(array('id' => $id));
         $templateEngine = $this->getTemplateEngine();
         $templateEngine->setData('router', $this->getRouter());
         $templateEngine->setData('comment', $comment);
 
-        $templateEngine->render(CMS_LAYOUT, CMS_VIEWS.'comment/show.html.php');
+        $templateEngine->render(CMS_LAYOUT, CMS_VIEWS . 'comment/show.html.php');
     }
 
     public function addAction()
@@ -105,8 +105,8 @@ class CommentController extends Controller
         $templateEngine->setData('posts', $posts);
 
         if ($request->isMethod('POST')) {
-            try{
-                $comment     = new Comment();
+            try {
+                $comment = new Comment();
                 $commentForm = new Form($comment, 'add');
 
                 if ($commentForm->isValid()) {
@@ -128,20 +128,20 @@ class CommentController extends Controller
                 } else {
                     $errors = Validator::getErrorList();
                     $templateEngine->setData('errors', $errors);
-                    $templateEngine->render(CMS_LAYOUT, CMS_VIEWS.'comment/add.html.php');
+                    $templateEngine->render(CMS_LAYOUT, CMS_VIEWS . 'comment/add.html.php');
                 }
-            } catch(FrameworkException $e){
+            } catch (FrameworkException $e) {
                 $templateEngine->setData('exception', $e);
-                $templateEngine->render(CMS_LAYOUT, CMS_VIEWS.'error.html.php');
+                $templateEngine->render(CMS_LAYOUT, CMS_VIEWS . 'error.html.php');
             }
         } else {
-            $templateEngine->render(CMS_LAYOUT, CMS_VIEWS.'comment/add.html.php');
+            $templateEngine->render(CMS_LAYOUT, CMS_VIEWS . 'comment/add.html.php');
         }
     }
 
     public function deleteAction()
     {
-        $id      = func_get_args()[0][0];
+        $id = func_get_args()[0][0];
         $comment = new Comment(array('id' => $id));
         $postTitle = $comment->getPostTitle();
         $comment->remove();

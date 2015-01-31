@@ -45,8 +45,9 @@ class Service implements ServiceInterface
         $resolver = null,
         $params = array(),
         $dependencies = array()
-    ) {
-        self::$_services[$name]              = array();
+    )
+    {
+        self::$_services[$name] = array();
         self::$_services[$name]['className'] = $className;
         self::setParams($name, $params);
         self::setDependencies($name, $dependencies);
@@ -135,7 +136,7 @@ class Service implements ServiceInterface
             }
 
             $resolver = self::$_services[$name]['resolver'];
-            $service  = $resolver($params);
+            $service = $resolver($params);
 
             return $service;
         }
