@@ -122,11 +122,8 @@ $isRouteActive = function ($currentRoute) {
                     $categoryId = (int)$_SESSION['categoryId'];
                 }
                 foreach ($this->categories as $category) {
-                    ?>
-                    <li role="presentation" <?= ($categoryId === (int)$category['id']) ? 'id="active_category"' : ''; ?> >
-                        <a href="<?= $this->router->generateRoute('posts', array('categoryId' => $category['id'], 'pageId' => 1)); ?>"><?= $category['name']; ?></a>
-                    </li>
-                <?php } ?>
+                    ?><li role="presentation" <?= ($categoryId === (int)$category['id']) ? 'id="active_category"' : ''; ?> >
+                        <a href="<?= $this->router->generateRoute('posts', array('categoryId' => $category['id'], 'pageId' => 1)); ?>"><?= $category['name']; ?></a></li><?php } ?>
             <?php } ?>
         </ul>
         <?= $this->view; ?>
