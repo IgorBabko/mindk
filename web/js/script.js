@@ -82,7 +82,5 @@ $(document).ready(function () {
     var codeEditor = null;
     for (var i = 0; i < size; ++i) {
         codeEditor = makeEditor(codeEditors[i]);
-        ;
-        //codeEditor.setSize(300, null);
     }
 });
