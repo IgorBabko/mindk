@@ -30,7 +30,7 @@ class CommentController extends Controller
             <img class="user-picture img-rounded" src="{$_SESSION['user']['picture']}" alt="user picture" />
             <div class="panel panel-default comment-block">
                 <div class="panel-heading panel-title comment-title">
-                    <p>{$comment->getAuthor()}</p>
+                    <p>{$comment->getAuthor()} says:</p>
                     <sub>{$comment->getCreatedDate()}</sub>
                     <div class="clear"></div>
                 </div>
