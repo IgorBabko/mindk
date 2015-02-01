@@ -99,6 +99,8 @@ class UserController extends Controller
         $templateEngine = $this->getTemplateEngine();
         $request = $this->getRequest();
         $session = $request->getSession();
+        $session->destroy();
+
 
         $categories = Category::query('SELECT * FROM ?i', array(Category::getTable()));
         foreach ($categories as &$category) {
@@ -123,8 +125,10 @@ class UserController extends Controller
                     if ($hashedPassword === $user->getPassword()) {
 
                         $remember = $request->getPost('remember');
-                        if ($remember === 'yes') {
-                            session_set_cookie_params(Config::getSetting('session_cookie_lifetime'));
+                        if ($remember == 'yes') {
+
+                            $session_lifetime = Config::getSetting('session_cookie_lifetime');
+                            session_set_cookie_params($session_lifetime, '/');
                         }
                         $session->start();
                         $session->add(
@@ -136,6 +140,7 @@ class UserController extends Controller
                                 'role' => $user->getRole()
                             )
                         );
+
                         $redirect = $this->getResponseRedirect();
                         $session->flash(
                             'authenticated',

@@ -83,7 +83,7 @@ class Session implements SessionInterface
      */
     public function start()
     {
-        if ($this->_started === true) {
+        if ($this->_started == true) {
             return;
         }
 
@@ -116,6 +116,9 @@ class Session implements SessionInterface
             );
         }
         session_destroy();
+
+
+        $this->_started = false;
     }
 
     /**
