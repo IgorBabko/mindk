@@ -2,7 +2,7 @@
 
 return array(
 
-    /***************************** Blog *************************/
+    /*************************** Blog *************************/
 
     /* pages: home, posts, post, comment, show, feedback, dashboard */
     'home' => array(
@@ -63,27 +63,32 @@ return array(
     'signup' => array(
         'pattern' => '/signup',
         'controller' => 'Blog\\Controllers\\UserController',
-        'action' => 'signup'
+        'action' => 'signup',
+        'security' => array('GUEST')
     ),
     'login' => array(
         'pattern' => '/login',
         'controller' => 'Blog\\Controllers\\UserController',
-        'action' => 'login'
+        'action' => 'login',
+        'security' => array('GUEST')
     ),
     'update' => array(
         'pattern' => '/update',
         'controller' => 'Blog\\Controllers\\UserController',
-        'action' => 'update'
+        'action' => 'update',
+        'security' => array('USER', 'ADMIN')
     ),
     'change_password' => array(
         'pattern' => '/change_password',
         'controller' => 'Blog\\Controllers\\UserController',
-        'action' => 'changePassword'
+        'action' => 'changePassword',
+        'security' => array('USER', 'ADMIN')
     ),
     'logout' => array(
         'pattern' => '/logout',
         'controller' => 'Blog\\Controllers\\UserController',
-        'action' => 'logout'
+        'action' => 'logout',
+        'security' => array('USER', 'ADMIN')
     ),
     /* end profile management */
 
