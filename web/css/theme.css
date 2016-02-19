@@ -273,7 +273,7 @@ a.btn-primary {
     left: 30%;
     width: 50px;
     height: 70px;
-    background: url('/web/images/html_black.png') no-repeat center;
+    background: url('/images/html_black.png') no-repeat center;
     background-size: cover;
 }
 
@@ -282,7 +282,7 @@ a.btn-primary {
     left: 40%;
     width: 50px;
     height: 70px;
-    background: url('/web/images/css_black.png') no-repeat center;
+    background: url('/images/css_black.png') no-repeat center;
     background-size: cover;
 }
 
@@ -291,7 +291,7 @@ a.btn-primary {
     left: 50%;
     width: 60px;
     height: 70px;
-    background: url('/web/images/js-black.png') no-repeat center;
+    background: url('/images/js-black.png') no-repeat center;
     background-size: cover;
 }
 
@@ -300,7 +300,7 @@ a.btn-primary {
     left: 60%;
     width: 100px;
     height: 57px;
-    background: url('/web/images/php-black.png');
+    background: url('/images/php-black.png');
     background-size: cover;
 }
 

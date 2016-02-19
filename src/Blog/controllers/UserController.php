@@ -8,9 +8,9 @@
 
 namespace Blog\Controllers;
 
+use Blog\Models\Category;
 use Blog\Models\Post;
 use Blog\Models\User;
-use Blog\Models\Category;
 use Framework\Config\Config;
 use Framework\Controller\Controller;
 use Framework\Exception\FrameworkException;
@@ -31,7 +31,7 @@ class UserController extends Controller
             $user = new User();
             $form = new Form($user, 'signup');
 
-            $wrongFile = false;
+            $wrongFile   = false;
             $picturePath = null;
             $pictureName = null;
             if (empty($_FILES['profile_image']['name'])) {
@@ -39,9 +39,9 @@ class UserController extends Controller
             } else {
                 $allowed = array('jpg', 'jpeg', 'gif', 'png');
 
-                $fileName = $_FILES['profile_image']['name'];
-                $fileInfo = explode('.', $fileName);
-                $fileExtn = strtolower(end($fileInfo));
+                $fileName     = $_FILES['profile_image']['name'];
+                $fileInfo     = explode('.', $fileName);
+                $fileExtn     = strtolower(end($fileInfo));
                 $fileTempPath = $_FILES['profile_image']['tmp_name'];
 
                 if (in_array($fileExtn, $allowed) === true) {
@@ -58,7 +58,7 @@ class UserController extends Controller
 
                 $form->bindDataToModel();
                 $user->setPicturePath(
-                    ($pictureName != null) ? '/web/uploads/' . $pictureName : '/web/uploads/profile_icon_trim.png'
+                    ($pictureName != null) ? '/uploads/' . $pictureName : '/uploads/profile_icon_trim.png'
                 );
                 $user->setSalt(Hash::generateSalt(32));
                 $user->setPassword(Hash::generatePass($user->getPassword(), $user->getSalt()));
@@ -97,10 +97,9 @@ class UserController extends Controller
     public function loginAction()
     {
         $templateEngine = $this->getTemplateEngine();
-        $request = $this->getRequest();
-        $session = $request->getSession();
+        $request        = $this->getRequest();
+        $session        = $request->getSession();
         $session->destroy();
-
 
         $categories = Category::query('SELECT * FROM ?i', array(Category::getTable()));
         foreach ($categories as &$category) {
@@ -134,10 +133,10 @@ class UserController extends Controller
                         $session->add(
                             'user',
                             array(
-                                'name' => $user->getUsername(),
-                                'email' => $user->getEmail(),
+                                'name'    => $user->getUsername(),
+                                'email'   => $user->getEmail(),
                                 'picture' => $user->getPicturePath(),
-                                'role' => $user->getRole()
+                                'role'    => $user->getRole(),
                             )
                         );
 
@@ -184,9 +183,9 @@ class UserController extends Controller
         if ($request->isMethod('POST')) {
             try {
                 $redirect = $this->getResponseRedirect();
-                $form = new Form($user, 'update');
+                $form     = new Form($user, 'update');
 
-                $wrongFile = false;
+                $wrongFile   = false;
                 $picturePath = null;
                 $pictureName = null;
                 if (empty($_FILES['profile_image']['name'])) {
@@ -194,9 +193,9 @@ class UserController extends Controller
                 } else {
                     $allowed = array('jpg', 'jpeg', 'gif', 'png');
 
-                    $fileName = $_FILES['profile_image']['name'];
-                    $fileInfo = explode('.', $fileName);
-                    $fileExtn = strtolower(end($fileInfo));
+                    $fileName     = $_FILES['profile_image']['name'];
+                    $fileInfo     = explode('.', $fileName);
+                    $fileExtn     = strtolower(end($fileInfo));
                     $fileTempPath = $_FILES['profile_image']['tmp_name'];
 
                     if (in_array($fileExtn, $allowed) === true) {
@@ -212,16 +211,16 @@ class UserController extends Controller
                 if ($form->isValid() && $wrongFile == false) {
                     $form->bindDataToModel();
                     $user->setPicturePath(
-                        ($pictureName != null) ? '/web/uploads/' . $pictureName : '/web/uploads/profile_icon_trim.png'
+                        ($pictureName != null) ? '/uploads/' . $pictureName : '/uploads/profile_icon_trim.png'
                     );
                     $user->save(array('username' => $session->get('user')['name']));
                     $session->add(
                         'user',
                         array(
-                            'name' => $user->getUsername(),
-                            'email' => $user->getEmail(),
+                            'name'    => $user->getUsername(),
+                            'email'   => $user->getEmail(),
                             'picture' => $user->getPicturePath(),
-                            'role' => $user->getRole()
+                            'role'    => $user->getRole(),
                         )
                     );
                     $session->flash(
@@ -241,7 +240,7 @@ class UserController extends Controller
             }
         } else {
             $_POST['_username'] = $user->getUsername();
-            $_POST['_email'] = $user->getEmail();
+            $_POST['_email']    = $user->getEmail();
             $templateEngine->render(BLOG_LAYOUT, BLOG_VIEWS . 'user/update.html.php');
         }
     }
@@ -272,7 +271,7 @@ class UserController extends Controller
         if ($request->isMethod('POST')) {
 
             $currentPassword = $user->getPassword();
-            $salt = $user->getSalt();
+            $salt            = $user->getSalt();
 
             $form = new Form($user, 'change_password');
             if ($form->isValid()) {

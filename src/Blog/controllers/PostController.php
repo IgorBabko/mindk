@@ -2,11 +2,11 @@
 
 namespace Blog\Controllers;
 
+use Blog\Models\Category;
 use Blog\Models\Comment;
 use Blog\Models\Post;
 use Blog\Models\User;
 use Blog\Util;
-use Blog\Models\Category;
 use Framework\Config\Config;
 use Framework\Controller\Controller;
 
@@ -14,14 +14,14 @@ class PostController extends Controller
 {
     public function indexAction()
     {
-        $args = func_get_args();
+        $args       = func_get_args();
         $categoryId = empty($args[0]) ? 0 : $args[0][0];
-        $pageId = empty($args[0]) ? 1 : $args[0][1];
+        $pageId     = empty($args[0]) ? 1 : $args[0][1];
 
         $session = $this->getRequest()->getSession();
         $session->start();
 
-        $request = $this->getRequest();
+        $request        = $this->getRequest();
         $templateEngine = $this->getTemplateEngine();
 
         $posts = array();
@@ -36,16 +36,16 @@ class PostController extends Controller
             } else {
                 $rawQueryString = "SELECT * FROM ?i WHERE ?i LIKE ?s OR ?i LIKE ?s OR ?i LIKE ?s ORDER BY ?i DESC";
                 $bindParameters =
-                    array(
-                        Post::getTable(),
-                        'title',
-                        '%' . $_POST['search'] . '%',
-                        'small_text',
-                        '%' . $_POST['search'] . '%',
-                        'text',
-                        '%' . $_POST['search'] . '%',
-                        'posted_date'
-                    );
+                array(
+                    Post::getTable(),
+                    'title',
+                    '%' . $_POST['search'] . '%',
+                    'small_text',
+                    '%' . $_POST['search'] . '%',
+                    'text',
+                    '%' . $_POST['search'] . '%',
+                    'posted_date',
+                );
 
                 $session->add(
                     'searchQuery',
@@ -59,7 +59,7 @@ class PostController extends Controller
             }
         } elseif ($session->exists('searchQuery') && $categoryId == $_SESSION['categoryId']) {
             $searchQuery = $session->get('searchQuery');
-            $posts = Post::query($searchQuery['rawQueryString'], $searchQuery['bindParameters']);
+            $posts       = Post::query($searchQuery['rawQueryString'], $searchQuery['bindParameters']);
             $templateEngine->setData('searchResult', 'Search result: ' . count($posts) . ' items');
         } else {
             $session->remove('searchQuery');
@@ -67,8 +67,8 @@ class PostController extends Controller
                 $rawQueryString = "SELECT * FROM ?i ORDER BY ?i DESC";
                 $bindParameters = array(Post::getTable(), 'posted_date');
             } else {
-                $category = new Category(array('id' => $categoryId));
-                $categoryName = $category->getName();
+                $category       = new Category(array('id' => $categoryId));
+                $categoryName   = $category->getName();
                 $rawQueryString = "SELECT * FROM ?i WHERE ?i = ?s ORDER BY ?i DESC";
                 $bindParameters = array(Post::getTable(), 'category', $categoryName, 'posted_date');
             }
@@ -90,7 +90,7 @@ class PostController extends Controller
         $templateEngine->setData('categories', $categories);
 
         $itemsPerPage = Config::getSetting('pagination/items_per_page');
-        $pagination = Util::pagination(
+        $pagination   = Util::pagination(
             'posts',
             array('categoryId' => $categoryId, 'pageId' => $pageId),
             count($posts)
@@ -107,13 +107,13 @@ class PostController extends Controller
     {
         $session = $this->getRequest()->getSession();
         $session->start();
-        $id = func_get_args()[0][0];;
-        $post = new Post(array('id' => $id));
+        $id       = func_get_args()[0][0];
+        $post     = new Post(array('id' => $id));
         $comments = Comment::query(
             'SELECT * FROM ?i WHERE ?i = ?s ORDER BY ?i DESC',
             array(Comment::getTable(), 'post_title', $post->getTitle(), 'created_date')
         );
-        $usersInfo = User::query('SELECT ?i, ?i FROM ?i', array('username', 'picture_path', User::getTable()));
+        $usersInfo    = User::query('SELECT ?i, ?i FROM ?i', array('username', 'picture_path', User::getTable()));
         $userPictures = array();
         foreach ($usersInfo as $userInfo) {
             $userPictures[$userInfo['username']] = $userInfo['picture_path'];

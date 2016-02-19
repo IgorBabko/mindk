@@ -1,6 +1,6 @@
 <?php
 
-ob_start();
+// ob_start();
 
 use Framework\Application\App;
 use Framework\Loader\Loader;
@@ -19,10 +19,10 @@ define('CMS_VIEWS', __DIR__ . '/../src/cms/views/');
 define('BLOG_LAYOUT', __DIR__ . '/../src/blog/views/layout.html.php');
 define('CMS_LAYOUT', __DIR__ . '/../src/cms/views/layout.html.php');
 
-require_once(__DIR__ . '/../framework/application/AppInterface.php');
-require_once(__DIR__ . '/../framework/application/App.php');
-require_once(__DIR__ . '/../framework/loader/LoaderInterface.php');
-require_once(__DIR__ . '/../framework/loader/Loader.php');
+require_once __DIR__ . '/../framework/application/AppInterface.php';
+require_once __DIR__ . '/../framework/application/App.php';
+require_once __DIR__ . '/../framework/loader/LoaderInterface.php';
+require_once __DIR__ . '/../framework/loader/Loader.php';
 
 Loader::addNamespacePath('Blog\\', __DIR__ . '/../src/blog/');
 Loader::addNamespacePath('Blog\\Controllers\\', __DIR__ . '/../src/blog/controllers/');
